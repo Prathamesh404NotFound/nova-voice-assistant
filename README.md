@@ -52,7 +52,7 @@ Every future tool plugs into `src/main/permissions/`:
 In-app: the side panel hosts a **Private Mode toggle** (🔒 PRIVATE badge appears in the top bar while on), an **Action Log** section (newest first, Export JSON, Clear), and **demo-action buttons** to exercise each gate path. Dry runs are available for anything Level 2+.
 
 ```bash
-npm run test:permissions   # headless self-test — 26 checks across all gate paths
+npm run test:permissions   # headless self-test — 27 checks across all gate paths
 ```
 
 Dev-only verification flag: `electron . --run-demo-action <actionId>` fires a single demo action through the gate after the window shows (useful for visual checks in CI/Xvfb).
