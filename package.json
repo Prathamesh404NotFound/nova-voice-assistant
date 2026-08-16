@@ -1,0 +1,70 @@
+{
+  "name": "nova-assistant",
+  "productName": "Nova",
+  "version": "0.1.0",
+  "description": "Nova — a voice-first desktop AI assistant",
+  "author": "Nova",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nova-assistant/nova"
+  },
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:all": "electron-builder -mwl",
+    "test:router": "node src/main/test-router.js"
+  },
+  "build": {
+    "appId": "com.nova.assistant",
+    "productName": "Nova",
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "icon": "assets/icon.icns",
+      "category": "public.app-category.productivity"
+    },
+    "dmg": {
+      "sign": false,
+      "writeUpdateInfo": false
+    }
+  },
+  "dependencies": {
+    "electron-log": "^5.1.2"
+  },
+  "devDependencies": {
+    "dmg-license": "^1.0.11",
+    "electron": "^31.4.0",
+    "electron-builder": "^24.13.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

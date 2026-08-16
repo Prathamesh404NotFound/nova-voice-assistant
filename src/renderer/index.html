@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; media-src 'self' blob: data:; connect-src 'self' https://openrouter.ai;" />
+  <title>Nova</title>
+  <link rel="stylesheet" href="css/hud.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="app">
+    <!-- ============================ TOP BAR ============================ -->
+    <header id="topbar" class="drag">
+      <div class="topbar-left">
+        <span class="brand">NOVA</span>
+        <span class="version">v0.1.0</span>
+      </div>
+      <div class="topbar-center">
+        <span id="statusDot" class="status-dot offline" title="Status"></span>
+        <span id="statusLabel" class="status-label">offline</span>
+        <span id="modelChip" class="model-chip" title="Click to refresh the free-model list">
+          <span class="model-icon">&#9672;</span>
+          <span id="modelName">—</span>
+          <span id="modelBadge" class="model-badge" hidden>free</span>
+        </span>
+        <button id="refreshBtn" class="icon-btn" title="Refresh free-model list now">&#8635;</button>
+      </div>
+      <div class="topbar-right">
+        <span id="clock" class="clock">--:--:--</span>
+        <button id="sideToggle" class="icon-btn" title="Toggle side panel">&#9776;</button>
+        <span class="window-controls">
+          <button id="minBtn" class="icon-btn win" title="Minimize">&#8722;</button>
+          <button id="maxBtn" class="icon-btn win" title="Maximize">&#9633;</button>
+          <button id="closeBtn" class="icon-btn win close" title="Close">&#10005;</button>
+        </span>
+      </div>
+    </header>
+
+    <!-- ============================ MAIN STAGE ============================ -->
+    <main id="stage">
+      <div id="orbWrap">
+        <canvas id="orbCanvas"></canvas>
+        <div id="orbCore"></div>
+        <div id="orbLabel" class="orb-label">IDLE</div>
+      </div>
+      <p id="liveLine" class="live-line"></p>
+      <p id="limitationNote" class="limitation-note">Web Speech recognition requires an internet connection (audio is sent to the OS speech service while active).</p>
+    </main>
+
+    <!-- ============================ BOTTOM BAR ============================ -->
+    <footer id="bottombar">
+      <button id="talkBtn" class="talk-btn" title="Hold the conversation — click to talk to Nova">
+        <span class="talk-ring"></span>
+        <span class="talk-mic">&#127908;</span>
+        <span class="talk-text">Talk to Nova</span>
+      </button>
+      <label id="continuousToggle" class="toggle" title="Continuous listening (off by default — opt in)">
+        <input type="checkbox" id="continuousCheck" />
+        <span class="toggle-track"><span class="toggle-thumb"></span></span>
+        <span class="toggle-label">continuous</span>
+      </label>
+      <span id="liveHear" class="live-hear"></span>
+    </footer>
+
+    <!-- ============================ SIDE PANEL ============================ -->
+    <aside id="sidePanel">
+      <div class="side-header">
+        <h2>Session</h2>
+        <button id="sideClose" class="icon-btn">&#10005;</button>
+      </div>
+
+      <div class="side-section">
+        <div class="side-label">Developer Mode</div>
+        <div id="devPanel" class="dev-panel">
+          <div class="dev-row"><span>Active model</span><span id="devModel">—</span></div>
+          <div class="dev-row"><span>Free models</span><span id="devCount">—</span></div>
+          <div class="dev-row"><span>Last fetch</span><span id="devUpdated">—</span></div>
+          <div class="dev-row"><span>Fallback</span><span id="devFallback">—</span></div>
+          <details>
+            <summary>Pick log</summary>
+            <div id="devLog" class="dev-log"></div>
+          </details>
+        </div>
+      </div>
+
+      <div class="side-section">
+        <div class="side-label">History</div>
+        <div id="history" class="history">
+          <p class="history-empty">Nothing yet — say something to Nova.</p>
+        </div>
+      </div>
+
+      <div class="side-section input-section">
+        <div class="side-label">Type instead</div>
+        <form id="typeForm" autocomplete="off">
+          <input id="typeInput" type="text" placeholder="Type a message — same pipeline as voice" maxlength="2000" />
+          <button type="submit" class="send-btn">&#10148;</button>
+        </form>
+      </div>
+
+      <div class="side-section">
+        <div class="side-label">Settings</div>
+        <div class="settings-row">
+          <span>OpenRouter key</span>
+          <span id="keyStatus" class="key-status">—</span>
+        </div>
+        <button id="setKeyBtn" class="flat-btn">Set / change key</button>
+        <div class="settings-note">Key is stored with your OS keychain — never a plaintext file, never logged. You can also launch Nova with the <code>OPENROUTER_API_KEY</code> environment variable.</div>
+      </div>
+    </aside>
+
+    <!-- ============================ KEY DIALOG (overlay) ============================ -->
+    <div id="keyOverlay" class="overlay" hidden>
+      <div class="overlay-card">
+        <h3>OpenRouter API key</h3>
+        <p>Paste your key from <a href="https://openrouter.ai/keys" target="_blank" rel="noopener">openrouter.ai/keys</a>. It is stored with your OS keychain.</p>
+        <input id="keyInput" type="password" placeholder="sk-or-…" autocomplete="off" />
+        <div class="overlay-actions">
+          <button id="keyCancelBtn" class="flat-btn">Skip</button>
+          <button id="keySaveBtn" class="accent-btn">Save securely</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
