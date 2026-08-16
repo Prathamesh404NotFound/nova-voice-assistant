@@ -7,6 +7,13 @@ const log = require("electron-log");
 const { getKey, requireKeyOnce, isKeyConfigured, storeKey } = require("./keys");
 const router = require("./router");
 
+// Permission & safety framework (exists BEFORE any real tooling is added).
+const settings = require("./settings");
+const { listActions, getAction } = require("./permissions/action-registry");
+const { runAction } = require("./permissions/gate");
+const actionLog = require("./permissions/action-log");
+require("./permissions/test-actions"); // demo actions for verifying gate paths
+
 log.transports.file.level = "info";
 log.transports.console.level = "info";
 
@@ -87,7 +94,35 @@ ipcMain.handle("nova:get-settings", async () => {
     freeModelCount: router.freeModelCount(),
     updatedAt: router.lastUpdated(),
     fallbackInUse: router.isFallbackInUse(),
+    privateMode: settings.isPrivateMode(),
   };
+});
+
+// ---------------------------------------------------------------------------
+// IPC: permission & safety framework
+// ---------------------------------------------------------------------------
+ipcMain.handle("nova:get-actions", async () => listActions());
+
+ipcMain.handle("nova:run-action", async (_evt, req) => {
+  const { actionId, payload = {}, dryRun = false } = req || {};
+  if (typeof actionId !== "string") {
+    return { outcome: "failed", detail: { error: "actionId is required" } };
+  }
+  try {
+    return await runAction(actionId, payload, { dryRun: !!dryRun });
+  } catch (err) {
+    log.error(`[permissions] nova:run-action failed:`, err?.message || err);
+    return { outcome: "failed", detail: { error: String(err?.message || err) } };
+  }
+});
+
+ipcMain.handle("nova:get-action-log", async () => actionLog.list());
+ipcMain.handle("nova:clear-action-log", async () => { actionLog.clear(); return { ok: true }; });
+
+ipcMain.handle("nova:get-private-mode", async () => settings.isPrivateMode());
+ipcMain.handle("nova:set-private-mode", async (_evt, on) => {
+  settings.setPrivateMode(!!on);
+  return { ok: true, privateMode: settings.isPrivateMode() };
 });
 
 ipcMain.handle("nova:submit-key", async (_evt, key) => {
@@ -145,6 +180,8 @@ app.whenReady().then(async () => {
     requireKeyOnce(mainWindow);
   }
 
+  log.info(`[permissions] ${listActions().length} actions registered; privateMode=${settings.isPrivateMode()}`);
+
   // 2. Warm the model router (fetch free models, then refresh every 6 hours)
   try {
     await router.refresh({ force: true });
@@ -155,6 +192,22 @@ app.whenReady().then(async () => {
   log.info(`Model router: current=${router.currentModel()} freeModels=${router.freeModelCount()} fallback=${router.isFallbackInUse()}`);
 
   createWindow();
+
+  // Hidden verification flag: `electron . --run-demo-action <id>` fires a single
+  // demo action through the permission gate once the window is ready to show.
+  // Used to visually verify toast/modal confirmation flows (e.g. in Xvfb).
+  const demoIdx = process.argv.indexOf("--run-demo-action");
+  if (demoIdx !== -1) {
+    const actionId = process.argv[demoIdx + 1];
+    if (actionId) {
+      mainWindow.once("show", async () => {
+        await new Promise((r) => setTimeout(r, 2500));
+        log.info(`[verify] firing demo action through the gate: ${actionId}`);
+        const res = await runAction(actionId, { from: "notes.txt", to: "notes-new.txt" }, { dryRun: false });
+        log.info(`[verify] demo action result:`, JSON.stringify(res));
+      });
+    }
+  }
 });
 
 app.on("window-all-closed", () => {

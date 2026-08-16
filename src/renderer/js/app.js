@@ -33,6 +33,10 @@
     setKeyBtn: $("setKeyBtn"), keyStatus: $("keyStatus"),
     keyOverlay: $("keyOverlay"), keyInput: $("keyInput"),
     keySaveBtn: $("keySaveBtn"), keyCancelBtn: $("keyCancelBtn"),
+    privateBadge: $("privateBadge"), privateToggle: $("privateToggle"),
+    permToast: $("permToast"), permToastLevel: $("permToastLevel"),
+    permToastMsg: $("permToastMsg"), permToastCancel: $("permToastCancel"),
+    permLog: $("permLog"), permExportBtn: $("permExportBtn"), permClearBtn: $("permClearBtn"),
   };
 
   // ------------------------------------------------------------------ clock
@@ -510,6 +514,11 @@
     }
   }
 
+  // Refresh the private-mode UI whenever settings change (e.g. key overlay save).
+  window.nova.onSettingsChanged?.(() => loadSettings().then(() => {
+    window.nova.getSettings().then((s) => setPrivateMode(!!s.privateMode)).catch(() => {});
+  }).catch(() => {}));
+
   function refreshDevPanel() {
     loadSettings();
     window.nova.getRouterLogs().then((logs) => {
@@ -517,7 +526,129 @@
         .map((l) => `<div>${l.ts.slice(11, 19)} ${l.taskType} → ${l.model}${l.fallback ? " (fallback)" : ""}</div>`)
         .join("") || "<div>no picks yet</div>";
     }).catch(() => {});
+    refreshPermPanel();
   }
+
+  // ======================================================================
+  // PERMISSIONS & SAFETY — private mode, action toast, action log
+  // ======================================================================
+  function setPrivateMode(on) {
+    el.privateBadge.hidden = !on;
+    if (el.privateToggle.checked !== on) el.privateToggle.checked = on;
+    if (on) {
+      el.statusDot.className = "status-dot private";
+      el.statusLabel.textContent = "private · local only";
+    }
+  }
+
+  el.privateToggle.addEventListener("change", (ev) => {
+    window.nova.setPrivateMode(ev.target.checked)
+      .then(() => setPrivateMode(ev.target.checked))
+      .catch((err) => {
+        el.privateToggle.checked = !ev.target.checked;
+        console.warn("Private mode toggle failed:", err);
+      });
+  });
+
+  // Boot guard: never show the toast unless a real "show" IPC arrives.
+  el.permToast.hidden = true;
+  // Level-2 permission toast: cancellable within 5 s, then auto-executes.
+  let toastTimer = null;
+  function setPermToastData(data) {
+    if (data && data.toastId) el.permToast.dataset.toastId = data.toastId;
+  }
+  function showPermToast(data) {
+    // Only an explicit "show" with a toast id opens the toast; everything else hides.
+    if (!data || data.type !== "show" || !data.toastId) { hidePermToast(); return; }
+    const lvl = (typeof data.level === "number" ? `L${data.level}` : "L2").toUpperCase();
+    el.permToastLevel.textContent = lvl + " · reversible";
+    el.permToastMsg.textContent = data.message || "Nova wants to perform a reversible action.";
+    el.permToast.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(hidePermToast, 5500);
+  }
+  function hidePermToast() {
+    clearTimeout(toastTimer);
+    el.permToast.hidden = true;
+  }
+  el.permToastCancel.addEventListener("click", () => {
+    const toastId = el.permToast.dataset.toastId;
+    if (toastId) window.nova.cancelToast(toastId);
+    hidePermToast();
+  });
+  window.nova.onPermissionToast((data) => {
+    setPermToastData(data);
+    showPermToast(data);
+  });
+
+  // Action log panel: newest first, exportable as JSON.
+  async function refreshPermPanel() {
+    try {
+      const entries = await window.nova.getActionLog();
+      if (!entries.length) {
+        el.permLog.innerHTML = `<p class="history-empty">No actions yet — Nova’s actions will appear here, newest first.</p>`;
+        return;
+      }
+      const lvlClass = (l) => `l${Math.min(4, Math.max(0, l))}`;
+      el.permLog.innerHTML = entries
+        .map((e) => {
+          const ts = e.ts ? new Date(e.ts).toLocaleTimeString() : "";
+          const detail = (e.detail && Object.keys(e.detail).length)
+            ? ` — ${JSON.stringify(e.detail).slice(0, 90)}` : "";
+          return `<div class="perm-entry">` +
+            `<span class="ts">${ts}</span>` +
+            `<span class="lvl ${lvlClass(e.level)}">L${e.level} ${e.levelName || ""}</span>` +
+            `<span>${escapeHtml(e.actionId)}${escapeHtml(detail)}</span>` +
+            `<span class="outcome ${e.outcome}">${e.outcome}</span>` +
+            `</div>`;
+        }).join("");
+    } catch (err) {
+      console.warn("Action log refresh failed:", err);
+    }
+  }
+
+  el.permExportBtn.addEventListener("click", async () => {
+    try {
+      const entries = await window.nova.getActionLog();
+      const blob = new Blob([JSON.stringify(entries, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `nova-action-log-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    } catch (err) {
+      console.warn("Log export failed:", err);
+    }
+  });
+
+  // Demo actions (test harness): click a demo button to drive the gate paths.
+  document.querySelectorAll("[data-demo]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const id = btn.dataset.demo;
+      const dry = id.endsWith(":dry");
+      const actionId = id.replace(":dry", "");
+      try {
+        const res = await window.nova.runAction(actionId,
+          actionId === "demo:rename-file" ? { from: "report.txt", to: "report-final.txt" } : {},
+          { dryRun: dry });
+        el.liveLine.textContent = dry
+          ? `Dry run: ${JSON.stringify(res.detail || {})}`
+          : `${actionId} → ${res.outcome}`;
+        refreshPermPanel();
+      } catch (err) {
+        el.liveLine.textContent = `Action failed: ${err?.message || err}`;
+      }
+    });
+  });
+
+  el.permClearBtn.addEventListener("click", async () => {
+    try {
+      await window.nova.clearActionLog();
+      refreshPermPanel();
+    } catch (err) {
+      console.warn("Log clear failed:", err);
+    }
+  });
 
   el.refreshBtn.addEventListener("click", async () => {
     el.refreshBtn.style.transform = "rotate(180deg)";

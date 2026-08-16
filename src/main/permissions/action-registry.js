@@ -1,0 +1,41 @@
+// Nova — action registry.
+//
+// Tools register themselves here with:
+//   - a unique action id
+//   - a risk level (RISK_LEVEL enum)
+//   - an execute(payload) function
+//   - an optional simulate(payload) function (dry run) — Level 2+ actions
+//     MUST provide simulate(); it reports what WOULD happen without doing it.
+//
+// This module holds no state about permissions — that lives in `gate.js`.
+
+const { RISK_LEVEL } = require("./risk-levels");
+const log = require("electron-log");
+
+const registry = new Map(); // id -> { id, level, description, execute, simulate }
+
+function registerAction({ id, level, description, execute, simulate }) {
+  if (typeof id !== "string" || !id.trim()) throw new Error("Action needs a string id");
+  if (registry.has(id)) throw new Error(`Action "${id}" already registered`);
+  if (![0, 1, 2, 3, 4].includes(level)) {
+    throw new Error(`Action "${id}" has invalid risk level ${level}`);
+  }
+  if (typeof execute !== "function") throw new Error(`Action "${id}" needs an execute function`);
+  if (level >= RISK_LEVEL.REVERSIBLE && typeof simulate !== "function") {
+    throw new Error(`Level ${level} action "${id}" MUST provide a simulate() dry-run function`);
+  }
+  registry.set(id, { id, level, description, execute, simulate: simulate || null });
+  log.info(`[permissions] registered action "${id}" at level ${level}`);
+}
+
+function getAction(id) {
+  const action = registry.get(id);
+  if (!action) throw new Error(`Unknown action "${id}"`);
+  return action;
+}
+
+function listActions() {
+  return [...registry.values()].map(({ id, level, description }) => ({ id, level, description }));
+}
+
+module.exports = { registerAction, getAction, listActions };

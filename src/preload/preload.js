@@ -18,6 +18,28 @@ contextBridge.exposeInMainWorld("nova", {
   refreshModels: () => ipcRenderer.invoke("nova:refresh-models"),
   getRouterLogs: () => ipcRenderer.invoke("nova:get-router-logs"),
 
+  // --- Permission & safety framework ---
+  getActions: () => ipcRenderer.invoke("nova:get-actions"),
+  runAction: (actionId, payload = {}, opts = {}) =>
+    ipcRenderer.invoke("nova:run-action", { actionId, payload, ...opts }),
+  getActionLog: () => ipcRenderer.invoke("nova:get-action-log"),
+  clearActionLog: () => ipcRenderer.invoke("nova:clear-action-log"),
+  getPrivateMode: () => ipcRenderer.invoke("nova:get-private-mode"),
+  setPrivateMode: (on) => ipcRenderer.invoke("nova:set-private-mode", on),
+
+  // Permission toast: main process announces L2 actions; renderer can cancel.
+  onPermissionToast: (cb) => {
+    const listener = (_evt, data) => cb(data);
+    ipcRenderer.on("nova:permission-toast", listener);
+    return () => ipcRenderer.removeListener("nova:permission-toast", listener);
+  },
+  cancelToast: (toastId) => ipcRenderer.send("nova:permission-toast-reply", { toastId }),
+  onSettingsChanged: (cb) => {
+    const listener = (_evt, data) => cb(data);
+    ipcRenderer.on("nova:settings-changed", listener);
+    return () => ipcRenderer.removeListener("nova:settings-changed", listener);
+  },
+
   // --- Chat (streaming, renderer-side fetch) ---
   // The renderer performs the fetch directly (avoids IPC streaming complexity).
   platform: process.platform,

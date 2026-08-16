@@ -16,7 +16,8 @@
     "build:win": "electron-builder --win",
     "build:mac": "electron-builder --mac",
     "build:all": "electron-builder -mwl",
-    "test:router": "node src/main/test-router.js"
+    "test:router": "node src/main/test-router.js",
+    "test:permissions": "node src/main/test-permissions.js"
   },
   "build": {
     "appId": "com.nova.assistant",

@@ -1,6 +1,6 @@
 # Nova — Voice-First Desktop AI Assistant
 
-Nova is the foundation stage of a cross-platform (Windows + macOS) desktop AI assistant built with **Electron + Node.js**. This stage covers **voice/chat interaction and model routing only** — no computer-control, file-system, or vision features yet.
+Nova is the foundation stage of a cross-platform (Windows + macOS) desktop AI assistant built with **Electron + Node.js**. This stage covers **voice/chat interaction, model routing, and the permission & safety framework** — the safety scaffolding exists BEFORE any feature that can touch the user's mouse, keyboard, files, or screen. No real computer-control, file-system, or vision tools are implemented yet; dummy test actions verify every confirmation flow.
 
 ## Features
 
@@ -14,6 +14,7 @@ Nova is the foundation stage of a cross-platform (Windows + macOS) desktop AI as
 | Key storage | `OPENROUTER_API_KEY` env var → Electron `safeStorage` (OS keychain) → one-time settings prompt. Never plaintext, never logged |
 | Packaging | electron-builder: Windows NSIS `.exe` installer (x64), macOS `.dmg` (universal) |
 | Indicators | Small model chip in top bar (click = refresh list / open side panel) + Developer Mode panel in side panel |
+| Safety framework | 5 risk levels (L0 Read → L4 Destructive), per-action permission gate (L0–1 immediate / L2 cancellable 5s toast / L3–4 explicit Confirm modal in plain language), persistent action log (JSON, newest first, exportable), dry-run `simulate()` paths for L2+, global Private Mode (blocks all outbound network except OpenRouter, persistent 🔒 PRIVATE badge) |
 
 ## Run
 
@@ -35,6 +36,27 @@ npm run build:all   # all platforms (only works on macOS + wine)
 
 Cross-platform build note: the Windows target builds fine from Linux with `wine64` installed (`sudo apt-get install wine64`). The macOS DMG target depends on `dmg-license`/`iconv-corefoundation`, whose native binary is darwin-only — on Linux the mac build falls back gracefully only if you build on a Mac or CI runner (GitHub Actions `macos-latest` works out of the box).
 
+## Permission & safety framework
+
+Every future tool plugs into `src/main/permissions/`:
+
+| Module | Role |
+|--------|------|
+| `risk-levels.js` | Shared `RISK_LEVEL` enum (READ 0 → DESTRUCTIVE 4) and `riskLabel()` |
+| `action-registry.js` | `registerAction({ id, level, description, execute, simulate })` — every tool declares its level |
+| `gate.js` | `runAction(id, payload, { dryRun })` — routes by level: L0–1 immediate, L2 toast (5 s cancel window), L3–4 native Confirm/Cancel modal with a plain-language description built from `simulate({ __describe: true })`; Private Mode blocks L3+ |
+| `action-log.js` | Persistent log at `userData/actions.log.json` — action id, level, timestamp, outcome (`success`/`failed`/`cancelled`/`dry-run`); newest first, capped at 500 entries |
+| `settings.js` | `setPrivateMode(on)` persisted to `userData/settings.json`, notifies renderer |
+| `test-actions.js` | Dummy harness actions (`demo:read-files` L0, `demo:open-app` L1, `demo:rename-file` L2, `demo:send-message` L3, `demo:delete-files` L4) — wired behind side-panel demo buttons for manual verification |
+
+In-app: the side panel hosts a **Private Mode toggle** (🔒 PRIVATE badge appears in the top bar while on), an **Action Log** section (newest first, Export JSON, Clear), and **demo-action buttons** to exercise each gate path. Dry runs are available for anything Level 2+.
+
+```bash
+npm run test:permissions   # headless self-test — 26 checks across all gate paths
+```
+
+Dev-only verification flag: `electron . --run-demo-action <actionId>` fires a single demo action through the gate after the window shows (useful for visual checks in CI/Xvfb).
+
 ## Test the model router headlessly
 
 ```bash
@@ -51,7 +73,10 @@ src/
 │   ├── main.js        Electron lifecycle, IPC handlers, window chrome
 │   ├── router.js      OpenRouter free-model router (fetch, cache, pickModel)
 │   ├── keys.js        API key: env → safeStorage → one-time prompt
-│   └── test-router.js Headless router self-test (electron shim)
+│   ├── settings.js    Settings persistence (Private Mode)
+│   ├── permissions/   Safety framework (risk levels, registry, gate, action log, demo actions)
+│   ├── test-router.js Headless router self-test (electron shim)
+│   └── test-permissions.js Headless permission-gate self-test (electron shim)
 ├── preload/preload.js contextBridge API — renderer has no Node access
 └── renderer/
     ├── index.html     Single-screen HUD

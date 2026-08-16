@@ -12,6 +12,12 @@
   <div id="app">
     <!-- ============================ TOP BAR ============================ -->
     <header id="topbar" class="drag">
+      <!-- Permission toast for reversible (level 2) actions: cancellable within 5 s -->
+      <div id="permToast" class="perm-toast" hidden>
+        <span class="perm-toast-level" id="permToastLevel"></span>
+        <span id="permToastMsg"></span>
+        <button id="permToastCancel" class="perm-toast-btn">Cancel</button>
+      </div>
       <div class="topbar-left">
         <span class="brand">NOVA</span>
         <span class="version">v0.1.0</span>
@@ -28,6 +34,7 @@
       </div>
       <div class="topbar-right">
         <span id="clock" class="clock">--:--:--</span>
+        <span id="privateBadge" class="private-badge" hidden title="Private Mode — all outbound network calls except OpenRouter are blocked">&#128274; PRIVATE</span>
         <button id="sideToggle" class="icon-btn" title="Toggle side panel">&#9776;</button>
         <span class="window-controls">
           <button id="minBtn" class="icon-btn win" title="Minimize">&#8722;</button>
@@ -99,6 +106,39 @@
         </form>
       </div>
 
+      <div class="side-section">
+        <div class="side-label">Permissions &amp; Safety</div>
+        <div class="settings-row toggle-row">
+          <span>Private Mode</span>
+          <label class="switch">
+            <input id="privateToggle" type="checkbox" />
+            <span class="switch-slider"></span>
+          </label>
+        </div>
+        <div class="settings-note">Private Mode blocks everything that would leave this machine — no browser opens, no network calls except to openrouter.ai. Local tools report “no local model configured” until local models are wired in.</div>
+        <div class="settings-row" style="margin-top:4px;">
+          <span>Demo actions (test harness)</span>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:6px;">
+          <button class="flat-btn small" data-demo="demo:read-files">Read files</button>
+          <button class="flat-btn small" data-demo="demo:open-app">Open app</button>
+          <button class="flat-btn small" data-demo="demo:rename-file">Rename file</button>
+          <button class="flat-btn small" data-demo="demo:send-message">Send message</button>
+          <button class="flat-btn small" data-demo="demo:delete-files">Delete files</button>
+          <button class="flat-btn small" data-demo="demo:rename-file:dry">Dry run</button>
+        </div>
+      </div>
+      <div class="side-section">
+        <div class="side-label">Action Log
+          <span class="log-actions">
+            <button id="permExportBtn" class="flat-btn small" title="Export log as JSON">Export JSON</button>
+            <button id="permClearBtn" class="flat-btn small danger" title="Clear the log">Clear</button>
+          </span>
+        </div>
+        <div id="permLog" class="perm-log">
+          <p class="history-empty">No actions yet — Nova’s actions will appear here, newest first.</p>
+        </div>
+      </div>
       <div class="side-section">
         <div class="side-label">Settings</div>
         <div class="settings-row">
