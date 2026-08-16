@@ -1,6 +1,6 @@
 # Nova — Voice-First Desktop AI Assistant
 
-Nova is the foundation stage of a cross-platform (Windows + macOS) desktop AI assistant built with **Electron + Node.js**. This stage covers **voice/chat interaction, model routing, and the permission & safety framework** — the safety scaffolding exists BEFORE any feature that can touch the user's mouse, keyboard, files, or screen. No real computer-control, file-system, or vision tools are implemented yet; dummy test actions verify every confirmation flow.
+Nova is the foundation stage of a cross-platform (Windows + macOS) desktop AI assistant built with **Electron + Node.js**. This stage covers **voice/chat interaction, model routing, the permission & safety framework, and screen vision** — the safety scaffolding exists BEFORE any feature that can touch the user's mouse, keyboard, or files. Nova can now *see* the screen (screenshot + local OCR + optional vision-model reasoning), which is the first real tool and it is wired through the permission framework as a Level 0 (read-only) action. No file-system, mouse, or keyboard tools are implemented yet.
 
 ## Features
 
@@ -14,6 +14,7 @@ Nova is the foundation stage of a cross-platform (Windows + macOS) desktop AI as
 | Key storage | `OPENROUTER_API_KEY` env var → Electron `safeStorage` (OS keychain) → one-time settings prompt. Never plaintext, never logged |
 | Packaging | electron-builder: Windows NSIS `.exe` installer (x64), macOS `.dmg` (universal) |
 | Indicators | Small model chip in top bar (click = refresh list / open side panel) + Developer Mode panel in side panel |
+| Screen vision | Saying or typing "what's on my screen", "what am I looking at", "what does this error say", "describe my screen" captures the screen via `desktopCapturer`, runs fully offline tesseract.js OCR (works in Private Mode), detects button-like / input-like UI regions from OCR bounding boxes, and — when not in Private Mode and a free vision model is available — sends the screenshot + question to a vision-capable model via the router; otherwise answers from OCR text alone; every capture is logged to the Action Log as Level 0 with a note (never the image bytes) |
 | Safety framework | 5 risk levels (L0 Read → L4 Destructive), per-action permission gate (L0–1 immediate / L2 cancellable 5s toast / L3–4 explicit Confirm modal in plain language), persistent action log (JSON, newest first, exportable), dry-run `simulate()` paths for L2+, global Private Mode (blocks all outbound network except OpenRouter, persistent 🔒 PRIVATE badge) |
 
 ## Run
@@ -57,6 +58,25 @@ npm run test:permissions   # headless self-test — 27 checks across all gate pa
 
 Dev-only verification flag: `electron . --run-demo-action <actionId>` fires a single demo action through the gate after the window shows (useful for visual checks in CI/Xvfb).
 
+## Screen vision (Level 0, read-only)
+
+Screen reading lives in `src/main/vision/` and is the first feature built on top of the safety framework. All vision actions route through `runAction("vision:capture-screen", ...)` (Level 0 — executed immediately, but still logged):
+
+| Module | Role |
+|--------|------|
+| `screenshot.js` | `desktopCapturer.getSources({ types: ['screen'] })` capture; on macOS detects missing Screen Recording permission (`systemPreferences.getMediaAccessStatus`) and offers setup instructions + a button that opens the correct System Settings pane |
+| `ocr.js` | Offline tesseract.js (WASM) OCR — lazy worker init, temp-file decoding, HOCR parsing for words + bounding boxes + per-word confidence; works fully offline and in Private Mode |
+| `ui-detector.js` | Baseline line clustering + horizontal phrase grouping; buttons = short isolated Title-Case/CAPS phrases, inputs = colon-ended labels with an empty region to the right (no ML) |
+| `vision-query.js` | Full pipeline: capture → OCR → UI detection → vision-model call (`pickModel("vision")`, skipped in Private Mode or when the router is in fallback/no-vision-model state) → plain-language answer; OCR-only fallback path |
+
+Voice trigger phrases (in the shared `submitMessage` path, typed and voice both): `what's on my screen`, `what is on my screen`, `what am I looking at`, `describe my screen`, `read the screen`, `what does this error/message say`, and more.
+
+```bash
+npm run test:vision    # headless self-test — OCR, UI detection, permission paths, pipeline fallbacks, action-log entries
+```
+
+The OCR engine downloads `eng.traineddata` on first run (auto-stored at the repo root; gitignored) — after that, all OCR is local. macOS users must grant Screen Recording access before vision commands work; Nova shows an in-app banner with a one-click button to open System Settings > Privacy & Security > Screen Recording when permission is missing.
+
 ## Test the model router headlessly
 
 ```bash
@@ -76,12 +96,14 @@ src/
 │   ├── settings.js    Settings persistence (Private Mode)
 │   ├── permissions/   Safety framework (risk levels, registry, gate, action log, demo actions)
 │   ├── test-router.js Headless router self-test (electron shim)
-│   └── test-permissions.js Headless permission-gate self-test (electron shim)
+│   ├── test-permissions.js Headless permission-gate self-test (electron shim)
+│   ├── test-vision.js Headless screen-vision self-test (electron shim, PIL-generated test images)
+│   └── vision/ Screenshot capture, offline OCR, UI detection, vision-query pipeline
 ├── preload/preload.js contextBridge API — renderer has no Node access
 └── renderer/
     ├── index.html     Single-screen HUD
     ├── css/hud.css    Dark command-center styling (Orbitron + Space Grotesk)
-    └── js/app.js      Orb visualizer, mic, STT, TTS barge-in, streaming chat
+    └── js/app.js      Orb visualizer, mic, STT, TTS barge-in, streaming chat, vision trigger phrases, screen-permission help banner
 ```
 
 The renderer performs the OpenRouter fetch directly (renderer-side fetch avoids IPC streaming complexity; CSP `connect-src` restricts it to `https://openrouter.ai`).
@@ -92,6 +114,8 @@ The renderer performs the OpenRouter fetch directly (renderer-side fetch avoids 
 2. **Wake word** — an open-source pure-JS keyword spotter for an exact "Hey Nova" phrase with offline guarantees is not yet available in the JS ecosystem (Porcupine's SDK is commercial and native-per-architecture; sherpa-onnx is a heavy native addon). This stage uses an energy-gate VAD that arms recognition, so audio capture only begins on tap or wake. A native wake-word addon can be dropped in later without touching the pipeline.
 3. **In-app settings prompt** uses a renderer overlay dialog; Electron's native `dialog.showInputBox` is used where available.
 4. **safeStorage on Linux** may fall back to in-memory storage when libsecret is missing — flagged in logs.
+5. **Screen vision on headless/CI environments** — `desktopCapturer` needs a real display server (Xvfb works for testing, but captures may be empty windows). macOS always requires the Screen Recording grant; Windows works without extra permissioning.
+6. **Vision-model reasoning needs an API key and internet** — in Private Mode or when no free vision model is available, Nova answers from OCR text alone, so vision never leaks screen content off-device in that mode.
 
 ## Packaging notes
 

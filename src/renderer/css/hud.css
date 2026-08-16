@@ -544,6 +544,19 @@ html, body {
 .settings-note { font-size: 10.5px; color: var(--text-faint); line-height: 1.55; }
 .settings-note code { font-family: var(--font-mono); color: var(--cyan-dim); }
 
+/* --------------------------------- macOS screen-recording permission help */
+.screen-perm-help {
+  margin-top: 8px;
+  border: 1px solid var(--cyan-dim);
+  border-left: 3px solid var(--cyan);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: rgba(57, 210, 255, 0.06);
+}
+.screen-perm-help .side-label { font-size: 10px; color: var(--cyan); margin-bottom: 4px; }
+.screen-perm-help .settings-note { margin-bottom: 6px; }
+#openScreenSettingsBtn { margin-top: 2px; }
+
 /* ------------------------------------------------------------- key overlay */
 .overlay {
   position: fixed; inset: 0;

@@ -17,7 +17,8 @@
     "build:mac": "electron-builder --mac",
     "build:all": "electron-builder -mwl",
     "test:router": "node src/main/test-router.js",
-    "test:permissions": "node src/main/test-permissions.js"
+    "test:permissions": "node src/main/test-permissions.js",
+    "test:vision": "node src/main/test-vision.js"
   },
   "build": {
     "appId": "com.nova.assistant",
@@ -58,7 +59,8 @@
     }
   },
   "dependencies": {
-    "electron-log": "^5.1.2"
+    "electron-log": "^5.1.2",
+    "tesseract.js": "^7.0.0"
   },
   "devDependencies": {
     "dmg-license": "^1.0.11",

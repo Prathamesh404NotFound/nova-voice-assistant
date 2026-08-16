@@ -116,6 +116,12 @@
           </label>
         </div>
         <div class="settings-note">Private Mode blocks everything that would leave this machine — no browser opens, no network calls except to openrouter.ai. Local tools report “no local model configured” until local models are wired in.</div>
+        <!-- macOS Screen Recording permission help (shown when permission is missing) -->
+        <div id="screenPermHelp" class="screen-perm-help" hidden>
+          <div class="side-label">Screen reading</div>
+          <p class="settings-note">macOS requires the <strong>Screen Recording</strong> permission before Nova can see your screen (needed for “what’s on my screen”). Grant it, then fully quit and reopen Nova.</p>
+          <button id="openScreenSettingsBtn" class="flat-btn small">Open Screen Recording settings</button>
+        </div>
         <div class="settings-row" style="margin-top:4px;">
           <span>Demo actions (test harness)</span>
         </div>

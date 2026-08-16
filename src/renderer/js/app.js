@@ -37,6 +37,7 @@
     permToast: $("permToast"), permToastLevel: $("permToastLevel"),
     permToastMsg: $("permToastMsg"), permToastCancel: $("permToastCancel"),
     permLog: $("permLog"), permExportBtn: $("permExportBtn"), permClearBtn: $("permClearBtn"),
+    screenPermHelp: $("screenPermHelp"), openScreenSettingsBtn: $("openScreenSettingsBtn"),
   };
 
   // ------------------------------------------------------------------ clock
@@ -379,10 +380,38 @@
     return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   }
 
+  // Vision trigger phrases: "what am I looking at", "what's on my screen",
+  // "what does this error say", "describe my screen", etc.
+  const VISION_PHRASES = /what('s| is)? (on my screen|this screen|this (error|message))|what am i looking at|describe (my |the )?screen|read (my |the )?screen|what does (this|that) (error |message )?say/i;
+
   async function submitMessage(text, source) {
     if (!text?.trim()) return;
     addHistoryEntry({ role: "user", text: text.trim(), src: source });
     el.liveLine.textContent = "";
+
+    // Vision route: capture the screen + OCR (+ vision model if available).
+    // Works offline and in Private Mode — no API key needed.
+    if (VISION_PHRASES.test(text.trim())) {
+      try {
+        setMode("speaking", "LOOKING…");
+        el.liveLine.textContent = "Taking a look at your screen…";
+        const res = await window.nova.visionQuery(text.trim());
+        if (res?.error) throw new Error(res.error);
+        const answer = res?.answer || "I could not read anything on the screen.";
+        addHistoryEntry({ role: "nova", text: answer, src: source });
+        speak(answer);
+        el.liveLine.textContent = `Screen vision (${res?.mode || "?"} mode) — see the log for the captured-text record.`;
+        refreshPermPanel();
+      } catch (err) {
+        const msg = "I could not read the screen. " + (err?.message || String(err));
+        addHistoryEntry({ role: "nova", text: msg, src: source });
+        speak(msg);
+        console.error("Vision query failed:", err);
+      } finally {
+        setMode("idle", "IDLE");
+      }
+      return;
+    }
 
     if (!apiKey) {
       speak("I need your OpenRouter API key before I can answer. Open the side panel settings to set it.");
@@ -521,6 +550,7 @@
 
   function refreshDevPanel() {
     loadSettings();
+    checkScreenPermission();
     window.nova.getRouterLogs().then((logs) => {
       el.devLog.innerHTML = logs.slice(-25).reverse()
         .map((l) => `<div>${l.ts.slice(11, 19)} ${l.taskType} → ${l.model}${l.fallback ? " (fallback)" : ""}</div>`)
@@ -641,6 +671,25 @@
     });
   });
 
+  // ------------------------------------------------------------------ screen
+  // permission help (macOS Screen Recording): check once at boot and whenever
+  // the side panel opens.
+  async function checkScreenPermission() {
+    if (window.nova.platform !== "darwin") {
+      el.screenPermHelp.hidden = true;
+      return;
+    }
+    try {
+      const res = await window.nova.checkScreenPermission();
+      const missing = res?.status && res.status !== "granted";
+      el.screenPermHelp.hidden = !missing;
+    } catch {
+      el.screenPermHelp.hidden = true;
+    }
+  }
+  el.openScreenSettingsBtn.addEventListener("click", () => {
+    window.nova.openScreenSettings().catch(() => {});
+  });
   el.permClearBtn.addEventListener("click", async () => {
     try {
       await window.nova.clearActionLog();

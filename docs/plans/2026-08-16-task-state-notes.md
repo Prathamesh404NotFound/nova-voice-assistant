@@ -84,3 +84,69 @@ No toast-channel IPC ever arrives at the renderer (preload file-log empty, main.
 
 ## Cleanup before delivery
 Remove: preload toast file-instrumentation (keep the listener simple), app.js console probe line. Keep boot guard (harmless). Then: run tests (27 PASS), git commit, deliver with README update + screenshots.
+
+
+# STAGE 3 progress (screen vision) — notes as of ~18:15
+
+## Files written (stage 3)
+- src/main/vision/screenshot.js — desktopCapturer capture + macOS permission detect + openScreenSettings
+- src/main/vision/ocr.js — tesseract.js wrapper, lazy worker with LOCAL eng.traineddata via langPath=pathToFileURL(dir), writes buffer to TEMP PNG FILE then worker.recognize(path) (buffers alone can return data without lines)
+- src/main/vision/ui-detector.js — clusterLines/clusterPhrases/looksLikeLabel/detectUIElements → {buttons, inputs}
+- src/main/vision/vision-actions.js — registers vision:capture-screen L0 READ via registerAction
+- src/main/vision/vision-query.js — runVisionQuery(q): gate runAction → capture → OCR → detectUIElements → if !private && pickModel("vision") && !fallbackInUse → askVisionModel (POST openrouter.ai with base64 image) → else OCR-only
+- main.js wired IPC: nova:vision-query / nova:check-screen-permission / nova:open-screen-settings; before-quit ocrShutdown
+- preload.js: visionQuery/checkScreenPermission/openScreenSettings
+- renderer app.js: VISION_PHRASES regex in submitMessage, LOOKING mode, speak() result, screenPermHelp banner
+- index.html: #screenPermHelp; css hud.css .screen-perm-help
+- test-vision.js: headless (electron shim + PIL PNGs via python3); steps 1 OCR, 2 UI detection, 3 gate L0, 4/5 permission fail, 6 pipeline private mode (mode=ocr), 7 pipeline normal
+- package.json: test:vision script
+
+## Key discoveries / fixes
+- createWorker("eng",1,{langPath: pathToFileURL(dir).href}) resolves <langPath>/eng.traineddata
+- eng.traineddata now at /home/ubuntu/nova/eng.traineddata (downloaded during first run)
+- worker.recognize(buffer) sometimes returns data with no lines → temp-file path reliable
+- Hand-built node PNG encoder failed libpng (IHDR must be exactly 13 bytes). Tests use python3 PIL base64 via execSync.
+- OCR takes ~60-90s per image on this CPU → test-vision.js full run >10min, killed twice. NEED SPEEDUP: maybe run OCR only once, reduce pipeline captures, or mock worker output for later steps.
+- Xvfb :99; app launches fine; permissions 27 PASS
+
+## Remaining
+- Speed up test-vision (accept OCR once; mock heavy parts) then green run
+- Verify app launch, typed "what's on my screen" command if possible
+- Commit + update README vision section + deliver
+
+
+## Tesseract.js v7 API findings (CRITICAL)
+tesseract.js@7.0.0 installed (v5 install failed: linux-unsupported optional dep; can't downgrade). v7 worker.recognize returns data with keys: text,hocr,tsv,box,unlv,osd,pdf,imageColor,imageGrey,imageBinary,confidence,blocks,layoutBlocks,psm,oem,version,debug,rotateRadians — NO data.words / data.lines anymore (v7 stripped the parsed layout fields). hocr/tsv/box/pdf default FALSE — worker.min.js shows bool config object {hocr:!1,tsv:!1,box:!1,unlv:!1,osd:!1,pdf:!1,imageColor:!1,imageGrey:!1,...}. To get hocr (from which we can parse words+bboxes ourselves): pass worker.recognize(image, {hocr:true}) or createWorker option. Worker code: `hocr:r.hocr?o(e.GetHOCRText()):null` — so recognize 2nd arg = {hocr:true}. My earlier standalone success ("text:" ok) was because text always works; words were never returned in v7 — I never checked words count in those debug runs!
+
+FIX PLAN for ocr.js: call worker.recognize(tmpPath, {hocr:true, tsv:true}) then parse hocr HTML with regex (class=ocr_word has bbox from title='bbox x y x y'; ocrx_word has conf in 'x_wconf N'). This gives words+conf+bboxes offline, no extra deps. Also lineIdx: parse ocr_line elements for grouping.
+
+Also: test-vision.js step-1 wordTexts assertion used OCR words — after fix it'll get real words. The line clustering test (step 2) uses hand-built words, unaffected.
+
+Remaining failures from last run: (1) OCR words empty — fixed by hocr parsing; (2) denied permission — now platform-guarded; (3) askVisionModel network error msg — regex widened; UI detection "Username:" input FAIL + clusterLines FAIL were consequences of step-2? No, step 2 uses hand-built words: the FAILs "label followed by empty gap detected as input" + "line clustering" depend on detectUIElements/clusterLines impl — need to check logic (maybe ui.inputs detection requires specific bbox gaps).
+
+eng.traineddata at /home/ubuntu/nova/eng.traineddata. OCR ~450ms per image once warm (step1 took 448ms).
+
+
+## STAGE 3 STATUS ~19:15 — ALL TESTS PASS
+- test:permissions: 27 PASS, 0 FAIL (npm run test:permissions)
+- test:vision: ALL PASS (npm run test:vision ~5min; OCR via tesseract.js@7 with config {tessedit_create_hocr:1} + recognize(img,{},{hocr:true}) then parseHocr regex; worker.recognize buffer→temp PNG file; OCR ~450ms warm; eng.traineddata local at repo root; fetch mock blocks only openrouter in harness)
+- App launches on Xvfb :99 (npx electron .); vision action registered L0; router fine
+- App running: PID 16285-ish, log /tmp/nova.log. Viz_main GPU error is sandbox-known glitch.
+
+## KEY TESSERACT.JS v7 API (for README/future)
+createWorker(lang,oem,options,config) — config={tessedit_create_hocr:1}; worker.recognize(img,params,output) 3rd arg {hocr:true}; parse hocr spans ocrx_word title='bbox x y x y; x_wconf N'. No data.words/lines in v7.
+
+## Vision pipeline wiring verified via grep
+- main.js: requires vision modules (line 22), IPC handlers nova:vision-query/check-screen-permission/open-screen-settings
+- preload.js lines 44-46: visionQuery/checkScreenPermission/openScreenSettings
+- renderer app.js: VISION_PHRASES regex (line 385), vision flow in submitMessage (394-398), checkScreenPermission (677), screenPermHelp (683-687), openScreenSettingsBtn (690-691)
+- index.html line 120-123: screenPermHelp banner
+
+## REMAINING
+1. (optional) functional UI check: invoke vision from renderer — could test via node script with electron app? Not critical.
+2. Kill app, commit all vision changes:
+   git add src/main/vision/ src/main/main.js src/main/test-vision.js src/preload/preload.js src/renderer/ package.json docs/ eng.traineddata? (NO — add to .gitignore; it's ~30MB; add eng.traineddata to .gitignore and docs note to download on first run)
+   commit msg: "Add screen vision: desktopCapturer + tesseract.js OCR + vision query pipeline + UI element detection"
+3. Update README: add Screen Vision section (new features, vision:capture-screen L0 action, private mode offline OCR, macOS permission help).
+4. Deliver: commit hash, summary, note eng.traineddata not committed (~30MB), first-run downloads it.
+- debug files to remove before commit: debug-*.js, debug-*.sh, /tmp/tb.png etc (outside repo fine), /tmp/node-encoder.png

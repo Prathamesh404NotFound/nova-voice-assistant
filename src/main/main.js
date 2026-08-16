@@ -14,6 +14,14 @@ const { runAction } = require("./permissions/gate");
 const actionLog = require("./permissions/action-log");
 require("./permissions/test-actions"); // demo actions for verifying gate paths
 
+// Screen vision: desktopCapturer capture + offline tesseract.js OCR + vision
+// query pipeline. All vision actions are Level 0 (read-only) and route through
+// the permission framework / Action Log.
+const { runVisionQuery } = require("./vision/vision-query");
+require("./vision/vision-actions"); // registers vision:capture-screen (L0)
+const { getScreenPermissionStatus, openScreenSettings } = require("./vision/screenshot");
+const ocrShutdown = require("./vision/ocr").shutdown;
+
 log.transports.file.level = "info";
 log.transports.console.level = "info";
 
@@ -168,6 +176,25 @@ ipcMain.on("nova:maximize", () => {
 ipcMain.on("nova:close", () => mainWindow?.close());
 
 // ---------------------------------------------------------------------------
+// IPC: screen vision (Level 0 — read-only, logged to the Action Log)
+// ---------------------------------------------------------------------------
+ipcMain.handle("nova:vision-query", async (_evt, question) => {
+  try {
+    return await runVisionQuery(question);
+  } catch (err) {
+    return { error: String(err?.message || err) };
+  }
+});
+
+ipcMain.handle("nova:check-screen-permission", async () => {
+  return { platform: process.platform, status: getScreenPermissionStatus() };
+});
+
+ipcMain.handle("nova:open-screen-settings", async () => {
+  return openScreenSettings();
+});
+
+// ---------------------------------------------------------------------------
 // Startup
 // ---------------------------------------------------------------------------
 app.whenReady().then(async () => {
@@ -208,6 +235,11 @@ app.whenReady().then(async () => {
       });
     }
   }
+});
+
+app.on("before-quit", () => {
+  // Release the tesseract.js worker (WASM memory) on shutdown.
+  ocrShutdown().catch(() => {});
 });
 
 app.on("window-all-closed", () => {

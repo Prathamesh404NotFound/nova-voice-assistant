@@ -40,6 +40,11 @@ contextBridge.exposeInMainWorld("nova", {
     return () => ipcRenderer.removeListener("nova:settings-changed", listener);
   },
 
+  // --- Screen vision (Level 0 READ — every capture is logged) ---
+  visionQuery: (question) => ipcRenderer.invoke("nova:vision-query", question),
+  checkScreenPermission: () => ipcRenderer.invoke("nova:check-screen-permission"),
+  openScreenSettings: () => ipcRenderer.invoke("nova:open-screen-settings"),
+
   // --- Chat (streaming, renderer-side fetch) ---
   // The renderer performs the fetch directly (avoids IPC streaming complexity).
   platform: process.platform,

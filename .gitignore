@@ -4,3 +4,4 @@ dist/
 .nova-free-models-cache.json
 free-models-cache.json
 *.log
+eng.traineddata
