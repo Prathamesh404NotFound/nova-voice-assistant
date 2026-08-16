@@ -16,6 +16,7 @@ const { RISK_LEVEL, riskLabel } = require("./risk-levels");
 const { getAction } = require("./action-registry");
 const actionLog = require("./action-log");
 const settings = require("../settings");
+const undo = require("./undo");
 
 let toastCounter = 0;
 
@@ -25,6 +26,8 @@ let toastCounter = 0;
  * @param {object} payload   passed to execute()/simulate()
  * @param {object} opts
  * @param {boolean} opts.dryRun   if true, run simulate() only and return its report
+ * @param {string}  opts.taskId   agent-task id; flows into the action log so the
+ *                                Developer Mode inspector can group entries by task
  * @returns {{ outcome: "success"|"failed"|"cancelled"|"blocked", detail?: any }}
  */
 async function runAction(actionId, payload = {}, opts = {}) {
@@ -34,7 +37,7 @@ async function runAction(actionId, payload = {}, opts = {}) {
   // outcome="dry-run" so every gate decision is auditable.
   if (opts.dryRun) {
     const report = await action.simulate(payload);
-    actionLog.append({ actionId, level: action.level, outcome: "dry-run", detail: report });
+    actionLog.append({ actionId, level: action.level, outcome: "dry-run", taskId: opts.taskId, detail: report });
     log.info(`[permissions] "${actionId}" dry-run:`, JSON.stringify(report));
     return { outcome: "dry-run", detail: report };
   }
@@ -44,7 +47,7 @@ async function runAction(actionId, payload = {}, opts = {}) {
   // the user's machine is invasive regardless of network reach.
   if (settings.isPrivateMode()) {
     if (action.level >= RISK_LEVEL.SENSITIVE || action.physical) {
-      actionLog.append({ actionId, level: action.level, outcome: "blocked", reason: "private-mode" });
+      actionLog.append({ actionId, level: action.level, outcome: "blocked", taskId: opts.taskId, reason: "private-mode" });
       log.info(`[permissions] "${actionId}" blocked by Private Mode`);
       return { outcome: "blocked" };
     }
@@ -52,39 +55,41 @@ async function runAction(actionId, payload = {}, opts = {}) {
 
   if (action.level <= RISK_LEVEL.SAFE) {
     // Level 0–1: immediate execution, logged afterwards.
-    return executeAndLog(action, payload);
+    return executeAndLog(action, payload, opts.taskId);
   }
 
   if (action.level === RISK_LEVEL.REVERSIBLE) {
     // Level 2: toast with 5-second cancellation window.
     const cancelled = await toastConfirm(action, payload);
     if (cancelled) {
-      actionLog.append({ actionId, level: action.level, outcome: "cancelled" });
+      actionLog.append({ actionId, level: action.level, outcome: "cancelled", taskId: opts.taskId });
       log.info(`[permissions] "${actionId}" cancelled in toast window`);
       return { outcome: "cancelled" };
     }
-    return executeAndLog(action, payload);
+    return executeAndLog(action, payload, opts.taskId);
   }
 
   // Level 3–4: modal with explicit Confirm.
   const confirmed = await modalConfirm(action, payload);
   if (!confirmed) {
-    actionLog.append({ actionId, level: action.level, outcome: "cancelled" });
+    actionLog.append({ actionId, level: action.level, outcome: "cancelled", taskId: opts.taskId });
     log.info(`[permissions] "${actionId}" declined in modal`);
     return { outcome: "cancelled" };
   }
-  return executeAndLog(action, payload);
+  return executeAndLog(action, payload, opts.taskId);
 }
 
-async function executeAndLog(action, payload) {
+async function executeAndLog(action, payload, taskId) {
   const started = Date.now();
   try {
     const detail = await action.execute(payload);
-    actionLog.append({ actionId: action.id, level: action.level, outcome: "success", startedAt: started, detail });
+    actionLog.append({ actionId: action.id, level: action.level, outcome: "success", taskId, startedAt: started, detail });
+    // Undo tracking: remember the last reversible SUCCESS (has a reverse fn).
+    undo.noteReversibleSuccess(taskId, action.id, payload, "success");
     return { outcome: "success", detail };
   } catch (err) {
     const detail = { error: String(err?.message || err) };
-    actionLog.append({ actionId: action.id, level: action.level, outcome: "failed", startedAt: started, detail });
+    actionLog.append({ actionId: action.id, level: action.level, outcome: "failed", taskId, startedAt: started, detail });
     log.error(`[permissions] "${action.id}" failed:`, err?.message || err);
     return { outcome: "failed", detail };
   }

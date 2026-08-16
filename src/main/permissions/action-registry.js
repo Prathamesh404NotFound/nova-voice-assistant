@@ -14,7 +14,7 @@ const log = require("electron-log");
 
 const registry = new Map(); // id -> { id, level, description, execute, simulate }
 
-function registerAction({ id, level, description, execute, simulate, physical }) {
+function registerAction({ id, level, description, execute, simulate, physical, reverse }) {
   if (typeof id !== "string" || !id.trim()) throw new Error("Action needs a string id");
   if (registry.has(id)) throw new Error(`Action "${id}" already registered`);
   if (![0, 1, 2, 3, 4].includes(level)) {
@@ -26,7 +26,7 @@ function registerAction({ id, level, description, execute, simulate, physical })
   }
   // Extra registration metadata (e.g. physical: true for input-simulation
   // actions) is preserved so consumers like the gate can branch on it.
-  registry.set(id, { id, level, description, execute, simulate: simulate || null, physical: !!physical });
+  registry.set(id, { id, level, description, execute, simulate: simulate || null, physical: !!physical, reverse: typeof reverse === "function" ? reverse : null });
   log.info(`[permissions] registered action "${id}" at level ${level}`);
 }
 

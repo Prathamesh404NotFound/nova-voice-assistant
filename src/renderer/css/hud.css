@@ -660,3 +660,77 @@ html, body {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.12s !important; }
 }
+
+/* ------------------------------------------------------------------
+   Stage 5 — undo / dev task / onboarding
+------------------------------------------------------------------ */
+#undoBtn {
+  margin-left: 6px;
+  font-size: 12px;
+}
+#undoBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.dev-task {
+  border-top: 1px solid #313148;
+  padding: 10px 14px;
+  margin-top: 8px;
+}
+.dev-task h4 {
+  margin: 0 0 6px 0;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: #6e6e90;
+  text-transform: uppercase;
+}
+.dev-task-body {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #9c9cb8;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 260px;
+  overflow-y: auto;
+}
+.msg.small {
+  font-size: 12px;
+  opacity: 0.65;
+}
+.msg.small .src {
+  font-size: 9px;
+}
+
+/* Stage 5 — first-run permission onboarding overlay */
+.onboarding {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 5, 14, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.onboarding.hidden {
+  display: none;
+}
+.onboarding-card {
+  background: #161625;
+  border: 1px solid #313148;
+  border-radius: 14px;
+  padding: 28px 32px;
+  max-width: 440px;
+  text-align: center;
+}
+.onboarding-card h2 {
+  font-size: 18px;
+  margin: 0 0 12px 0;
+  color: #e8e8f4;
+}
+.onboarding-card p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #9c9cb8;
+  margin: 0 0 18px 0;
+}

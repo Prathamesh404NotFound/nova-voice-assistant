@@ -22,7 +22,7 @@ const { detectUIElements } = require("../vision/ui-detector");
  * @param {{ id?: string, plan: PlanStep[] }} opts
  * @returns {{ finished: "done"|"aborted"|"failed", failedStepId?: string }}
  */
-async function runSequence({ plan }) {
+async function runSequence({ plan, taskId }) {
   const maxSteps = 20; // hard ceiling — sequences never grow unbounded
 
   if (!Array.isArray(plan) || !plan.length) {
@@ -53,7 +53,7 @@ async function runSequence({ plan }) {
         payload.y = coords.y;
       }
 
-      outcome = await runAction(step.actionId, payload);
+      outcome = await runAction(step.actionId, payload, { taskId });
     } catch (err) {
       if (err instanceof SequenceAbortedError) return finishSequence(plan, i, "aborted", step.id);
       log.error(`[control] step "${step.id}" errored:`, err?.message || err);

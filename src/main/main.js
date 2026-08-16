@@ -27,6 +27,11 @@ const ocrShutdown = require("./vision/ocr").shutdown;
 // Ctrl+Shift+Escape hard kill-switch + visible STOP button.
 const control = require("./control");
 control.init();
+// Unified agent loop (Stage 5): intent classification, dispatch, narration,
+// retry + plain-language errors, undo, Dev Mode inspector, onboarding.
+const dispatcher = require("./agent/dispatcher");
+require("./agent/undo-bridge"); // registers the undo / dev-mode / onboarding IPCs
+const onboarding = require("./agent/onboarding");
 const { globalShortcut } = require("electron");
 
 log.transports.file.level = "info";
@@ -257,6 +262,42 @@ ipcMain.handle("nova:control-cursor", async () => {
   }
 });
 
+// ---------------------------------------------------------------------------
+// IPC: unified agent loop (Stage 5)
+// Every message (voice or text) routes through the agent: classify ->
+// dispatch (conversation / vision / control / combined) -> narrate.
+// ---------------------------------------------------------------------------
+/**
+ * Forward agent progress (narration steps + chat stream chunks) to the
+ * renderer. The renderer speaks narrations out loud and streams chat text.
+ */
+dispatcher.on("progress", (event) => {
+  if (!mainWindow?.webContents) return;
+  try {
+    mainWindow.webContents.send("nova:agent-progress", event);
+  } catch { /* window gone */ }
+});
+ipcMain.handle("nova:agent-run", async (_evt, text) => {
+  try {
+    const { getKey } = require("./keys");
+    const keyPromise = getKey().catch(() => null);
+    const out = await dispatcher.run(text, {
+      getKey: async () => (await keyPromise) || null,
+      runVisionQuery: async (question) => {
+        try {
+          return await runVisionQuery(question);
+        } catch (err) {
+          return { error: String(err?.message || err) };
+        }
+      },
+    });
+    return out;
+  } catch (err) {
+    log.error("[agent] run failed:", err?.message || err);
+    return { ok: false, intent: null, text: "Something went wrong — details are in Developer Mode.", error: String(err?.message || err) };
+  }
+});
+
 /**
  * Hard kill-switch hotkey: Ctrl+Shift+Escape on both platforms.
  * Registered AFTER app.whenReady() — globalShortcut requires the ready state
@@ -301,6 +342,16 @@ app.whenReady().then(async () => {
   // 3. Register the hard kill-switch hotkey (must happen after app is ready)
   registerKillHotkey();
   createWindow();
+  // First-run onboarding: tell the renderer which OS permissions are still
+  // pending so the why-needed screens can appear BEFORE the OS prompts.
+  try {
+    mainWindow.once("show", () => {
+      const pending = onboarding.pendingScreens();
+      if (pending.length) {
+        mainWindow.webContents.send("nova:onboarding", { pending, state: onboarding.permissionState(), platform: onboarding.platform() });
+      }
+    });
+  } catch { /* window gone */ }
 
   // Hidden verification flag: `electron . --run-demo-action <id>` fires a single
   // demo action through the permission gate once the window is ready to show.

@@ -31,6 +31,8 @@ registerAction({
   level: 2,
   description: "Rename a file",
   execute: async (payload) => ({ renamed: { from: payload.from, to: payload.to } }),
+  // Undo: rename the file back to its original name.
+  reverse: async (payload) => ({ renamedBack: { from: payload.to, to: payload.from } }),
   simulate: async (payload) => {
     if (payload?.__describe) {
       return {
@@ -39,6 +41,44 @@ registerAction({
       };
     }
     return { wouldRename: 1, from: payload.from, to: payload.to };
+  },
+});
+
+// demo:create-file — Level 2 with NO reverse fn: an irreversible stand-in so the
+// undo tracker correctly ignores it (Undo stays disabled) and the demo covers
+// every gate path.
+registerAction({
+  id: "demo:create-file",
+  level: 2,
+  description: "Create an empty file (demo)",
+  execute: async (payload) => ({ created: payload.path || "file" }),
+  simulate: async (payload) => {
+    if (payload?.__describe) {
+      return {
+        title: `Nova wants to create "${payload?.path || "file"}"`,
+        body: "This cannot be undone in this demo. Nova will proceed automatically unless you cancel within 5 seconds.",
+      };
+    }
+    return { wouldCreate: 1, path: payload?.path };
+  },
+});
+
+// demo:move-file — same Level 2 gate path as rename, with its own undo (move back).
+registerAction({
+  id: "demo:move-file",
+  level: 2,
+  description: "Move a file",
+  execute: async (payload) => ({ moved: { from: payload.from, to: payload.to } }),
+  // Undo: move the file back to its original location.
+  reverse: async (payload) => ({ movedBack: { from: payload.to, to: payload.from } }),
+  simulate: async (payload) => {
+    if (payload?.__describe) {
+      return {
+        title: `Nova wants to move "${payload?.from || "file.txt"}" to "${payload?.to || "new-location/"}"`,
+        body: "This is reversible — you can move it back. Nova will proceed automatically unless you cancel within 5 seconds.",
+      };
+    }
+    return { wouldMove: 1, from: payload.from, to: payload.to };
   },
 });
 

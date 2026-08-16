@@ -19,7 +19,8 @@
     "test:router": "node src/main/test-router.js",
     "test:permissions": "node src/main/test-permissions.js",
     "test:vision": "node src/main/test-vision.js",
-    "test:control": "node src/main/test-control.js"
+    "test:control": "node src/main/test-control.js",
+    "test:agent": "node src/main/test-agent.js"
   },
   "build": {
     "appId": "com.nova.assistant",
@@ -40,7 +41,10 @@
           ]
         }
       ],
-      "icon": "assets/icon.ico"
+      "icon": "assets/icon.ico",
+      "nsis": {
+        "oneClick": false
+      }
     },
     "nsis": {
       "oneClick": false,
@@ -52,7 +56,7 @@
         "dmg"
       ],
       "icon": "assets/icon.icns",
-      "category": "public.app-category.productivity"
+      "category": "public.app-category.utilities"
     },
     "dmg": {
       "sign": false,

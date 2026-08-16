@@ -32,7 +32,8 @@
         </span>
         <button id="refreshBtn" class="icon-btn" title="Refresh free-model list now">&#8635;</button>
         <!-- Hard kill-switch for any running control sequence (also Ctrl+Shift+Esc). -->
-        <button id="ctrlStopBtn" class="ctrl-stop-btn" title="Stop the running control sequence (also Ctrl+Shift+Esc)" aria-disabled="true">&#9724; STOP</button>
+        <button id="ctrlStopBtn" class="ctrl-stop-btn" title="Stop the running control sequence (also Ctrl+Shift+Esc)" aria-disabled="true">
+    <button id="undoBtn" class="ctrl-stop-btn" title="Undo last reversible action" disabled>↶ Undo</button>&#9724; STOP</button>
       </div>
       <div class="topbar-right">
         <span id="clock" class="clock">--:--:--</span>
@@ -80,7 +81,7 @@
       </div>
 
       <div class="side-section">
-        <div class="side-label">Developer Mode</div>
+        <span id="devToggle" class="ctrl-stop-btn" style="cursor:pointer" title="Developer Mode: see what Nova used and why">Dev</span><div class="side-label">Developer Mode</div>
         <div id="devPanel" class="dev-panel">
           <div class="dev-row"><span>Active model</span><span id="devModel">—</span></div>
           <div class="dev-row"><span>Free models</span><span id="devCount">—</span></div>
@@ -156,7 +157,12 @@
         <button id="setKeyBtn" class="flat-btn">Set / change key</button>
         <div class="settings-note">Key is stored with your OS keychain — never a plaintext file, never logged. You can also launch Nova with the <code>OPENROUTER_API_KEY</code> environment variable.</div>
       </div>
-    </aside>
+      <!-- Stage 5: Developer Mode task inspector -->
+  <div id="devTask" class="dev-task hidden">
+    <h4>Developer Mode — last task</h4>
+    <pre id="devTaskBody" class="dev-task-body">No task yet.</pre>
+  </div>
+</aside>
 
     <!-- ============================ KEY DIALOG (overlay) ============================ -->
     <div id="keyOverlay" class="overlay" hidden>
@@ -173,5 +179,13 @@
   </div>
 
   <script src="js/app.js"></script>
+<!-- Stage 5: first-run permission onboarding overlay -->
+<div id="onboarding" class="onboarding hidden">
+  <div class="onboarding-card">
+    <h2 id="onboardingTitle"></h2>
+    <p id="onboardingWhy"></p>
+    <button id="onboardingAck" class="cta">Allow</button>
+  </div>
+</div>
 </body>
 </html>

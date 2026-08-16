@@ -51,7 +51,7 @@ function persist() {
  * Append an entry. Outcome must be one of:
  * success | failed | cancelled | blocked | dry-run
  */
-function append({ actionId, level, outcome, startedAt, detail, reason }) {
+function append({ actionId, level, outcome, startedAt, detail, reason, taskId }) {
   ensureLoaded();
   entries.unshift({
     ts: new Date().toISOString(),
@@ -59,6 +59,7 @@ function append({ actionId, level, outcome, startedAt, detail, reason }) {
     level,
     levelName: riskLabel(level),
     outcome,
+    ...(taskId ? { taskId } : {}),
     ...(reason ? { reason } : {}),
     ...(startedAt ? { durationMs: Date.now() - startedAt } : {}),
     ...(detail !== undefined ? { detail } : {}),

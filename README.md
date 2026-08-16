@@ -1,6 +1,8 @@
 # Nova — Voice-First Desktop AI Assistant
 
-Nova is the foundation stage of a cross-platform (Windows + macOS) desktop AI assistant built with **Electron + Node.js**. This stage covers **voice/chat interaction, model routing, the permission & safety framework, screen vision, and mouse/keyboard control** — the safety scaffolding exists BEFORE any feature that can touch the user's mouse, keyboard, or files. Nova can now *see* the screen (screenshot + local OCR + optional vision-model reasoning, Level 0 read-only) and *act* on it through a safety-gated, rule-based task planner (Level 0–3, strictly routed through the permission framework). No file-system tools are implemented yet.
+Nova is a cross-platform (Windows + macOS) desktop AI assistant built with **Electron + Node.js**, developed stage by stage with the safety scaffolding built BEFORE any feature that can touch the user's mouse, keyboard, files, or screen. Every message now flows through one **unified agent loop**: an intent classifier (conversation / vision / control / combined) dispatches each message, and Nova narrates each step out loud ("Opening Notepad now…"). Nova can *see* the screen (screenshot + local OCR + optional vision-model reasoning, Level 0 read-only), *act* on it through a safety-gated, rule-based task planner (Level 0–3, strictly routed through the permission framework), *undo* reversible L2 file/text actions for 5 minutes, and *inspect its own behavior* in a Developer Mode panel. No file-system tools are implemented yet.
+
+**Distribution-ready:** electron-builder produces an unsigned Windows NSIS installer and macOS `.dmg` (`npm run build:win` / `npm run build:mac`); first-run onboarding screens explain every OS permission before the OS prompt appears (macOS Screen Recording + Accessibility; Windows needs none). See `docs/SIGNING.md` for how to add code signing later.
 
 ## Features
 
@@ -13,6 +15,11 @@ Nova is the foundation stage of a cross-platform (Windows + macOS) desktop AI as
 | Chat | Streams `https://openrouter.ai/api/v1/chat/completions` (picked free model) into orb speech output + side-panel history, sentence-by-sentence for natural barge-in timing |
 | Key storage | `OPENROUTER_API_KEY` env var → Electron `safeStorage` (OS keychain) → one-time settings prompt. Never plaintext, never logged |
 | Packaging | electron-builder: Windows NSIS `.exe` installer (x64), macOS `.dmg` (universal) |
+| Agent loop | Unified dispatcher in `src/main/agent/`: rule-based intent classifier (offline, Private-Mode-safe; ambiguous messages go through `pickModel("quick")` with a safe fallback) → conversation / vision / control / combined pipelines; every step narrated aloud and printed in chat |
+| Undo | Reversible L2 file/text actions (registered with a `reverse` fn) are undoable for 5 minutes via the Undo button; irreversible actions (clicks, key presses, L3+) keep it disabled; undo itself is logged (`::undo`) |
+| Developer Mode | Settings toggle; side panel shows the last task — model used and why, intent classification, generated plan, per-step risk level + timing, and raw errors with stack traces (data source: Action Log + last-task record) |
+| Retries | Every model call and pipeline step retries once automatically (`retryOnce`), then surfaces a plain-language error in chat; stack traces live only in Developer Mode |
+| Onboarding | macOS first-run: explains Screen Recording (vision) and Accessibility (mouse/keyboard) before the OS prompts, with per-permission acknowledgement; Windows/Linux need no OS permissions |
 | Indicators | Small model chip in top bar (click = refresh list / open side panel) + Developer Mode panel in side panel |
 | Screen vision | Saying or typing "what's on my screen", "what am I looking at", "what does this error say", "describe my screen" captures the screen via `desktopCapturer`, runs fully offline tesseract.js OCR (works in Private Mode), detects button-like / input-like UI regions from OCR bounding boxes, and — when not in Private Mode and a free vision model is available — sends the screenshot + question to a vision-capable model via the router; otherwise answers from OCR text alone; every capture is logged to the Action Log as Level 0 with a note (never the image bytes) |
 | Mouse/keyboard control | Rule-based task planner compiles instructions like "open the system calculator and compute 12 x 8" into a checklist shown before execution; `@nut-tree-fork/nut-js` simulation (move/click/right-click/double-click/scroll/drag/type/press-keys) at L0–L3 with `physical` flag (L2+ blocked in Private Mode); hard kill-switch: `Ctrl+Shift+Esc` global hotkey + STOP button + "nova stop" barge-in; mid-sequence vision verification (screenshot + OCR confirms expected text before continuing); every step logged with outcome |
@@ -102,6 +109,34 @@ npm run test:control   # headless self-test — planner rules, kill-switch state
 
 **Demo:** say or type `"open the system calculator and compute 12 x 8"` — Nova shows the 4-step checklist, executes with toast/modal confirmations per level, verifies the calculator window on screen before typing, types `12 * 8`, presses Return, and logs every step. `Ctrl+Shift+Esc`, the STOP button, or `nova stop` halt it at any point.
 
+## Unified agent loop (Stage 5)
+
+All voice and text input now flows through `src/main/agent/` — one loop with an intent classifier at the front and a dispatcher behind it. Every handled message returns a spoken narration (`dispatcher.on("progress", e => e.type === "narration")`) that the renderer speaks aloud with TTS and also prints in chat:
+
+| Module | Role |
+|--------|------|
+| `classifier.js` | Rule-based intent classification (conversation / vision / control / combined) — no LLM round-trip for unambiguous messages, works offline and in Private Mode; genuinely ambiguous messages (both screen-question hints and action verbs) go through `pickModel("quick")` and fall back to a safe combined path if the call fails |
+| `dispatcher.js` | `run(text, { getKey, runVisionQuery })` — classifies, dispatches to the conversation stream / vision pipeline / control planner / combined path, records a **last-task** object (classification, model used, steps with per-step timings, raw errors) for the Developer Mode inspector |
+| `retry.js` | `retryOnce(fn, label)` — one automatic retry on any failure, then `plainError(err, "the assistant")` returns a user-readable string with the raw error available only in Developer Mode |
+| `onboarding.js` | macOS first-run: detects denied Screen Recording (`systemPreferences.getMediaAccessStatus("screen")`) and missing Accessibility access (AppleScript probe), exposes `pendingScreens()` / `acknowledge(id)` / `runAccessibilityTest()` (the keystroke that triggers the real OS prompt). Windows/Linux need no OS permissions. |
+| `undo-bridge.js` | IPC surface (`nova:undo-info`, `nova:undo-last`) for the renderer Undo button |
+
+**Undo (L2 reversibility):** `permissions/undo.js` watches successful `noteReversibleSuccess(...)` calls from the gate. Actions registered with a `reverse` fn (e.g. `demo:rename-file`, `demo:move-file`; file/text actions in future stages) are undoable for 5 minutes; irreversible actions (clicks, key presses, L3+) never register, so the **Undo** button stays disabled for them. Undo is itself logged (`<actionId>::undo`) in the Action Log.
+
+**Developer Mode:** the Settings toggle persists `developerMode` in `settings.json`; when on, the side panel shows the last task — model picked and why (`router.lastPick()`), the intent classification, the control plan, per-step risk levels and timings, and every raw error with stack trace. The source is the Action Log (`taskId` now flows through `gate.runAction` into every entry) plus the dispatcher's last-task record.
+
+**Retry policy:** every model call and pipeline step goes through `retryOnce` — exactly one automatic retry, then a plain-language error in chat. Stack traces never reach the user outside Developer Mode.
+
+```bash
+npm run test:agent   # headless self-test — 38 checks: classification rules, quick-model
+                     # fallback, retry + plain errors, dispatcher paths + narration +
+                     # streaming, last-task inspector, undo end-to-end, darwin onboarding
+```
+
+```bash
+npm run test         # everything: agent + permissions + control + vision
+```
+
 ## Test the model router headlessly
 
 ```bash
@@ -143,7 +178,11 @@ The renderer performs the OpenRouter fetch directly (renderer-side fetch avoids 
 3. **In-app settings prompt** uses a renderer overlay dialog; Electron's native `dialog.showInputBox` is used where available.
 4. **safeStorage on Linux** may fall back to in-memory storage when libsecret is missing — flagged in logs.
 5. **Screen vision on headless/CI environments** — `desktopCapturer` needs a real display server (Xvfb works for testing, but captures may be empty windows). macOS always requires the Screen Recording grant; Windows works without extra permissioning.
-6. **Vision-model reasoning needs an API key and internet** — in Private Mode or when no free vision model is available, Nova answers from OCR text alone, so vision never leaks screen content off-device in that mode.
+6. **Free-tier model rotation (OpenRouter)** — the free-model list is fetched at startup and every 6 h and cached locally; models can rotate out without notice, so some task types may temporarily have no free model (the router falls back to a hardcoded `google/gemini-2.5-flash-001` and logs every pick). Free models carry rate limits (roughly 20 requests/minute and 200 requests/hour per account key, per OpenRouter's terms — unauthenticated and authenticated tiers differ), so bursts of voice commands can hit `429 Too Many Requests`; `retryOnce` auto-retries once, then tells the user plainly to wait a moment. Occasional higher latency and lower quality on free tiers are expected.
+7. **Ambiguous-intent quick classification** runs one model round-trip per ambiguous message; if it fails (rate limit, network, offline), the classifier safely defaults to the combined path — never silent failure.
+8. **Undo limits** — only actions registered with a `reverse` function are reversible, and only within 5 minutes of success; mouse clicks, key presses, and anything L3+ can never be undone and the button stays disabled for them.
+9. **Control input simulation on macOS** additionally requires the Accessibility grant — the first-run onboarding screen explains this before the OS prompt; Nova detects a missing grant and gates control sequences until it is granted.
+10. **Vision-model reasoning needs an API key and internet** — in Private Mode or when no free vision model is available, Nova answers from OCR text alone, so vision never leaks screen content off-device in that mode.
 
 ## Packaging notes
 

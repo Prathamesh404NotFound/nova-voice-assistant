@@ -29,6 +29,9 @@
     sidePanel: $("sidePanel"), sideToggle: $("sideToggle"), sideClose: $("sideClose"),
     history: $("history"), typeForm: $("typeForm"), typeInput: $("typeInput"),
     devModel: $("devModel"), devCount: $("devCount"), devUpdated: $("devUpdated"),
+    devTask: $("devTask"), devTaskBody: $("devTaskBody"), devToggle: $("devToggle"),
+    undoBtn: $("undoBtn"), onboarding: $("onboarding"), onboardingTitle: $("onboardingTitle"),
+    onboardingWhy: $("onboardingWhy"), onboardingAck: $("onboardingAck"), onboardingBtn: $("onboardingBtn"),
     devFallback: $("devFallback"), devLog: $("devLog"),
     setKeyBtn: $("setKeyBtn"), keyStatus: $("keyStatus"),
     keyOverlay: $("keyOverlay"), keyInput: $("keyInput"),
@@ -509,11 +512,25 @@
   // ======================================================================
   // MESSAGE PIPELINE — voice and typed text share one entry point
   // ======================================================================
-  let historyItems = [];
+  // Local settings mirror (synced via nova:settings-changed).
+  const settings = { developerMode: false, privateMode: false, keyConfigured: false };
+  window.nova.getSettings().then((s) => {
+    settings.developerMode = !!s.developerMode;
+    settings.privateMode = !!s.privateMode;
+    settings.keyConfigured = !!s.keyConfigured;
+    if (settings.developerMode) refreshDevTask();
+  }).catch(() => {});
+  window.nova.onSettingsChanged?.((s) => {
+    if (s.developerMode != null) settings.developerMode = !!s.developerMode;
+    if (s.privateMode != null) settings.privateMode = !!s.privateMode;
+    if (s.developerMode != null) refreshDevTask();
+  });
+
+let historyItems = [];
   const MAX_HISTORY = 40;
 
-  function addHistoryEntry({ role, text, src }) {
-    historyItems.push({ role, text, src });
+  function addHistoryEntry({ role, text, src, small }) {
+    historyItems.push({ role, text, src, small: !!small });
     if (historyItems.length > MAX_HISTORY) historyItems = historyItems.slice(-MAX_HISTORY);
     renderHistory();
   }
@@ -524,7 +541,7 @@
       return;
     }
     el.history.innerHTML = historyItems
-      .map((m) => `<div class="msg ${m.role}"><span class="src">${m.src}</span>${escapeHtml(m.text)}</div>`)
+      .map((m) => `<div class="msg ${m.role}${m.small ? " small" : ""}"><span class="src">${m.src}</span>${escapeHtml(m.text)}</div>`)
       .join("");
     el.history.scrollTop = el.history.scrollHeight;
   }
@@ -544,70 +561,71 @@
   // but the control route wins regardless of key state.
   const CONTROL_PHRASES = /^(open|click|double[- ]?click|right[- ]?click|type|press|submit|send|compute|calculate|wait for|drag)/i;
 
+    // ======================================================================
+  // UNIFIED AGENT LOOP (Stage 5): every message routes through
+  // nova:agent-run on the main process — classify → dispatch → narrate.
+  // No routing regexes here anymore; the main process owns the policy.
+  // ======================================================================
   async function submitMessage(text, source) {
     if (!text?.trim()) return;
     addHistoryEntry({ role: "user", text: text.trim(), src: source });
     el.liveLine.textContent = "";
-
-    // Vision route: capture the screen + OCR (+ vision model if available).
-    // Works offline and in Private Mode — no API key needed.
-    if (VISION_PHRASES.test(text.trim())) {
-      try {
-        setMode("speaking", "LOOKING…");
-        el.liveLine.textContent = "Taking a look at your screen…";
-        const res = await window.nova.visionQuery(text.trim());
-        if (res?.error) throw new Error(res.error);
-        const answer = res?.answer || "I could not read anything on the screen.";
-        addHistoryEntry({ role: "nova", text: answer, src: source });
-        speak(answer);
-        el.liveLine.textContent = `Screen vision (${res?.mode || "?"} mode) — see the log for the captured-text record.`;
-        refreshPermPanel();
-      } catch (err) {
-        const msg = "I could not read the screen. " + (err?.message || String(err));
-        addHistoryEntry({ role: "nova", text: msg, src: source });
-        speak(msg);
-        console.error("Vision query failed:", err);
-      } finally {
-        setMode("idle", "IDLE");
+    let chatBuf = "";
+    const narrationSpoken = new Set();
+    const progressUnsub = window.nova.onAgentProgress((event) => {
+      if (event.type === "narration") {
+        // Nova narrates each step out loud AND transcripts it in chat.
+        addHistoryEntry({ role: "nova", text: event.text, src: "narration", small: true });
+        const key = event.taskId + ":" + event.step;
+        if (!narrationSpoken.has(key)) {
+          narrationSpoken.add(key);
+          speak(event.text);
+        }
+      } else if (event.type === "chat-chunk") {
+        chatBuf += event.text;
+        el.liveLine.textContent = chatBuf;
       }
-      return;
-    }
-
-    // Control route: compile the instruction into a plan for review BEFORE
-    // anything physical happens (nothing above Level 1 executes without
-    // explicit user confirmation, and L2/L3 still show the toast/modal).
-    if (CONTROL_PHRASES.test(text.trim())) {
-      try {
-        setMode("speaking", "PLANNING…");
-        el.liveLine.textContent = "Planning the steps…";
-        const res = await window.nova.controlPlan(text.trim());
-        if (!res?.ok) throw new Error(res?.error || "The planner could not understand that instruction.");
-        showControlPlan(res.plan, res.summary, text.trim(), source);
-      } catch (err) {
-        const msg = "I could not plan that: " + (err?.message || String(err));
-        addHistoryEntry({ role: "nova", text: msg, src: source });
-        speak(msg);
-        console.error("Control plan failed:", err);
-      } finally {
-        setMode("idle", "IDLE");
-      }
-      return;
-    }
-
-    if (!apiKey) {
-      speak("I need your OpenRouter API key before I can answer. Open the side panel settings to set it.");
-      return;
-    }
-
+    });
     try {
-      const full = await streamChat(text.trim(), onChunk);
-      addHistoryEntry({ role: "nova", text: full, src: source });
-      if (full.trim()) speak(full);
+      setMode("speaking", "THINKING…");
+      el.liveLine.textContent = "Thinking…";
+      const res = await window.nova.agentRun(text.trim());
+      if (!res?.ok) {
+        const msg = res?.text || "Something went wrong — the full details are in Developer Mode.";
+        addHistoryEntry({ role: "nova", text: msg, src: source });
+        speak(msg);
+        return;
+      }
+      if (res.intent === "conversation") {
+        if (!chatBuf.trim() && res.text) {
+          addHistoryEntry({ role: "nova", text: res.text, src: source });
+          speak(res.text);
+        }
+        el.liveLine.textContent = "";
+        return;
+      }
+      if (res.intent === "vision" || (res.intent === "combined" && res.visionAnswer)) {
+        const answer = res.intent === "combined" ? res.visionAnswer : res.text;
+        if (answer) {
+          addHistoryEntry({ role: "nova", text: answer, src: source });
+          speak(answer);
+          el.liveLine.textContent = "";
+        }
+        if (res.intent === "vision") return;
+      }
+      if (res.plan) {
+        showControlPlan(res.plan, res.summary, text.trim(), source);
+      }
     } catch (err) {
-      const msg = "Sorry — I could not reach the assistant. " + (err?.message || err);
+      const msg = "Sorry — something went wrong. Details are in Developer Mode.";
       addHistoryEntry({ role: "nova", text: msg, src: source });
       speak(msg);
-      console.error("Chat error:", err);
+      console.error("Agent loop failed:", err);
+    } finally {
+      progressUnsub();
+      setMode("idle", "IDLE");
+      refreshUndoButton();
+      refreshDevTask();
     }
   }
 
@@ -932,4 +950,133 @@
 
   // Expose for debugging in DevTools only
   window.__novaDebug = { state, history: () => historyItems };
+
+  // ---------------------------------------------------------------------------
+  // Stage 5 wiring: undo button, Developer Mode task inspector, onboarding.
+  // ---------------------------------------------------------------------------
+  async function refreshUndoButton() {
+    if (!el.undoBtn) return;
+    try {
+      const res = await window.nova.getUndoInfo();
+      const info = res?.ok && res.info ? res.info : null;
+      el.undoBtn.disabled = !info;
+      el.undoBtn.title = info
+        ? "Undo: " + info.label + " (reversible, within 5 minutes)"
+        : "Nothing to undo — mouse clicks and messages can't be reversed.";
+    } catch { /* offline window state */ }
+  }
+
+  el.undoBtn?.addEventListener("click", async () => {
+    try {
+      const res = await window.nova.undoLast();
+      if (!res?.ok) {
+        speak("I could not undo that: " + (res?.error || "unknown error"));
+        return;
+      }
+      addHistoryEntry({ role: "nova", text: "Undid the last reversible action — " + res.label + ".", src: "undo" });
+      speak("Undone — " + res.label + ".");
+      refreshUndoButton();
+    } catch (err) {
+      console.error("Undo failed:", err);
+    }
+  });
+
+  function renderDevTask(task) {
+    if (!el.devTaskBody) return;
+    if (!task) {
+      el.devTaskBody.textContent = "No task yet — send Nova a message and this panel fills with the last run.";
+      return;
+    }
+    const lines = [];
+    lines.push("Task " + task.id + " — intent: " + task.intent + " (" + (task.classification?.method ?? "?") + ", confidence " + (task.classification?.confidence ?? "?") + ")");
+    if (task.modelPick) lines.push("Model: " + (task.modelPick.model || "?") + (task.modelPick.reason ? " — " + task.modelPick.reason : ""));
+    lines.push("Steps:");
+    for (const s of task.steps || []) {
+      lines.push("  • " + s.label + "  " + (s.level != null ? "(L" + s.level + ")" : "") + "  " + s.durationMs + "ms");
+    }
+    lines.push("Action log (this task):");
+    for (const e of task.logEntries || []) lines.push("  • " + e.actionId + " [L" + e.level + "] " + e.outcome + " at " + (e.ts || e.startedAt || "?"));
+    lines.push("Errors (raw — visible only in Developer Mode):");
+    for (const e of task.errors || []) {
+      const stack = e.stack ? "\n    " + e.stack.split("\n").slice(1).join("\n    ").slice(0, 500) : "";
+      lines.push("  • [" + e.context + "] " + e.message + stack);
+    }
+    el.devTaskBody.textContent = lines.join("\n") || "Nothing recorded.";
+  }
+
+  async function refreshDevTask() {
+    if (!el.devTask || !el.devToggle) return;
+    const devOn = !!window.nova.isDevMode?.();
+    el.devTask.hidden = !devOn;
+    if (!devOn) return;
+    try {
+      const res = await window.nova.getLastTask();
+      renderDevTask(res?.ok ? res.task : null);
+    } catch { /* window gone */ }
+  }
+
+  function toggleDevMode() {
+    if (!el.devToggle) return;
+    window.nova.setDevMode(!settings.developerMode).then((res) => {
+      if (res?.ok) {
+        settings.developerMode = res.developerMode;
+        refreshDevTask();
+      }
+    }).catch(() => {});
+  }
+
+  el.devToggle?.addEventListener("click", toggleDevMode);
+
+  function showOnboarding(pending, state) {
+    if (!el.onboarding) return;
+    const screen = pending[0];
+    if (!screen) {
+      el.onboarding.hidden = true;
+      return;
+    }
+    el.onboarding.hidden = false;
+    const titles = {
+      "screen-recording": "Nova needs Screen Recording access",
+      "accessibility": "Nova needs Accessibility access",
+    };
+    const whys = {
+      "screen-recording": "To answer questions like \u201Cwhat's on my screen\u201D, Nova reads your display. macOS asks you to allow this in System Settings → Privacy & Security → Screen Recording.",
+      "accessibility": "To control the mouse and keyboard for you (typing, clicking), Nova sends system-level input events. macOS asks you to allow this in System Settings → Privacy & Security → Accessibility.",
+    };
+    el.onboardingTitle.textContent = titles[screen.id] || screen.why;
+    el.onboardingWhy.textContent = whys[screen.id] || screen.why;
+  }
+
+  if (window.nova.onOnboarding) window.nova.onOnboarding((data) => showOnboarding(data.pending, data.state));
+
+  el.onboardingAck?.addEventListener("click", async () => {
+    try {
+      const current = await window.nova.getOnboarding();
+      if (!current?.ok) return;
+      const screen = current.pending[0];
+      if (!screen) {
+        showOnboarding([], current.state);
+        return;
+      }
+      if (screen.id === "accessibility") {
+        const res = await window.nova.runAccessibilityTest();
+        if (res?.status === "granted") {
+          await window.nova.ackOnboarding(screen.id);
+          const next = await window.nova.getOnboarding();
+          showOnboarding(next?.ok ? next.pending : [], res?.state);
+          return;
+        }
+        if (res?.ok) {
+          el.onboardingAck.textContent = "I allowed it in the OS dialog";
+          el.onboardingAck.dataset.step = "verify";
+          return;
+        }
+      } else {
+        await window.nova.ackOnboarding(screen.id);
+        const next = await window.nova.getOnboarding();
+        showOnboarding(next?.ok ? next.pending : [], current.state);
+        return;
+      }
+    } catch { /* offline */ }
+  });
 })();

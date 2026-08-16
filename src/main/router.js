@@ -219,6 +219,12 @@ function pickLogs() {
   return pickLog;
 }
 
+/** Most recent pick log entry, optionally filtered by taskType. */
+function lastPick(taskType) {
+  const list = taskType ? pickLog.filter((e) => e.taskType === taskType) : pickLog;
+  return list.length ? list[list.length - 1] : null;
+}
+
 // Warm the local cache on module load (main process only).
 if (process.type === "browser") loadCache();
 
@@ -231,5 +237,6 @@ module.exports = {
   lastUpdated,
   isFallbackInUse,
   pickLogs,
+  lastPick,
   FALLBACK_MODEL_ID,
 };

@@ -48,6 +48,23 @@ function isPrivateMode() {
   return !!data.privateMode;
 }
 
+function isDeveloperMode() {
+  return !!data.developerMode;
+}
+
+function setDeveloperMode(on) {
+  data.developerMode = !!on;
+  persist();
+  log.info(`[settings] developerMode=${data.developerMode}`);
+  // Notify all renderer windows so the Developer Mode panel updates.
+  try {
+    const { BrowserWindow } = require("electron");
+    for (const win of BrowserWindow.getAllWindows()) {
+      try { win.webContents.send("nova:settings-changed", { developerMode: data.developerMode }); } catch { /* */ }
+    }
+  } catch { /* before app ready */ }
+}
+
 function setPrivateMode(on) {
   data.privateMode = !!on;
   persist();
@@ -65,6 +82,13 @@ function all() {
   return { ...data };
 }
 
+/** Generic setter for misc flags (e.g. onboarding acknowledgements). */
+function setRaw(key, value) {
+  data[key] = value;
+  persist();
+}
+
 load();
 
-module.exports = { isPrivateMode, setPrivateMode, all };
+module.exports = { isPrivateMode, setPrivateMode, isDeveloperMode, setDeveloperMode, all, setRaw };
+
