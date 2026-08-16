@@ -529,6 +529,69 @@ html, body {
   align-self: flex-start;
 }
 .flat-btn:hover { border-color: var(--cyan-dim); color: var(--cyan); }
+
+/* Hard kill-switch: only visible while a control sequence runs. */
+.ctrl-stop-btn {
+  display: none;
+  background: #7a1a1a;
+  border: 1px solid #c04040;
+  color: #ffd0d0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 4px 11px;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  animation: ctrlPulse 1.1s ease-in-out infinite;
+  transition: background 0.2s, color 0.2s;
+}
+.ctrl-stop-btn.active { display: inline-flex; align-items: center; gap: 6px; }
+@keyframes ctrlPulse { 0%, 100% { background: #7a1a1a; } 50% { background: #9f2626; } }
+.ctrl-stop-btn:hover { background: #b43030; color: #fff; }
+
+/* Control plan review card in the history stream. */
+.ctrl-plan { margin-top: 6px; }
+.ctrl-plan-title { font-size: 12px; color: var(--cyan); font-weight: 700; letter-spacing: 0.04em; margin-bottom: 8px; }
+.ctrl-warn { font-size: 10px; color: var(--amber); border: 1px solid rgba(255, 179, 71, 0.3); border-radius: 6px; padding: 4px 8px; margin-bottom: 8px; }
+.ctrl-steps { display: flex; flex-direction: column; gap: 6px; }
+.ctrl-step {
+  display: flex; align-items: flex-start; gap: 9px;
+  font-size: 11px; line-height: 1.5;
+  padding: 6px 9px;
+  border: 1px solid rgba(90, 200, 255, 0.10);
+  border-radius: 8px;
+  background: rgba(16, 19, 30, 0.8);
+  color: var(--text-dim);
+}
+.ctrl-step .ctrl-step-dot {
+  width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0;
+  border: 1px solid #3a4c58; background: transparent;
+}
+.ctrl-step.running { border-color: rgba(57, 210, 255, 0.45); }
+.ctrl-step.running .ctrl-step-dot { background: var(--cyan-dim); }
+.ctrl-step.done { border-color: rgba(70, 180, 120, 0.4); color: #7fc090; }
+.ctrl-step.done .ctrl-step-dot { background: #3a8a54; border-color: #3a8a54; }
+.ctrl-step.verified { border-color: rgba(60, 230, 150, 0.5); color: #5dd990; }
+.ctrl-step.verified .ctrl-step-dot { background: #2bc96f; border-color: #2bc96f; box-shadow: 0 0 6px #2bc96f; }
+.ctrl-step.failed { border-color: rgba(255, 90, 110, 0.45); color: #e07070; }
+.ctrl-step.failed .ctrl-step-dot { background: var(--red); border-color: var(--red); }
+.ctrl-step.cancelled, .ctrl-step.aborted { border-color: rgba(160, 130, 90, 0.35); color: #c0a880; }
+.ctrl-step.cancelled .ctrl-step-dot, .ctrl-step.aborted .ctrl-step-dot { border-color: #8a7050; }
+.ctrl-step-label { color: var(--text); }
+.ctrl-step-note { font-size: 10px; color: var(--text-faint); }
+.ctrl-step-level {
+  display: inline-block; font-size: 9px; padding: 0 5px;
+  border-radius: 5px; margin-left: 4px; font-weight: 700; letter-spacing: 0.06em;
+}
+.ctrl-step-level.level-0, .ctrl-step-level.level-1 { background: rgba(57, 210, 255, 0.10); color: #5fd0e8; }
+.ctrl-step-level.level-2 { background: rgba(90, 150, 230, 0.12); color: #8fc4f0; }
+.ctrl-step-level.level-3, .ctrl-step-level.level-4 { background: rgba(255, 90, 110, 0.12); color: #f0a0a8; }
+.ctrl-plan-actions { display: flex; gap: 8px; margin-top: 9px; }
+.ctrl-plan .ctrl-start-btn { background: rgba(40, 180, 130, 0.12); border-color: rgba(60, 210, 160, 0.5); color: #80e8b8; }
+.ctrl-plan .ctrl-start-btn:hover { background: rgba(40, 180, 130, 0.24); }
+.ctrl-plan .ctrl-stop-btn { margin-left: 0; }
+.ctrl-plan .flat-btn[disabled], .ctrl-plan .ctrl-stop-btn[aria-disabled="true"] { opacity: 0.35; cursor: default; animation: none; }
 .accent-btn {
   background: var(--cyan);
   border: none;

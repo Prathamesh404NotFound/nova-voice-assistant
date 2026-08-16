@@ -1,6 +1,6 @@
 # Nova — Voice-First Desktop AI Assistant
 
-Nova is the foundation stage of a cross-platform (Windows + macOS) desktop AI assistant built with **Electron + Node.js**. This stage covers **voice/chat interaction, model routing, the permission & safety framework, and screen vision** — the safety scaffolding exists BEFORE any feature that can touch the user's mouse, keyboard, or files. Nova can now *see* the screen (screenshot + local OCR + optional vision-model reasoning), which is the first real tool and it is wired through the permission framework as a Level 0 (read-only) action. No file-system, mouse, or keyboard tools are implemented yet.
+Nova is the foundation stage of a cross-platform (Windows + macOS) desktop AI assistant built with **Electron + Node.js**. This stage covers **voice/chat interaction, model routing, the permission & safety framework, screen vision, and mouse/keyboard control** — the safety scaffolding exists BEFORE any feature that can touch the user's mouse, keyboard, or files. Nova can now *see* the screen (screenshot + local OCR + optional vision-model reasoning, Level 0 read-only) and *act* on it through a safety-gated, rule-based task planner (Level 0–3, strictly routed through the permission framework). No file-system tools are implemented yet.
 
 ## Features
 
@@ -15,6 +15,7 @@ Nova is the foundation stage of a cross-platform (Windows + macOS) desktop AI as
 | Packaging | electron-builder: Windows NSIS `.exe` installer (x64), macOS `.dmg` (universal) |
 | Indicators | Small model chip in top bar (click = refresh list / open side panel) + Developer Mode panel in side panel |
 | Screen vision | Saying or typing "what's on my screen", "what am I looking at", "what does this error say", "describe my screen" captures the screen via `desktopCapturer`, runs fully offline tesseract.js OCR (works in Private Mode), detects button-like / input-like UI regions from OCR bounding boxes, and — when not in Private Mode and a free vision model is available — sends the screenshot + question to a vision-capable model via the router; otherwise answers from OCR text alone; every capture is logged to the Action Log as Level 0 with a note (never the image bytes) |
+| Mouse/keyboard control | Rule-based task planner compiles instructions like "open the system calculator and compute 12 x 8" into a checklist shown before execution; `@nut-tree-fork/nut-js` simulation (move/click/right-click/double-click/scroll/drag/type/press-keys) at L0–L3 with `physical` flag (L2+ blocked in Private Mode); hard kill-switch: `Ctrl+Shift+Esc` global hotkey + STOP button + "nova stop" barge-in; mid-sequence vision verification (screenshot + OCR confirms expected text before continuing); every step logged with outcome |
 | Safety framework | 5 risk levels (L0 Read → L4 Destructive), per-action permission gate (L0–1 immediate / L2 cancellable 5s toast / L3–4 explicit Confirm modal in plain language), persistent action log (JSON, newest first, exportable), dry-run `simulate()` paths for L2+, global Private Mode (blocks all outbound network except OpenRouter, persistent 🔒 PRIVATE badge) |
 
 ## Run
@@ -77,6 +78,30 @@ npm run test:vision    # headless self-test — OCR, UI detection, permission pa
 
 The OCR engine downloads `eng.traineddata` on first run (auto-stored at the repo root; gitignored) — after that, all OCR is local. macOS users must grant Screen Recording access before vision commands work; Nova shows an in-app banner with a one-click button to open System Settings > Privacy & Security > Screen Recording when permission is missing.
 
+## Mouse & keyboard control (L0–L3, safety-gated)
+
+The highest-risk feature so far — every control action routes through the same permission gate, action log, and Private Mode as everything else. Simulation runs on `@nut-tree-fork/nut-js` v4.2.6 (prebuilt binaries, cross-platform) wrapped in `src/main/control/input.js`:
+
+| Action | Level | Notes |
+|--------|-------|-------|
+| `control:cursor-position`, `control:move-cursor` | L0 | Read-only cursor inspection / movement |
+| `control:open-app`, `control:wait-for-window` | L1 | Cross-platform launcher (`control/launcher.js` — resolves `calc` → `Calculator` / `calc.exe` / `gnome-calculator` by OS) |
+| `control:left-click`, `right-click`, `double-click`, `scroll`, `drag`, `type-text` | L2 | **Physical** — cancellable 5 s toast; **blocked entirely in Private Mode** |
+| `control:press-keys` | L3 | Combos; destructive ones (`Ctrl/Cmd+W`, `Alt+F4`, `Ctrl/Cmd+Q`, `Ctrl+Z`) escalate to the Confirm modal; harmless ones (`Ctrl+T` etc.) stay L2 |
+
+A **rule-based task planner** (`control/planner.js` — deliberately not LLM-based) compiles instructions like `"open the system calculator and compute 12 x 8"` into an ordered step list (`open-app → wait-for-window → type-text → press-keys Return`) with expression normalization (`12 x 8` → `12 * 8`, `divided by` → `/`), refusal of non-numeric compute payloads, typing-length caps, and a risk level per step. The plan renders as a checklist in the renderer *before* anything above Level 1 executes, and `control/runner.js` executes steps one at a time, emitting progress events (`running / done / verified / failed / aborted / cancelled`) that drive the visible checklist.
+
+**Kill-switch — three paths converging on `sequence.abort()`:** the global hotkey `Ctrl+Shift+Esc` (registered after `app.whenReady()`), the visible STOP button in the HUD topbar, and the barge-in phrase `nova stop`. The runner checks the kill-switch via `guardStep()` before *every* step, so a mid-step abort reports cleanly (`finished: "aborted"` with the interrupted step id) instead of crashing. A cancelled gate outcome (or a Private Mode block) halts the sequence with `finished: "failed"` and marks remaining steps `cancelled` in events and the action log — never silently skipped.
+
+**Vision verification mid-sequence:** steps with `verify: { contains }` (set by the planner for `wait-for-window` and compute steps) screenshot the screen and OCR it — reusing `vision/screenshot.js` + `vision/ocr.js`, so verification works offline and in Private Mode — retrying within a 3 s budget before failing the step and halting the sequence with a `verification failed: …` note that reaches the renderer events.
+
+```bash
+npm run test:control   # headless self-test — planner rules, kill-switch states, gate flow,
+                       # abort/cancel/block halting, vision verification, registry + launcher
+```
+
+**Demo:** say or type `"open the system calculator and compute 12 x 8"` — Nova shows the 4-step checklist, executes with toast/modal confirmations per level, verifies the calculator window on screen before typing, types `12 * 8`, presses Return, and logs every step. `Ctrl+Shift+Esc`, the STOP button, or `nova stop` halt it at any point.
+
 ## Test the model router headlessly
 
 ```bash
@@ -98,7 +123,10 @@ src/
 │   ├── test-router.js Headless router self-test (electron shim)
 │   ├── test-permissions.js Headless permission-gate self-test (electron shim)
 │   ├── test-vision.js Headless screen-vision self-test (electron shim, PIL-generated test images)
-│   └── vision/ Screenshot capture, offline OCR, UI detection, vision-query pipeline
+│   ├── test-control.js Headless mouse/keyboard-control self-test (electron shim, mock input engine)
+│   ├── vision/ Screenshot capture, offline OCR, UI detection, vision-query pipeline
+│   └── control/ nut-js input wrapper, cross-platform launcher, rule-based planner, kill-switch,
+│                 vision verification, step runner
 ├── preload/preload.js contextBridge API — renderer has no Node access
 └── renderer/
     ├── index.html     Single-screen HUD

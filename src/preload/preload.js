@@ -45,6 +45,19 @@ contextBridge.exposeInMainWorld("nova", {
   checkScreenPermission: () => ipcRenderer.invoke("nova:check-screen-permission"),
   openScreenSettings: () => ipcRenderer.invoke("nova:open-screen-settings"),
 
+  // --- Mouse & keyboard control (Stage 4 — gated via the permission framework) ---
+  controlPlan: (instruction) => ipcRenderer.invoke("nova:control-plan", instruction),
+  controlStart: () => ipcRenderer.invoke("nova:control-start"),
+  controlAbort: () => ipcRenderer.invoke("nova:control-abort"),
+  controlCursor: () => ipcRenderer.invoke("nova:control-cursor"),
+  // Progress events from a running sequence: step running/done/verified/failed/aborted/cancelled,
+  // sequence state changes, and final finished event.
+  onControlProgress: (cb) => {
+    const listener = (_evt, data) => cb(data);
+    ipcRenderer.on("nova:control-progress", listener);
+    return () => ipcRenderer.removeListener("nova:control-progress", listener);
+  },
+
   // --- Chat (streaming, renderer-side fetch) ---
   // The renderer performs the fetch directly (avoids IPC streaming complexity).
   platform: process.platform,

@@ -39,9 +39,11 @@ async function runAction(actionId, payload = {}, opts = {}) {
     return { outcome: "dry-run", detail: report };
   }
 
-  // Private Mode: block anything sensitive/destructive (network-touching)
+  // Private Mode: block anything sensitive/destructive (network-touching),
+  // AND any physically-invasive action (mouse/keyboard control) — controlling
+  // the user's machine is invasive regardless of network reach.
   if (settings.isPrivateMode()) {
-    if (action.level >= RISK_LEVEL.SENSITIVE) {
+    if (action.level >= RISK_LEVEL.SENSITIVE || action.physical) {
       actionLog.append({ actionId, level: action.level, outcome: "blocked", reason: "private-mode" });
       log.info(`[permissions] "${actionId}" blocked by Private Mode`);
       return { outcome: "blocked" };

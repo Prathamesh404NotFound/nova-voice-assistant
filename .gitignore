@@ -5,3 +5,4 @@ dist/
 free-models-cache.json
 *.log
 eng.traineddata
+.nova-ctrl-test-data/

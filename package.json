@@ -2,7 +2,7 @@
   "name": "nova-assistant",
   "productName": "Nova",
   "version": "0.1.0",
-  "description": "Nova — a voice-first desktop AI assistant",
+  "description": "Nova \u2014 a voice-first desktop AI assistant",
   "author": "Nova",
   "license": "MIT",
   "repository": {
@@ -18,7 +18,8 @@
     "build:all": "electron-builder -mwl",
     "test:router": "node src/main/test-router.js",
     "test:permissions": "node src/main/test-permissions.js",
-    "test:vision": "node src/main/test-vision.js"
+    "test:vision": "node src/main/test-vision.js",
+    "test:control": "node src/main/test-control.js"
   },
   "build": {
     "appId": "com.nova.assistant",
@@ -59,6 +60,7 @@
     }
   },
   "dependencies": {
+    "@nut-tree-fork/nut-js": "^4.2.6",
     "electron-log": "^5.1.2",
     "tesseract.js": "^7.0.0"
   },

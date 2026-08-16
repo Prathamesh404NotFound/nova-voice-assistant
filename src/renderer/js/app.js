@@ -38,6 +38,7 @@
     permToastMsg: $("permToastMsg"), permToastCancel: $("permToastCancel"),
     permLog: $("permLog"), permExportBtn: $("permExportBtn"), permClearBtn: $("permClearBtn"),
     screenPermHelp: $("screenPermHelp"), openScreenSettingsBtn: $("openScreenSettingsBtn"),
+    ctrlStopBtn: $("ctrlStopBtn"),
   };
 
   // ------------------------------------------------------------------ clock
@@ -60,6 +61,149 @@
   }
   el.sideToggle.addEventListener("click", () => setSidePanel(!el.sidePanel.classList.contains("open")));
   el.sideClose.addEventListener("click", () => setSidePanel(false));
+
+  // ======================================================================
+  // CONTROL PLAN REVIEW + PROGRESS CHECKLIST
+  // ======================================================================
+
+  /** Level 0–4 → short badge label for the checklist. */
+  const LEVEL_BADGES = ["READ", "SAFE", "CANCELLABLE", "CONFIRM", "CONFIRM"];
+
+  function showControlPlan(plan, summary, instruction, source) {
+    const maxLevel = Math.max(...plan.map((s) => s.level));
+    const needsConfirm = maxLevel >= 2;
+
+    const stepsHtml = plan
+      .map(
+        (s) => `
+      <div class="ctrl-step" id="ctrl-step-${escapeAttr(s.id)}" data-step-id="${escapeAttr(s.id)}">
+        <span class="ctrl-step-dot"></span>
+        <div class="ctrl-step-body">
+          <div class="ctrl-step-label">${escapeHtml(s.label)}</div>
+          <div class="ctrl-step-note">${escapeHtml(s.note)} <span class="ctrl-step-level level-${s.level}">${LEVEL_BADGES[s.level]}</span></div>
+        </div>
+      </div>`
+      )
+      .join("");
+
+    const warn = maxLevel >= 3
+      ? `<div class="ctrl-warn">Some steps may affect other apps (closing windows, submitting forms). Review carefully.</div>`
+      : ``;
+
+    addHistoryEntry({
+      role: "nova",
+      src: source,
+      // text field is unused by the plan UI but kept for fallback rendering
+      __controlPlan: {
+        summary,
+        instruction,
+        stepsHtml,
+        warn,
+        needsConfirm,
+        stepIds: plan.map((s) => s.id),
+      },
+    });
+
+    if (!needsConfirm) {
+      // Level 0–1 only: execute immediately after showing the plan (the user
+      // can still hit the kill-switch / STOP at any moment).
+      startControlSequence();
+    }
+    speak(`Here is my plan: ${summary}. ${needsConfirm ? "Review the checklist below and press Start when ready, or Stop." : "Everything is read-only or safe to run — starting now."}`);
+  }
+
+  /** User pressed Start on a reviewed plan. */
+  function startControlSequence() {
+    const card = el.history.querySelector(".ctrl-plan[data-state=reviewing]");
+    if (card) card.dataset.state = "running";
+    window.nova.controlStart();
+  }
+
+  /** User pressed Stop (visible STOP button / barge-in).
+   *  Returns true when a sequence was actually running and aborted. */
+  function stopControlSequence() {
+    if (!sequenceRunning) return false;
+    window.nova.controlAbort();
+    return true;
+  }
+
+  /** Update the visible checklist from sequence progress events. */
+  let sequenceRunning = false;
+
+  function handleControlProgress(ev) {
+    if (!ev || !ev.type) return;
+
+    if (ev.type === "state") {
+      sequenceRunning = ev.state === "running";
+      toggleStopButton(sequenceRunning);
+      return;
+    }
+
+    if (ev.type === "step" && ev.stepId) {
+      const node = document.querySelector(`.ctrl-step[data-step-id="${escapeAttr(ev.stepId)}"]`);
+      if (!node) return;
+      node.classList.remove("running", "done", "verified", "failed", "cancelled", "aborted");
+      node.classList.add(ev.status);
+      if (ev.note) {
+        const noteEl = node.querySelector(".ctrl-step-note");
+        if (noteEl) noteEl.textContent = `${escapeHtml(ev.note)} `;
+      }
+      return;
+    }
+
+    if (ev.type === "finished") {
+      sequenceRunning = false;
+      toggleStopButton(false);
+      const finished = ev.finished || "done";
+      let msg = finished === "done" ? "All steps completed." : "The sequence was stopped.";
+      addHistoryEntry({ role: "nova", text: msg, src: "control" });
+      speak(msg);
+      refreshPermPanel(); // the Action Log now contains the control entries
+    }
+  }
+
+  function toggleStopButton(visible) {
+    el.ctrlStopBtn.classList.toggle("active", visible);
+    el.ctrlStopBtn.setAttribute("aria-disabled", visible ? "false" : "true");
+  }
+
+  window.nova.onControlProgress(handleControlProgress);
+
+  function escapeAttr(s) {
+    return String(s || "").replace(/"/g, "&quot;");
+  }
+
+  // Render the control plan card with review controls. History entries with
+  // a __controlPlan payload get this custom markup instead of plain text.
+  const origRenderHistory = renderHistory;
+  renderHistory = function renderHistoryWithPlans() {
+    origRenderHistory();
+    let planIdx = 0;
+    el.history.querySelectorAll(".msg.nova").forEach((node, i) => {
+      const entry = historyItems[i];
+      if (!entry || !entry.__controlPlan) return;
+      const p = entry.__controlPlan;
+      node.innerHTML = `
+        <div class="ctrl-plan" data-state="${p.needsConfirm ? "reviewing" : "running"}" data-plan-idx="${planIdx++}">
+          <div class="ctrl-plan-title">Plan: ${escapeHtml(p.summary)}</div>
+          ${p.warn}
+          <div class="ctrl-steps">${p.stepsHtml}</div>
+          <div class="ctrl-plan-actions">
+            ${p.needsConfirm ? `<button class="flat-btn ctrl-start-btn" ${sequenceRunning ? "disabled" : ""}>Start</button>` : ""}
+            <button class="flat-btn ctrl-stop-btn" ${sequenceRunning ? "" : "disabled"}>Stop</button>
+          </div>
+        </div>`;
+      const card = node.querySelector(".ctrl-plan");
+      const startBtn = card.querySelector(".ctrl-start-btn");
+      const stopBtn = card.querySelector(".ctrl-stop-btn");
+      if (startBtn) startBtn.addEventListener("click", () => startControlSequence());
+      if (stopBtn) stopBtn.addEventListener("click", () => stopControlSequence());
+    });
+    el.history.scrollTop = el.history.scrollHeight;
+  };
+
+  // ------------------------------------------------------------------ stop btn
+  el.ctrlStopBtn.addEventListener("click", () => stopControlSequence());
 
   // ======================================================================
   // ORB VISUALIZER  (canvas, ~60fps via rAF)
@@ -230,11 +374,20 @@
         el.liveHear.textContent = "";
         const text = final.trim();
         if (!text) return;
-        // Barge-in trigger phrases
-        if (/^(nova\s+)?(stop|hush|be quiet|quiet)\b/i.test(text) && state.ttsActive) {
-          stopSpeaking();
-          el.liveLine.textContent = "Playback stopped.";
-          return;
+        // Barge-in trigger phrases:
+        // "Nova stop" (or just "stop") while a control sequence runs halts it
+        // immediately via the kill-switch path; otherwise stop speech playback.
+        if (/^(nova\s+)?(stop|hush|be quiet|quiet)\b/i.test(text)) {
+          if (stopControlSequence()) {
+            addHistoryEntry({ role: "nova", text: "Sequence stopped.", src: "voice" });
+            return;
+          }
+          if (state.ttsActive) {
+            stopSpeaking();
+            el.liveLine.textContent = "Playback stopped.";
+            return;
+          }
+          // Neither TTS nor a control sequence running — fall through to chat.
         }
         if (!interimOnly) submitMessage(text, "voice");
       }
@@ -384,6 +537,13 @@
   // "what does this error say", "describe my screen", etc.
   const VISION_PHRASES = /what('s| is)? (on my screen|this screen|this (error|message))|what am i looking at|describe (my |the )?screen|read (my |the )?screen|what does (this|that) (error |message )?say/i;
 
+  // Control trigger phrases: "open the calculator and compute 12 x 8", "click Save",
+  // "type hello into the search box", "press Ctrl+T", "wait for Notepad".
+  // These are checked AFTER vision (vision phrases are unambiguous), and they
+  // never collide with normal chat since chat requires a configured API key —
+  // but the control route wins regardless of key state.
+  const CONTROL_PHRASES = /^(open|click|double[- ]?click|right[- ]?click|type|press|submit|send|compute|calculate|wait for|drag)/i;
+
   async function submitMessage(text, source) {
     if (!text?.trim()) return;
     addHistoryEntry({ role: "user", text: text.trim(), src: source });
@@ -407,6 +567,27 @@
         addHistoryEntry({ role: "nova", text: msg, src: source });
         speak(msg);
         console.error("Vision query failed:", err);
+      } finally {
+        setMode("idle", "IDLE");
+      }
+      return;
+    }
+
+    // Control route: compile the instruction into a plan for review BEFORE
+    // anything physical happens (nothing above Level 1 executes without
+    // explicit user confirmation, and L2/L3 still show the toast/modal).
+    if (CONTROL_PHRASES.test(text.trim())) {
+      try {
+        setMode("speaking", "PLANNING…");
+        el.liveLine.textContent = "Planning the steps…";
+        const res = await window.nova.controlPlan(text.trim());
+        if (!res?.ok) throw new Error(res?.error || "The planner could not understand that instruction.");
+        showControlPlan(res.plan, res.summary, text.trim(), source);
+      } catch (err) {
+        const msg = "I could not plan that: " + (err?.message || String(err));
+        addHistoryEntry({ role: "nova", text: msg, src: source });
+        speak(msg);
+        console.error("Control plan failed:", err);
       } finally {
         setMode("idle", "IDLE");
       }

@@ -150,3 +150,77 @@ createWorker(lang,oem,options,config) — config={tessedit_create_hocr:1}; worke
 3. Update README: add Screen Vision section (new features, vision:capture-screen L0 action, private mode offline OCR, macOS permission help).
 4. Deliver: commit hash, summary, note eng.traineddata not committed (~30MB), first-run downloads it.
 - debug files to remove before commit: debug-*.js, debug-*.sh, /tmp/tb.png etc (outside repo fine), /tmp/node-encoder.png
+
+
+## STAGE 4 — MOUSE & KEYBOARD CONTROL (in progress, ~19:50)
+Design doc: docs/plans/2026-08-16-control-design.md (committed? NOT yet — design doc not committed, commit when done)
+
+### Decisions
+- Library: @nut-tree-fork/nut-js v4.2.6 installed (--force, dmg-license darwin warning ignored, same as tesseract)
+- nut.js verified working on Xvfb :99. API: mouse.move(Point), mouse.leftClick(n), rightClick(), scrollDown/Up(n), drag(Point) (presses at current pos then moves), keyboard.type(text), keyboard.pressKey(...keys)/releaseKey, screen.mousePosition(), Key enum, Button enum, Point
+- keyboard.drag() does NOT exist; use mouse.drag(Point) after moving to start pos
+- gate.js extended: Private Mode blocks actions with `physical: true` flag (control L2+ actions register with physical:true)
+
+### Files written (all syntax-checked OK)
+- src/main/control/input.js — registers 11 actions: control:cursor-position L0, control:move-cursor L0, control:left-click L2, control:right-click L2, control:double-click L2, control:scroll L2, control:drag L2, control:type-text L2, control:press-keys L3 (dangerous combos escalate), control:open-app L1, control:wait-for-window L1; all physical except L0/L1; describe{} has plain-language title/body for simulate(); getEngine()/setEngineForTesting() for tests
+- src/main/control/launcher.js — openApp(app,{os}) darwin `open -a`, win32 cmd /c start, linux direct exec + unref; KNOWN_APPS aliases (calculator/calc etc)
+- src/main/control/verify.js — verifyWindow({contains,waitMs=5000,poll 500}) uses captureScreen+recognizeText; screenshotTaken flag
+- src/main/control/kill-switch.js — SequenceController singleton `sequence`: reviewing/start/abort/finish/reset/guardStep/isRunning/isAborted; setEmitter(fn); SequenceAbortedError; states idle/reviewing/running/done
+- src/main/control/planner.js — compilePlan(instruction) rule-based: compute/calculate <expr> → [open calcApp, wait-for-window(contains:"0"), type expr, press-keys Return(L3)]; open <app> [and ...]; click/double-click/right-click <label> (x,y resolved at exec via locateOnScreen from OCR words/buttons bboxes); type "<text>" [into label]; submit/send/press enter → Return L3; press <combo> (DANGEROUS_COMBOS list: ctrl+w, ctrl+q, cmd+w, cmd+q, alt+f4, ctrl+z... → L3, others L2); wait for <label>. resetStepCounter exported. normalizeExpr converts ×x times ÷ plus minus etc.
+- src/main/control/runner.js — runSequence({plan}): per step guardStep→emit running→resolve label coords via locateOnScreen (OCR+bboxes fallback detectUIElements)→runAction→outcome handling (cancelled/blocked/failed halt+finishSequence logs remaining cancelled)→post-step verify if step.verify.contains else emit done; maxSteps=20; finishes with emit finished event
+- src/main/control/index.js — init() registers actions; exports compilePlan, runSequence, sequence, verifyWindow
+
+### main.js wiring (DONE, syntax OK)
+- requires ./control, control.init(), globalShortcut from electron
+- emitter: control.sequence.setEmitter → mainWindow.webContents.send("nova:control-progress", event)
+- IPC: nova:control-plan(instruction) → compile + lastPlan store + sequence.reviewing; nova:control-start → lastPlan + start + runSequence fire-and-forget; nova:control-abort; nova:control-cursor (runAction control:cursor-position)
+- globalShortcut.register("CommandOrControl+Shift+Escape") → sequence.abort("global hotkey (Ctrl+Shift+Esc)")
+
+### preload.js wiring (DONE)
+- nova.controlPlan/controlStart/controlAbort/controlCursor/onControlProgress
+
+### REMAINING
+1. renderer app.js: CONTROL_PHRASES regex trigger (e.g. /open|click|type|press|compute|calculate|submit|wait for/i careful not to collide with vision/chat) → in submitMessage: call window.nova.controlPlan(text); show plan checklist UI in history; "Start" + "STOP" buttons; wire onControlProgress listener; wire "Nova stop" voice to controlAbort when sequence running (reuse barge-in); wire orb stop too.
+2. index.html: add control checklist UI markup (hidden by default): #controlPlan section with steps list + start btn + stop btn. CSS in hud.css (red stop button style).
+3. test-control.js: electron shim (like test-permissions.js: Module._load override returning fake electron) + spy engine (setEngineForTesting) + test: plan compilation (calculator demo "open the system calculator and compute 12 x 8" → 4 steps: open-app L1, wait L1, type L2, press-keys Return L3), risk levels, describe titles, DANGEROUS_COMBOS mapping, runner with mocked runAction (mock require permissions/gate? runner requires gate → shim should intercept), abort mid-sequence, verifyWindow mock, Private Mode refusal via settings shim. Add npm script test:control.
+4. Run test:permissions (27), test:vision, test:control; launch app electron on :99 → verify log shows control actions registered + hotkey; commit.
+5. Update README: add Control section (L0/L1/L2/L3 mapping, planner, kill-switch, verification), add test:control to test table; note eng.traineddata, etc. Update limitation notes.
+6. Update screen-vision-summary? No — deliver new control summary docs/control-summary.md.
+7. Commit msg idea: "Add mouse & keyboard control: nut.js input engine + risk-gated actions + rule-based planner + kill-switch (Ctrl+Shift+Esc) + vision verification"
+
+### App test notes
+- Xvfb :99 runs (no display server default :98 per earlier? context says Xvfb :98; recent launches used DISPLAY=:99 which worked — check pgrep Xvfb before launch)
+- Known GPU viz_main error on Xvfb = sandbox glitch, ignore
+- Demo target: "open the system calculator and compute 12 x 8" — calcApp() linux = gnome-calculator (may not exist in sandbox; launcher logs warning, plan-level assertions still verified)
+
+### Existing tests
+- npm run test:permissions → 27/27
+- npm run test:vision → all pass (~5min, OCR heavy)
+- App log when launching: [permissions] 6 actions registered; control adds 11 → 17 total
+
+
+### Stage 4 renderer wiring (DONE as of latest edit)
+- app.js: added ctrlStopBtn to $() map; CONTROL_PHRASES regex in submitMessage (after VISION_PHRASES, before apiKey guard); showControlPlan() renders plan card via addHistoryEntry({__controlPlan:{summary,instruction,stepsHtml,warn,needsConfirm,stepIds}}); renderHistory overridden (orig kept) to turn __controlPlan entries into .ctrl-plan cards with Start (L2+) / Stop buttons; handleControlProgress listener wired via window.nova.onControlProgress; toggleStopButton toggles .active on el.ctrlStopBtn; barge-in stop/hush phrase now calls stopControlSequence first; escapeAttr + escapeHtml helpers.
+- index.html: added <button id="ctrlStopBtn" class="ctrl-stop-btn">&#9724; STOP</button> in .topbar-center after refreshBtn.
+- hud.css: appended .ctrl-stop-btn (+ .active, ctrlPulse) and .ctrl-plan/.ctrl-steps/.ctrl-step (.running/.done/.verified/.failed/.cancelled/.aborted) + .ctrl-step-level badges + .ctrl-plan-actions styles after .flat-btn:hover.
+- Node syntax checks passed: main.js, app.js, preload.js, control/*.js.
+
+### REMAINING (from earlier list, unchanged)
+3. test-control.js (shim like test-permissions.js Module._load override for electron; setEngineForTesting spy; tests: planner calc demo → 4 steps L1/L1/L2/L3; DANGEROUS_COMBOS; describe titles; runner w/ mocked gate; abort mid-sequence; verifyWindow mock; Private Mode refusal). Add npm script test:control.
+4. Run test:permissions (27), test:vision, test:control; launch app (check pgrep Xvfb first; Xvfb :98 or :99); confirm log "17 actions registered"; commit descriptive msg.
+5. README: add Control section (L0-L3 table, planner, kill-switch Ctrl+Shift+Esc, verification), test:control row; fix CIT typo earlier stage.
+6. Write docs/control-summary.md; deliver.
+
+
+### test-control.js run 1 diagnosis (5948-char log)
+Mostly green. Failures to fix:
+1. **Expression normalize fails** — planner payload text likely "12x8" without the `x→*`? Actually computeMatch extracts "12 x 8" but normalizeExpr regex `x(?=\s*\d)` only matches 'x' followed by digit w/o space; "12 x 8" → x replaced? It should. FAIL message was plain. CHECK: computeMatch[1] may be "12" only because the regex `([\d][\d .×x*÷/+−-]+...)` — "12 x 8" spaces allowed, " x " matches... maybe the "12 x 8" matches but then computeIdx match path m[1]="12 x 8" → normalizeExpr("12 x 8"). Hmm but test got FAIL. Suspect: test runs on linux → calcApp()=gnome-calculator, plan has 4 steps OK so computeMatch worked. Check what payload.text actually is.
+2. **verifyWindow uses REAL screenshot**: verify.js requires ../vision/screenshot at module load time BEFORE my mock install in main() — mock installed after require("./control/verify") → the real captureScreen is cached. FIX: install vision mocks BEFORE requiring verifyModule/input/control (move installVisionMocks() up, before requires). Also runner.js does require("./verify") inside function → will get mocked if cache installed first.
+3. **verify.js capture failure throws** (crash at harness end) — fixed by #2.
+4. **left-click NOT registered L2 physical / 7 missing simulate** — registry check before control.init()?? No, control.init() called. But wait — gate.runAction patched BEFORE control.init: registerAction runs during init; physical field should be there. FAIL says left-click not level 2/physical. CHECK the registry listing — maybe duplicate IDs: input.js registers "control:left-click"... and test-actions.js registered duplicate? Or my require("./control") in test returned stale module.exports? input.js physical flag is set via registerPhysicalAction. Hmm — 7 missing simulate for L2+: control:left-click/right-click/double-click/scroll/drag/type-text/press-keys = 7 exactly! So the registry listing found them at L2+ but simulate undefined... meaning the actions in registry are a DIFFERENT object than input.js registrations? No — 7 = exactly the physical actions. Maybe registerAction strips or ignores extra fields? Check action-registry.js validation: maybe it enforces exact schema and rejects "physical"/"simulate" keys? Or maybe it clones entry and drops simulate? Need to read action-registry.js registerAction schema.
+5. **cancelled test**: events "cancelled" check failed — maybe events already contained cancelled from earlier aborted run (events accumulates) — I didn't reset events array between runner tests. FIX: clear events before each runner test.
+6. verify failure note check failed due to #2 (real capture threw before emitting note).
+7. abort test: "the interrupted step is reported" failed maybe same events/state issue; check failedStepId assertion — after abort inside keyboard.type, runner catches SequenceAbortedError → returns aborted w/ step.id (type-1 or type-3). step ids are now unique per call (resetStepCounter at compile; but sequence.reset between runs). "type-1" expected but id may be "type-3" (wait step failed first? wait step failed via real capture → finishSequence returns failed NOT aborted, so abort test never reached typed step). After fixing #2, this will pass (wait succeeds, abort during type → failedStepId = "type-1").
+
+### Planner regex detail (for #1)
+normalizeExpr in planner.js: `.replace(/×|\*|x(?=\s*\d)|multiplied by|times/gi, "*")` — "12 x 8" → "12 * 8"?? lookahead `(?=\s*\d)` after x: x at pos 3, next non-space char is 8 → matches? The lookahead only checks ahead, fine → "12 * 8". Then test asserts payload.text === "12*8". FAIL → actual must differ. Compute: `5 divided by 2` → "5 / 2". Expected "5/2". So actual retains spaces? The test asserts "5/2" — planner keeps spaces → mismatch is my TEST expectation not planner. Fix tests to match planner output ("12 * 8", "5 / 2", "100 + 25 * 4"). Verify by running.

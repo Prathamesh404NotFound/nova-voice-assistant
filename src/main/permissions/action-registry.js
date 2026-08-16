@@ -14,7 +14,7 @@ const log = require("electron-log");
 
 const registry = new Map(); // id -> { id, level, description, execute, simulate }
 
-function registerAction({ id, level, description, execute, simulate }) {
+function registerAction({ id, level, description, execute, simulate, physical }) {
   if (typeof id !== "string" || !id.trim()) throw new Error("Action needs a string id");
   if (registry.has(id)) throw new Error(`Action "${id}" already registered`);
   if (![0, 1, 2, 3, 4].includes(level)) {
@@ -24,7 +24,9 @@ function registerAction({ id, level, description, execute, simulate }) {
   if (level >= RISK_LEVEL.REVERSIBLE && typeof simulate !== "function") {
     throw new Error(`Level ${level} action "${id}" MUST provide a simulate() dry-run function`);
   }
-  registry.set(id, { id, level, description, execute, simulate: simulate || null });
+  // Extra registration metadata (e.g. physical: true for input-simulation
+  // actions) is preserved so consumers like the gate can branch on it.
+  registry.set(id, { id, level, description, execute, simulate: simulate || null, physical: !!physical });
   log.info(`[permissions] registered action "${id}" at level ${level}`);
 }
 

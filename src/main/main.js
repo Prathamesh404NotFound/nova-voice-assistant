@@ -22,6 +22,13 @@ require("./vision/vision-actions"); // registers vision:capture-screen (L0)
 const { getScreenPermissionStatus, openScreenSettings } = require("./vision/screenshot");
 const ocrShutdown = require("./vision/ocr").shutdown;
 
+// Mouse & keyboard control (Stage 4) — all primitives gated through the
+// permission framework; plan review + progress checklist in the renderer;
+// Ctrl+Shift+Escape hard kill-switch + visible STOP button.
+const control = require("./control");
+control.init();
+const { globalShortcut } = require("electron");
+
 log.transports.file.level = "info";
 log.transports.console.level = "info";
 
@@ -195,6 +202,80 @@ ipcMain.handle("nova:open-screen-settings", async () => {
 });
 
 // ---------------------------------------------------------------------------
+// IPC: mouse & keyboard control (Stage 4)
+// ---------------------------------------------------------------------------
+
+// Emit control progress to the renderer (only the live window).
+control.sequence.setEmitter((event) => {
+  if (!mainWindow?.webContents) return;
+  try {
+    mainWindow.webContents.send("nova:control-progress", event);
+  } catch { /* window gone */ }
+});
+
+// Hold the last compiled plan until the user confirms and execution begins.
+let lastPlan = null;
+
+/** Compile the instruction and send the plan to the renderer for review. */
+ipcMain.handle("nova:control-plan", async (_evt, instruction) => {
+  const result = control.compilePlan(instruction);
+  if (!result.ok) return { ok: false, error: result.error };
+  lastPlan = result.plan;
+  control.sequence.reviewing(`plan-${Date.now()}`);
+  return { ok: true, plan: result.plan, summary: result.summary };
+});
+
+/** Start executing a reviewed plan (user confirmed in the renderer). */
+ipcMain.handle("nova:control-start", async () => {
+  const planToRun = lastPlan;
+  lastPlan = null;
+  if (!planToRun?.length) return { ok: false, error: "No plan is awaiting confirmation." };
+  if (!control.sequence.start()) return { ok: false, error: "No plan is awaiting confirmation." };
+  // Fire-and-forget: progress events flow through the emitter above.
+  control.runSequence({ plan: planToRun }).then((res) => {
+    control.sequence.emit({ type: "finished", ...res });
+  }).catch((err) => {
+    log.error("[control] sequence errored:", err?.message || err);
+    control.sequence.emit({ type: "finished", finished: "failed", failedStepId: null });
+  });
+  return { ok: true };
+});
+
+/** Abort the running sequence (STOP button / kill-switch / voice). */
+ipcMain.handle("nova:control-abort", async () => {
+  const was = control.sequence.abort("renderer abort");
+  return { ok: true, aborted: was };
+});
+
+/** L0 cursor read. */
+ipcMain.handle("nova:control-cursor", async () => {
+  try {
+    const res = await runAction("control:cursor-position", {});
+    return res.outcome === "success" ? res.detail : { error: res.outcome };
+  } catch (err) {
+    return { error: String(err?.message || err) };
+  }
+});
+
+/**
+ * Hard kill-switch hotkey: Ctrl+Shift+Escape on both platforms.
+ * Registered AFTER app.whenReady() — globalShortcut requires the ready state
+ * (registering too early throws "globalShortcut cannot be used before the
+ * app is ready").
+ */
+function registerKillHotkey() {
+  try {
+    globalShortcut.register("CommandOrControl+Shift+Escape", () => {
+      log.info("[control] kill-switch hotkey pressed");
+      control.sequence.abort("global hotkey (Ctrl+Shift+Esc)");
+    });
+    log.info("[control] kill-switch hotkey registered: Ctrl+Shift+Escape");
+  } catch (err) {
+    log.warn("[control] kill-switch hotkey registration failed:", err?.message);
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Startup
 // ---------------------------------------------------------------------------
 app.whenReady().then(async () => {
@@ -216,8 +297,9 @@ app.whenReady().then(async () => {
     log.warn("Initial model fetch failed — router will use fallback model:", err?.message || err);
   }
   router.startPeriodicRefresh({ intervalMs: 6 * 60 * 60 * 1000 });
-  log.info(`Model router: current=${router.currentModel()} freeModels=${router.freeModelCount()} fallback=${router.isFallbackInUse()}`);
-
+    log.info(`Model router: current=${router.currentModel()} freeModels=${router.freeModelCount()} fallback=${router.isFallbackInUse()}`);
+  // 3. Register the hard kill-switch hotkey (must happen after app is ready)
+  registerKillHotkey();
   createWindow();
 
   // Hidden verification flag: `electron . --run-demo-action <id>` fires a single
