@@ -84,8 +84,14 @@ async function undoLast(runActionFn) {
   const { actionId, payload, taskId } = lastReversible;
   const action = getAction(actionId);
   lastReversible.reversed = true;
+  // Merge the stored execute() outcome (moved/copied lists) into the undo
+  // payload — bulk actions (organize/move/copy) need the actual result to
+  // reverse, while simple actions (rename) only use the original payload.
+  const reversePayload = action.lastResult
+    ? { ...payload, ...(action.lastResult && typeof action.lastResult === "object" ? action.lastResult : {}) }
+    : payload;
   try {
-    await action.reverse(payload);
+    await action.reverse(reversePayload);
     actionLog.append({ actionId: `${actionId}::undo`, level: action.level, taskId, outcome: "undo", detail: { undid: actionId } });
     log.info(`[undo] reversed "${actionId}"`);
     lastReversible = null;

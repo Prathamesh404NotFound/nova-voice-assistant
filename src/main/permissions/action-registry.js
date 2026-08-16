@@ -26,7 +26,13 @@ function registerAction({ id, level, description, execute, simulate, physical, r
   }
   // Extra registration metadata (e.g. physical: true for input-simulation
   // actions) is preserved so consumers like the gate can branch on it.
-  registry.set(id, { id, level, description, execute, simulate: simulate || null, physical: !!physical, reverse: typeof reverse === "function" ? reverse : null });
+  // `lastResult` remembers the most recent execute() outcome — undo uses it
+  // to reverse bulk actions (organize/move/copy) whose reverse() needs the
+  // actual moved/copied list, not just the original payload.
+  registry.set(id, {
+    id, level, description, execute, simulate: simulate || null, physical: !!physical,
+    reverse: typeof reverse === "function" ? reverse : null, lastResult: null,
+  });
   log.info(`[permissions] registered action "${id}" at level ${level}`);
 }
 

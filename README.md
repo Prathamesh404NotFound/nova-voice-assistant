@@ -134,8 +134,34 @@ npm run test:agent   # headless self-test — 38 checks: classification rules, q
 ```
 
 ```bash
-npm run test         # everything: agent + permissions + control + vision
+npm run test         # everything: agent + permissions + control + vision + files
 ```
+
+## Voice-driven file management (Stage 6)
+
+All file operations live in `src/main/files/` and — by design — go through the exact same permission gate, Action Log, and undo framework as vision and control. Nothing in this stage ever deletes permanently: even Level 4 deletes go to the **OS Recycle Bin / Trash** (`toolbox.moveToTrash` — PowerShell `VB.FileSystem::DeleteFile` on Windows, `osascript` Finder delete on macOS, `gio trash` on Linux), so the OS-level undo still works outside Nova's own Undo button.
+
+| Action | Level | Notes |
+|--------|-------|-------|
+| `files:search`, `files:detect-duplicates`, `files:folder-stats` | L0 | Read-only, runs immediately; search defaults to Documents / Downloads / Desktop ("search everywhere" widens it); dup-detect is SHA-256 hash-based, not name-based |
+| `files:organize`, `files:remove-duplicates`, `files:move-files`, `files:copy-files`, `files:rename-file` | L2 | Reversible — cancellable 5 s toast; each has a `reverse` fn so Nova's Undo restores within 5 minutes |
+| `files:delete-files` | L4 | Confirm modal with the exact file list; **never** a bare "delete junk files" — vague requests are refused at the planning layer with a pointer to the dry-run preview flow |
+
+**Organize/tidy is preview-first, always.** `"clean up my Downloads folder"` never moves a file immediately: `files:organize` is required to dry-run first (the gate path with `{dryRun: true}` calls `simulate()`, and the action's `execute()` refuses to run without a preview token). The dispatcher stores the dry-run report in a short-lived `pendingPreviews` map keyed by a one-shot token and emits a `file-preview` event; the renderer shows a preview card (e.g. `Documents/ (12 files)  Images/ (23 files)  Installers/ (4 files)`) with Confirm / Cancel. Only `nova:files-execute` with the exact token performs the real moves. Organize is also **only-loose** — files already inside subfolders are left alone.
+
+**"This file" file context:** search / dup-detect results are remembered by the dispatcher, so follow-ups like `"move this file to Documents"` or `"delete this file"` resolve against the last result without repeating the search. Named files from a previous search (`"get rid of setup.exe"`) also resolve when they appear in context.
+
+```bash
+npm run test:files   # headless self-test — 80+ checks: registration + risk levels +
+                     # reverse fns, toolbox primitives, NL planning + intent
+                     # classification, L0/L2/L4 gate paths, organize dry-run accept
+                     # AND reject, one-shot preview tokens, bulk-undo via the stored
+                     # execute result, mock OS-trash delete, refusal cases
+```
+
+**Demo:** say or type `"find my resume"`, `"how much space is Downloads taking up"`, `"clean up my Downloads folder"`, `"move this file to Documents"`. The last one shows the 5 s cancellable toast before moving; the organize flow shows the preview card first and moves nothing until you confirm it.
+
+**Design note on the undo bridge:** bulk reversals (organize/move/copy) need the actual moved/copied list, which only exists after `execute()`. `gate.js` now stores the execute result on the registry entry (`action.lastResult`), and `undo.js` merges it into the reverse payload — single-file reversals (rename) keep using the original payload.
 
 ## Test the model router headlessly
 

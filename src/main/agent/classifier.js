@@ -15,12 +15,14 @@
 // classifier falls back to the heuristic (safest default: conversation).
 
 const router = require("../router");
+const { FILE_RE } = require("../files/plan");
 
 /** Intent names returned by classify(). */
 const INTENTS = Object.freeze({
   CONVERSATION: "conversation",
   VISION: "vision",
   CONTROL: "control",
+  FILES: "files",
   COMBINED: "combined",
 });
 
@@ -53,10 +55,11 @@ async function quickClassify(text) {
     return null; // router failure → never route on a failed model pick
   }
   const prompt =
-    "Classify the user message into exactly one of: conversation, vision, control, combined.\n" +
+    "Classify the user message into exactly one of: conversation, vision, control, files, combined.\n" +
     "conversation = chat / questions / anything that needs no tooling.\n" +
     "vision = the user wants to know what is on their screen (e.g. read an error).\n" +
     "control = the user wants the assistant to do something (open an app, click, type).\n" +
+    "files = the user wants file management (search, organize, move, delete files).\n" +
     "combined = the user wants BOTH (check the screen AND act, e.g. verify the app opened).\n" +
     "Answer with a single lowercase word only.\n\n" +
     `Message: "${text}"`;
@@ -94,6 +97,14 @@ async function classify(text = "") {
   const trimmed = text.trim();
   const isVision = VISION_RE.test(trimmed);
   const isControl = CONTROL_RE.test(trimmed);
+  // File management is recognized by its own verb set and never ambiguous —
+  // "find / clean up / move / rename / delete … files" always means FILES.
+  // Only count it when the parser confirms it is a real file request (so
+  // "I need to find a new job" does not route to the file manager).
+  if (!isVision && FILE_RE.test(trimmed)) {
+    const action = planFileActionSafe(trimmed, {});
+    if (action && !action.error) return { intent: INTENTS.FILES, method: "rules", confidence: "high" };
+  }
 
   // Unambiguous: pure rules, no model call, works offline / Private Mode.
   if (isVision && !isControl) return { intent: INTENTS.VISION, method: "rules", confidence: "high" };
@@ -114,6 +125,17 @@ async function classify(text = "") {
   }
   // Neither: plain conversation.
   return { intent: INTENTS.CONVERSATION, method: "rules", confidence: "high" };
+}
+
+let planFileActionSafe;
+try {
+  // Lazy-load planFileAction for a cheap "is this a real file request?"
+  // fallback check; if the loader fails, FILE_RE alone decides (Stage 6 safety:
+  // a mis-routed message just lands in the files dispatcher, which replies
+  // "I could not find …" instead of acting blindly).
+  planFileActionSafe = require("../files/plan").planFileAction;
+} catch {
+  planFileActionSafe = () => true;
 }
 
 module.exports = { classify, quickClassify, INTENTS, VISION_RE, CONTROL_RE };

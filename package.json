@@ -2,7 +2,7 @@
   "name": "nova-assistant",
   "productName": "Nova",
   "version": "0.1.0",
-  "description": "Nova \u2014 a voice-first desktop AI assistant",
+  "description": "Nova — a voice-first desktop AI assistant",
   "author": "Nova",
   "license": "MIT",
   "repository": {
@@ -20,7 +20,9 @@
     "test:permissions": "node src/main/test-permissions.js",
     "test:vision": "node src/main/test-vision.js",
     "test:control": "node src/main/test-control.js",
-    "test:agent": "node src/main/test-agent.js"
+    "test:agent": "node src/main/test-agent.js",
+    "test:files": "node src/main/test-files.js",
+    "test": "npm run test:permissions && npm run test:vision && npm run test:control && npm run test:agent && npm run test:files"
   },
   "build": {
     "appId": "com.nova.assistant",

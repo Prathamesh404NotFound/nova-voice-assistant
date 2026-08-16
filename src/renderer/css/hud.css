@@ -734,3 +734,20 @@ html, body {
   color: #9c9cb8;
   margin: 0 0 18px 0;
 }
+
+/* File dry-run preview cards (Stage 6) — mirror the control-plan review UI. */
+.file-preview { margin-top: 6px; padding: 10px 12px; border: 1px solid #262b3a; border-radius: 10px; background: #0a0d14; }
+.fp-title { font-size: 12px; color: var(--cyan); font-weight: 700; letter-spacing: 0.04em; margin-bottom: 6px; }
+.fp-body { font-size: 12px; color: #c2cbd8; line-height: 1.45; margin-bottom: 6px; white-space: pre-wrap; }
+.fp-dirs { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 6px; }
+.fp-dir { font-size: 11px; padding: 2px 9px; border: 1px solid #2b3446; border-radius: 999px; color: #9ab0c8; }
+.fp-files { font-size: 11px; color: #8493a6; line-height: 1.4; margin-bottom: 6px; }
+.fp-actions { display: flex; gap: 8px; }
+.fp-actions .flat-btn { font-size: 12px; padding: 4px 14px; }
+.file-preview[data-state="reviewing"] .fp-cancel { border-color: #3a4255; color: #8493a6; }
+.file-preview[data-state="reviewing"] .fp-confirm:hover { border-color: #22d3ee; color: #22d3ee; }
+.file-preview[data-state="done"] { border-color: #1f4a36; }
+.file-preview[data-state="done"] .fp-title { color: #4ade80; }
+.file-preview[data-state="cancelled"] { border-color: #4a3036; }
+.file-preview[data-state="cancelled"] .fp-title { color: #e08080; }
+.file-preview[data-state="running"] { opacity: 0.55; pointer-events: none; }

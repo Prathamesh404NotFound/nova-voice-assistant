@@ -21,6 +21,7 @@ const undo = require("../permissions/undo");
 const { classify, INTENTS } = require("./classifier");
 const { plainError, retryOnce } = require("./retry");
 const control = require("../control");
+const { runFileAction, executePreview, getContext } = require("../files/dispatch");
 
 const emitter = new EventEmitter();
 
@@ -41,6 +42,12 @@ function narrate(taskId, step, text) {
 function recordStep(taskId, label, level, ms) {
   if (!lastTask) return;
   lastTask.steps.push({ label, level, durationMs: ms, ts: new Date().toISOString() });
+}
+
+/** Human file answer + preview card. Spoken by the renderer (first time). */
+function narrateFiles(taskId, step, text) {
+  emitter.emit("progress", { type: "narration", taskId, step, text });
+  log.info(`[agent:narrate] [${step}] ${text}`);
 }
 
 function recordError(taskId, ctx, err) {
@@ -148,6 +155,29 @@ async function dispatchControl(text) {
   return { plan: result.plan, summary: result.summary };
 }
 
+/** File management: search / stats / organize with dry-run previews. */
+async function dispatchFiles(text) {
+  narrate(lastTask.id, "files", "Checking your files…");
+  const started = Date.now();
+  const attempt = async () => {
+    const res = await runFileAction(text, { taskId: lastTask.id });
+    if (res === null) throw new Error("not a file request"); // caller fallback
+    return res;
+  };
+  const res = await retryOnce(attempt, "file action");
+  recordStep(lastTask.id, "file action", null, Date.now() - started);
+  if (!res.ok || res.value.error) {
+    const err = res.value?.error || (res.error && new Error(String(res.error)));
+    if (res.error) recordError(lastTask.id, "file action", res.error);
+    return { text: res.value?.text || "I could not handle that file request.", error: err };
+  }
+  const out = res.value;
+  if (out.narration) narrateFiles(lastTask.id, "files", out.narration);
+  if (out.preview) return { preview: true, actionId: out.actionId, report: out.report, previewToken: out.previewToken, narration: out.narration };
+  if (out.text) return { text: out.text };
+  return { actionId: out.actionId, detail: out.detail, narration: out.narration };
+}
+
 /** Combined: vision check first, then control plan. */
 async function dispatchCombined(text, opts) {
   narrate(lastTask.id, "vision", "Let me check your screen first…");
@@ -197,6 +227,11 @@ async function run(text, opts = {}) {
     if (intent === INTENTS.CONTROL) {
       const out = await dispatchControl(text);
       lastTask.output = { type: "control", plan: out.plan, summary: out.summary, error: !!out.error };
+      return { ok: true, intent, ...out };
+    }
+    if (intent === INTENTS.FILES) {
+      const out = await dispatchFiles(text);
+      lastTask.output = { type: "files", ...out, error: !!out.error };
       return { ok: true, intent, ...out };
     }
     // COMBINED

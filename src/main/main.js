@@ -34,6 +34,14 @@ require("./agent/undo-bridge"); // registers the undo / dev-mode / onboarding IP
 const onboarding = require("./agent/onboarding");
 const { globalShortcut } = require("electron");
 
+// File management (Stage 6) — every files:* action goes through the existing
+// permission gate: L0 read / L2 cancellable toast / L4 modal, dry-run
+// previews for organize & duplicate removal, OS Recycle-Bin deletes only,
+// Nova Undo on reversible moves. Registration must happen before the first
+// agent run so the gate knows the actions.
+require("./files/actions");
+const { executePreview } = require("./files/dispatch");
+
 log.transports.file.level = "info";
 log.transports.console.level = "info";
 
@@ -277,6 +285,20 @@ dispatcher.on("progress", (event) => {
     mainWindow.webContents.send("nova:agent-progress", event);
   } catch { /* window gone */ }
 });
+/**
+ * Execute a confirmed file-preview (organize / duplicate-removal dry-run).
+ * The token MUST come from a preview the user explicitly confirmed in the
+ * renderer — there is no direct execute path for these actions.
+ */
+ipcMain.handle("nova:files-execute", async (_evt, previewToken) => {
+  try {
+    return await executePreview(String(previewToken || ""));
+  } catch (err) {
+    log.error("[files] files-execute failed:", err?.message || err);
+    return { ok: false, intent: "files", text: "The action could not be executed — details are in Developer Mode.", error: String(err?.message || err) };
+  }
+});
+
 ipcMain.handle("nova:agent-run", async (_evt, text) => {
   try {
     const { getKey } = require("./keys");

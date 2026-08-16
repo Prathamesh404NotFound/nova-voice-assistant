@@ -176,12 +176,75 @@
     return String(s || "").replace(/"/g, "&quot;");
   }
 
+  // ======================================================================
+  // FILE PREVIEW CARDS (Stage 6 — dry-run confirmation)
+  // A dry-run report must be confirmed via filesExecute(token) before the
+  // main process will actually move or trash anything.
+  // ======================================================================
+
+  /** Render a dry-run preview card and wire up Confirm / Cancel. */
+  function showFilePreview(res, source) {
+    const report = res.report || {};
+    const title = report.title || `${(res.actionId || "").replace(/^files:/, "").replace(/-/, " ")} preview`;
+    const body = report.body || "";
+    const dirs = Array.isArray(report.summary) ? report.summary : [];
+    const files = report.files || [];
+    addHistoryEntry({
+      role: "nova",
+      src: source,
+      __filePreview: {
+        title,
+        body,
+        dirs,
+        files: files.map((f) => (typeof f === "string" ? f : f.path)).slice(0, 10),
+        previewToken: res.previewToken,
+        actionId: res.actionId,
+      },
+    });
+    speak(res.narration || "Here is what I would do — confirm or cancel.");
+  }
+
+  /** Execute a confirmed file preview (token bound). */
+  async function confirmFilePreview(node, token, source) {
+    const btns = node.querySelectorAll("button");
+    btns.forEach((b) => (b.disabled = true));
+    node.dataset.state = "running";
+    try {
+      const res = await window.nova.filesExecute(token);
+      if (res?.ok) {
+        node.dataset.state = "done";
+        const txt = res.text || "Done — nothing deleted, files were only moved.";
+        addHistoryEntry({ role: "nova", text: txt, src: "files" });
+        speak(txt);
+      } else {
+        node.dataset.state = "cancelled";
+        const txt = res?.text || "The preview was not applied — nothing changed.";
+        addHistoryEntry({ role: "nova", text: txt, src: "files" });
+        speak(txt);
+      }
+    } catch {
+      node.dataset.state = "cancelled";
+      addHistoryEntry({ role: "nova", text: "The action could not be applied — nothing changed.", src: "files" });
+    } finally {
+      refreshUndoButton();
+      refreshPermPanel();
+    }
+  }
+
+  /** Cancel a pending preview (nothing moves). */
+  function cancelFilePreview(node) {
+    node.dataset.state = "cancelled";
+    addHistoryEntry({ role: "nova", text: "Cancelled — nothing was changed.", src: "files" });
+    speak("Cancelled — nothing was changed.");
+  }
+
   // Render the control plan card with review controls. History entries with
   // a __controlPlan payload get this custom markup instead of plain text.
   const origRenderHistory = renderHistory;
-  renderHistory = function renderHistoryWithPlans() {
+  renderHistory = function renderHistoryWithCards() {
     origRenderHistory();
     let planIdx = 0;
+    let prevIdx = 0;
     el.history.querySelectorAll(".msg.nova").forEach((node, i) => {
       const entry = historyItems[i];
       if (!entry || !entry.__controlPlan) return;
@@ -201,6 +264,29 @@
       const stopBtn = card.querySelector(".ctrl-stop-btn");
       if (startBtn) startBtn.addEventListener("click", () => startControlSequence());
       if (stopBtn) stopBtn.addEventListener("click", () => stopControlSequence());
+    });
+    el.history.querySelectorAll(".msg.nova").forEach((node, i) => {
+      const entry = historyItems[i];
+      if (!entry || !entry.__filePreview) return;
+      const p = entry.__filePreview;
+      const dirsHtml = p.dirs.map((d) => `<span class="fp-dir">${escapeHtml(String(d))}</span>`).join("");
+      const filesHtml = p.files.length
+        ? `<div class="fp-files">${p.files.map((f) => escapeHtml(String(f).split(/[\\/]/).pop())).join(", ")}</div>`
+        : "";
+      node.innerHTML = `
+        <div class="file-preview" data-state="reviewing">
+          <div class="fp-title">Dry-run preview: ${escapeHtml(p.title)}</div>
+          ${p.body ? `<div class="fp-body">${escapeHtml(p.body).replace(/\n/g, "<br>")}</div>` : ""}
+          <div class="fp-dirs">${dirsHtml}</div>
+          ${filesHtml}
+          <div class="fp-actions">
+            <button class="flat-btn fp-confirm">Confirm</button>
+            <button class="flat-btn fp-cancel">Cancel</button>
+          </div>
+        </div>`;
+      const card = node.querySelector(".file-preview");
+      card.querySelector(".fp-confirm").addEventListener("click", () => confirmFilePreview(card, p.previewToken, entry.src));
+      card.querySelector(".fp-cancel").addEventListener("click", () => cancelFilePreview(card));
     });
     el.history.scrollTop = el.history.scrollHeight;
   };
@@ -612,6 +698,51 @@ let historyItems = [];
           el.liveLine.textContent = "";
         }
         if (res.intent === "vision") return;
+      }
+      if (res.intent === "files") {
+        if (res.preview) {
+          // Dry-run preview card: the user MUST confirm before anything moves.
+          showFilePreview(res, source);
+        } else if (res.text) {
+          addHistoryEntry({ role: "nova", text: res.text, src: source });
+          speak(res.text);
+        } else if (res.actionId === "files:search") {
+          const files = res.detail?.files || [];
+          const names = files.slice(0, 8).map((f) => f.split(/[\\/]/).pop());
+          const txt = files.length
+            ? `Found ${files.length} match${files.length === 1 ? "" : "es"}: ${names.join(", ")}${files.length > 8 ? " and more" : ""}.`
+            : "Nothing matched in Documents, Downloads and Desktop. Say \"search everywhere\" and I will look through your whole home folder.";
+          addHistoryEntry({ role: "nova", text: txt, src: source });
+          speak(txt);
+        } else if (res.actionId === "files:detect-duplicates") {
+          const groups = res.detail?.groups || [];
+          const dupCount = groups.reduce((n, g) => n + Math.max(0, g.files.length - 1), 0);
+          const txt = dupCount
+            ? `Found ${dupCount} duplicate file${dupCount === 1 ? "" : "s"} across ${groups.length} group${groups.length === 1 ? "" : "s"} — same content, not just the name. Say \"remove the duplicates\" to send them to the Recycle Bin.`
+            : "No duplicates found — every file in that folder has unique content.";
+          addHistoryEntry({ role: "nova", text: txt, src: source });
+          speak(txt);
+        } else if (res.actionId === "files:folder-stats") {
+          const s = res.detail || {};
+          const label = (s.dir || "").split(/[\\/]/).filter(Boolean).pop() || s.dir;
+          const txt = `"${escapeHtml(String(label))}" holds ${s.count || 0} file${s.count === 1 ? "" : "s"}, using ${s.human || "no space"}.`;
+          addHistoryEntry({ role: "nova", text: txt, src: source });
+          speak(txt);
+        } else if (res.actionId === "files:delete-files" || res.actionId === "files:remove-duplicates") {
+          const t = res.detail?.trashed ?? 0;
+          const f = res.detail?.failed?.length || 0;
+          const txt = f
+            ? `Moved ${t} file${t === 1 ? "" : "s"} to the Recycle Bin — ${f} could not be removed, see Developer Mode.`
+            : `Moved ${t} file${t === 1 ? "" : "s"} to the Recycle Bin — you can still restore them from there if needed.`;
+          addHistoryEntry({ role: "nova", text: txt, src: source });
+          speak(txt);
+        } else if (res.actionId) {
+          const txt = res.narration || "Done.";
+          addHistoryEntry({ role: "nova", text: txt, src: source });
+          speak(txt);
+        }
+        el.liveLine.textContent = "";
+        return;
       }
       if (res.plan) {
         showControlPlan(res.plan, res.summary, text.trim(), source);

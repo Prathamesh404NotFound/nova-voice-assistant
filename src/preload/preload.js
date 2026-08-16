@@ -46,6 +46,8 @@ contextBridge.exposeInMainWorld("nova", {
 
   // --- Unified agent loop (Stage 5) ---
   agentRun: (text) => ipcRenderer.invoke("nova:agent-run", text),
+  // --- File preview confirmation (Stage 6) ---
+  filesExecute: (previewToken) => ipcRenderer.invoke("nova:files-execute", previewToken),
   onAgentProgress: (cb) => {
     const listener = (_evt, event) => cb(event);
     ipcRenderer.on("nova:agent-progress", listener);

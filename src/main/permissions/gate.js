@@ -84,6 +84,9 @@ async function executeAndLog(action, payload, taskId) {
   try {
     const detail = await action.execute(payload);
     actionLog.append({ actionId: action.id, level: action.level, outcome: "success", taskId, startedAt: started, detail });
+    // Remember the execute() outcome — undo uses it to reverse bulk actions
+    // (organize/move/copy) whose reverse() needs the actual moved/copied list.
+    action.lastResult = detail || {};
     // Undo tracking: remember the last reversible SUCCESS (has a reverse fn).
     undo.noteReversibleSuccess(taskId, action.id, payload, "success");
     return { outcome: "success", detail };
@@ -172,8 +175,17 @@ function cancelToast(toastId) {
 /**
  * Level 3–4: native modal demanding explicit confirmation.
  */
+// Headless test hook: when set, modals auto-confirm in environments with no
+// renderer window (e.g. CLI tests). Production keeps it null — no window
+// means no confirmation is ever granted.
+let testForceConfirm = null;
+function setModalConfirmForTesting(fn) {
+  testForceConfirm = fn;
+}
+
 async function modalConfirm(action, payload) {
   const win = BrowserWindow.getAllWindows()[0];
+  if (testForceConfirm) return !!testForceConfirm(action, payload);
   if (!win) return false;
 
   const plain = await describeActionPlain(action, payload);
@@ -207,4 +219,4 @@ async function describeActionPlain(action, payload) {
   };
 }
 
-module.exports = { runAction, cancelToast, toastConfirm, modalConfirm, describeActionPlain };
+module.exports = { runAction, cancelToast, toastConfirm, modalConfirm, describeActionPlain, setModalConfirmForTesting };
