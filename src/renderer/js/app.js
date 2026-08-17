@@ -47,6 +47,8 @@
     kbFolders: $("kbFolders"), kbAdd: $("kbAdd"), kbRefreshBtn: $("kbRefreshBtn"),
     kbProgressLine: $("kbProgressLine"), kbQueryForm: $("kbQueryForm"),
     kbQueryInput: $("kbQueryInput"), kbAnswer: $("kbAnswer"),
+    autoList: $("autoList"), autoAdd: $("autoAdd"), autoRefreshBtn: $("autoRefreshBtn"),
+    autoPendingCard: $("autoPendingCard"),
   };
 
   // ------------------------------------------------------------------ clock
@@ -374,6 +376,196 @@
       });
     }
     renderKbPanel();
+  }
+
+  // ======================================================================
+  // AUTOMATION ENGINE SIDE PANEL (Stage 9 — local scheduling + chaining)
+  // ======================================================================
+
+  /** Short, human-friendly schedule label from a 5-field cron expression. */
+  function cronLabel(cron) {
+    try {
+      const [, hour, , , dow] = cron.split(/\s+/);
+      const h = parseInt(hour, 10);
+      const ap = h >= 12 && h < 21 ? "PM" : "AM";
+      const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
+      const dayPart = dow === "1-5" ? "weekdays" : dow === "0,6" ? "weekends" : dow === "*" ? "day" : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][parseInt(dow, 10)];
+      return `${dayPart} ${h12}:00 ${ap}`;
+    } catch {
+      return cron;
+    }
+  }
+
+  /** Render automation list from the persisted store (local, no network). */
+  async function renderAutoPanel() {
+    const res = await window.nova.autoList().catch(() => null);
+    const autos = res?.ok ? res.automations || [] : [];
+    if (!autos.length) {
+      el.autoList.innerHTML = `<p class="history-empty">No automations yet. Say “every day at 9 AM, check my Downloads folder” or type below.</p>`;
+    } else {
+      el.autoList.innerHTML = autos.map((a) => {
+        const chip = a.status === "safe"
+          ? `<span class="auto-status-chip auto-status-safe">runs unattended</span>`
+          : `<span class="auto-status-chip auto-status-confirm">confirms first</span>`;
+        const next = a.nextRunAt
+          ? new Date(a.nextRunAt).toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })
+          : "—";
+        const last = a.lastRunAt
+          ? `${a.lastRunStatus || "?"} · ${new Date(a.lastRunAt).toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}`
+          : "never run";
+        return `
+        <div class="auto-item" data-auto-id="${escapeAttr(a.id)}">
+          <div class="auto-item-head">
+            <span class="auto-item-name" title="${escapeAttr(a.cron)}">${escapeHtml(a.name)}</span>
+            ${chip}
+          </div>
+          <div class="auto-item-meta">${cronLabel(a.cron)} · next ${escapeHtml(next)} · last: ${last}</div>
+          <label class="auto-toggle">
+            <input type="checkbox" data-auto-action="toggle" data-auto-id="${escapeAttr(a.id)}" ${a.enabled ? "checked" : ""} />
+            enabled
+          </label>
+          <div class="auto-item-actions">
+            <button class="flat-btn small" data-auto-action="run-now">Run now</button>
+            <button class="flat-btn small kb-danger" data-auto-action="delete">Delete</button>
+          </div>
+        </div>`;
+      }).join("");
+    }
+    el.autoAdd.innerHTML = `
+    <form id="autoForm" autocomplete="off">
+      <input id="autoInput" type="text" placeholder="e.g. every weekday at 8 AM, tell me my tasks" maxlength="500" />
+      <button type="submit" class="send-btn">&#10148;</button>
+    </form>
+    <div class="settings-note">Voice works the same — say “every day at 9 AM, …”.</div>`;
+    $("autoForm").addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      const v = $("autoInput").value.trim();
+      if (!v) return;
+      $("autoInput").value = "";
+      await runAutoCommand(v);
+    });
+    el.autoList.querySelectorAll("[data-auto-action]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const id = btn.dataset.autoId;
+        if (btn.dataset.autoAction === "toggle") await window.nova.autoToggle({ id, enabled: btn.checked });
+        else if (btn.dataset.autoAction === "run-now") await runAutoNow(id);
+        else if (btn.dataset.autoAction === "delete") await runAutoDelete(id);
+        renderAutoPanel();
+      });
+    });
+  }
+
+  async function refreshAutoPanel() { renderAutoPanel(); }
+
+  /** Speak a result and log it to the chat history (voice + panel path). */
+  function autoResultToHistory(res) {
+    if (!res?.text) return;
+    addHistoryEntry({ role: "nova", text: res.text, src: "panel" });
+    speak(res.text);
+  }
+
+  async function runAutoNow(id) {
+    try {
+      const res = await window.nova.autoRunNow(id);
+      if (res?.ok) {
+        if (res.status === "awaiting-confirmation") {
+          showAutoToast("Some steps need your confirmation — check the pending card.");
+        } else {
+          autoResultToHistory({ text: res.text });
+        }
+      } else {
+        showAutoToast(res?.text || "That automation could not run.");
+      }
+    } catch {
+      showAutoToast("Something went wrong — see Developer Mode.");
+    }
+  }
+
+  async function runAutoDelete(id) {
+    try {
+      const res = await window.nova.autoDelete(id);
+      if (res?.ok) showAutoToast("Automation removed from the schedule (nothing past was affected).");
+      else showAutoToast(res?.text || "Could not delete that automation.");
+    } catch {
+      showAutoToast("Something went wrong — see Developer Mode.");
+    }
+  }
+
+  /** Voice/panel command through the agent loop (same gate as voice). */
+  async function runAutoCommand(text) {
+    try {
+      const res = await window.nova.agentRun(text);
+      if (res?.ok && res.intent === "automation" && res.detail?.automationId) {
+        autoResultToHistory({ text: res.text });
+      } else if (res?.ok && res.intent === "automation") {
+        autoResultToHistory({ text: res.text });
+      } else {
+        showAutoToast(res?.text || "I could not create that automation.");
+      }
+    } catch {
+      showAutoToast("Something went wrong — see Developer Mode.");
+    }
+    renderAutoPanel();
+  }
+
+  function showAutoToast(text) {
+    const existing = document.getElementById("autoToast");
+    if (existing) existing.remove();
+    const div = document.createElement("div");
+    div.id = "autoToast";
+    div.className = "notes-toast";
+    div.textContent = text;
+    document.body.appendChild(div);
+    setTimeout(() => div.classList.add("show"), 10);
+    setTimeout(() => {
+      div.classList.remove("show");
+      setTimeout(() => div.remove(), 300);
+    }, 3500);
+  }
+
+  /** Pending-confirmation card for L3+ automated runs that paused. */
+  function showAutoPending({ id, name }) {
+    el.autoPendingCard.hidden = false;
+    el.autoPendingCard.innerHTML = `
+      <div class="auto-pending-title">${escapeHtml(name || "Automation")} needs your confirmation</div>
+      <div class="auto-pending-body">It wants to run sensitive steps. Confirm below to run it now, or leave it — nothing will run unattended.</div>
+      <div class="auto-item-actions">
+        <button class="flat-btn small" id="autoConfirmBtn">Confirm &amp; run</button>
+        <button class="flat-btn small" id="autoDismissPendingBtn">Dismiss</button>
+      </div>`;
+    document.getElementById("autoConfirmBtn")?.addEventListener("click", async () => {
+      el.autoPendingCard.hidden = true;
+      const res = await window.nova.autoConfirm(id).catch(() => null);
+      if (res?.ok) autoResultToHistory({ text: res.text });
+      else if (res?.text) showAutoToast(res.text);
+      renderAutoPanel();
+    });
+    document.getElementById("autoDismissPendingBtn")?.addEventListener("click", () => {
+      el.autoPendingCard.hidden = true;
+    });
+  }
+
+  function initAutoPanel() {
+    el.autoRefreshBtn.addEventListener("click", () => renderAutoPanel());
+    // Scheduled runs report back with their result (or a confirmation request).
+    if (window.nova.onAutoRunResult) {
+      window.nova.onAutoRunResult((data) => {
+        if (!data) return;
+        if (data.status === "awaiting-confirmation") {
+          showAutoPending({ id: data.id, name: data.name });
+        } else if (data.ok && data.text) {
+          autoResultToHistory({ text: data.text });
+        }
+        renderAutoPanel();
+      });
+    }
+    if (window.nova.onAutoPending) {
+      window.nova.onAutoPending((data) => {
+        if (!data) return;
+        showAutoPending(data);
+      });
+    }
+    renderAutoPanel();
   }
 
   // ======================================================================
@@ -1089,6 +1281,18 @@ let historyItems = [];
         refreshKbPanel();
         return;
       }
+      if (res.intent === "automation") {
+        // Automations: narrate creation/management results and refresh the
+        // side panel so the list stays in sync (voice + mouse share it).
+        const txt = res.text || res.narration || "Done.";
+        if (txt) {
+          addHistoryEntry({ role: "nova", text: txt, src: source });
+          speak(txt);
+        }
+        el.liveLine.textContent = "";
+        refreshAutoPanel();
+        return;
+      }
       if (res.plan) {
         showControlPlan(res.plan, res.summary, text.trim(), source);
       }
@@ -1526,6 +1730,7 @@ let historyItems = [];
   if (window.nova.onOnboarding) window.nova.onOnboarding((data) => showOnboarding(data.pending, data.state));
   initNotesPanel();
   initKbPanel();
+  initAutoPanel();
 
   el.onboardingAck?.addEventListener("click", async () => {
     try {

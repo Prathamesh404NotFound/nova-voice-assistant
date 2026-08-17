@@ -57,6 +57,101 @@ const reminders = require("./notes/reminders");
 require("./kb/actions");
 const kbWatcher = require("./kb/watcher");
 
+// Automation engine (Stage 9) — scheduling + chaining of existing tools
+// (vision / control / files / notes / kb). Local cron scheduler; Level 3+
+// steps pause for in-app confirmation; run history flows into the Action Log.
+const automationDispatch = require("./automation/dispatch");
+const automationRunner = require("./automation/runner");
+const automationScheduler = require("./automation/scheduler");
+const remindersNotifier = require("./notes/reminders");
+
+// --- Automation side panel + scheduler boot ---
+ipcMain.handle("nova:auto-list", async () => {
+  try {
+    return { ok: true, automations: automationDispatch.listAutomations() };
+  } catch (err) {
+    log.error("[automation] auto-list failed:", err?.message || err);
+    return { ok: false, error: String(err?.message || err) };
+  }
+});
+ipcMain.handle("nova:auto-run-now", async (_evt, id) => {
+  try {
+    return await automationDispatch.runAutomationNow(String(id), {
+      mainWindow,
+      runVisionQuery: async (question) => {
+        try { return await runVisionQuery(question); } catch (err) { return { error: String(err?.message || err) }; }
+      },
+    });
+  } catch (err) {
+    log.error("[automation] auto-run-now failed:", err?.message || err);
+    return { ok: false, error: String(err?.message || err) };
+  }
+});
+ipcMain.handle("nova:auto-toggle", async (_evt, req) => {
+  try {
+    return await automationDispatch.toggleAutomation(String(req?.id), !!req?.enabled);
+  } catch (err) {
+    log.error("[automation] auto-toggle failed:", err?.message || err);
+    return { ok: false, error: String(err?.message || err) };
+  }
+});
+ipcMain.handle("nova:auto-delete", async (_evt, id) => {
+  try {
+    // Level 1 (SAFE): only removes the schedule — nothing past is affected.
+    return await automationDispatch.deleteAutomation(String(id));
+  } catch (err) {
+    log.error("[automation] auto-delete failed:", err?.message || err);
+    return { ok: false, error: String(err?.message || err) };
+  }
+});
+ipcMain.handle("nova:auto-confirm", async (_evt, id) => {
+  try {
+    return await automationDispatch.confirmAutomation(String(id));
+  } catch (err) {
+    log.error("[automation] auto-confirm failed:", err?.message || err);
+    return { ok: false, error: String(err?.message || err) };
+  }
+});
+
+// When a scheduled L3+ automation fires, it pauses for confirmation:
+// OS notification (via the reminders notifier, same channel as reminders)
+// + a pending card in the side panel.
+automationScheduler.emitter.on("automation-firing", async ({ id, name }) => {
+  try {
+    const result = await automationRunner.runAutomation(id, {
+      mainWindow,
+      runVisionQuery: async (question) => {
+        try { return await runVisionQuery(question); } catch (err) { return { error: String(err?.message || err) }; }
+      },
+      getKey: async () => (await getKey().catch(() => null)) || null,
+    });
+    if (result.status === "awaiting-confirmation") {
+      try {
+        const notifier = remindersNotifier.getNotifier();
+        if (notifier) {
+          notifier("Nova automation needs your confirmation", `${name} wants to run sensitive steps — open Nova and confirm.`);
+        }
+      } catch (err) {
+        log.warn("[automation] notification failed:", err?.message || err);
+      }
+    }
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      try {
+        mainWindow.webContents.send("nova:auto-run-result", { id, name, ...result });
+      } catch {}
+    }
+  } catch (err) {
+    log.error("[automation] scheduled run failed:", err?.message || err);
+  }
+});
+automationScheduler.emitter.on("automation-pending", ({ id, name }) => {
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    try {
+      mainWindow.webContents.send("nova:auto-pending", { id, name });
+    } catch {}
+  }
+});
+
 log.transports.file.level = "info";
 log.transports.console.level = "info";
 
@@ -453,6 +548,15 @@ app.whenReady().then(async () => {
   }
 
   log.info(`[permissions] ${listActions().length} actions registered; privateMode=${settings.isPrivateMode()}`);
+  // 3. Boot the automation scheduler (Stage 9) — schedules are persisted in
+  // userData/automations.json; nextRunAt is recomputed at boot.
+  try {
+    await automationDispatch.scheduleNextRuns();
+    automationScheduler.start();
+    log.info(`[automation] ${automationDispatch.listAutomations().length} automation(s) loaded`);
+  } catch (err) {
+    log.error("[automation] boot failed:", err?.message || err);
+  }
 
   // 2. Warm the model router (fetch free models, then refresh every 6 hours)
   try {

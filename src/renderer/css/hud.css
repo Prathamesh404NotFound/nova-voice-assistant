@@ -942,3 +942,89 @@ html, body {
   text-align: left;
 }
 .kb-source-link:hover { color: #7be4ff; }
+
+/* --------------------------------------------------------------------------
+ * Stage 9: Automation engine (side panel)
+ * -------------------------------------------------------------------------- */
+.auto-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+.auto-item {
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: rgba(160, 120, 255, 0.05);
+}
+.auto-item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+.auto-item-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.auto-item-meta {
+  font-size: 10.5px;
+  font-family: var(--font-mono);
+  color: var(--text-faint);
+  white-space: nowrap;
+  margin-top: 2px;
+}
+.auto-status-chip {
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 1px 7px;
+  white-space: nowrap;
+}
+.auto-status-safe {
+  background: rgba(80, 220, 140, 0.15);
+  color: #4fdc8c;
+}
+.auto-status-confirm {
+  background: rgba(255, 190, 60, 0.15);
+  color: #ffbe3c;
+}
+.auto-item-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+.auto-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--text-faint);
+}
+.auto-toggle input[type="checkbox"] {
+  accent-color: var(--cyan);
+}
+.auto-pending-card {
+  margin-top: 8px;
+  border: 1px solid rgba(255, 190, 60, 0.5);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: rgba(255, 190, 60, 0.06);
+}
+.auto-pending-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffbe3c;
+}
+.auto-pending-body {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 3px;
+}

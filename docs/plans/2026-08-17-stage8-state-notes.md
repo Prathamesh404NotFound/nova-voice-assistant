@@ -80,3 +80,105 @@ This bug predates Stage 8 (Stage 7); I should fix it here since I added notes to
 - test-kb.js: 88 PASS. test-notes.js (standalone): 78 PASS. verify-plan-regexes: 25/25. smoke-kb-e2e: 13 PASS.
 - Boot on Xvfb: clean, kb:* actions registered.
 - Remaining: fix notes bug, re-run npm test (full chain incl notes+kb = must EXIT 0), commit + push, write docs/STAGE8-SUMMARY.md, deliver.
+
+## Stage 9 design decisions (user confirmed defaults)
+- Control steps in automations: flagged "needs-confirmation" (never unattended). L3+ → OS notification + pending-confirmation card in side panel; Confirm runs full sequence once.
+- Design doc written: docs/plans/2026-08-17-stage9-automation-design.md
+
+## Phase 2 study findings (for runner implementation)
+- registry.get(id).level via require("../permissions/action-registry").getAction(id). Level 0-4 = RISK_LEVEL enum.
+- files actions ids: files:search(0), files:detect-duplicates(0), files:folder-stats(0), files:organize(2), files:remove-duplicates(2), files:move-files(2), files:copy-files(2), files:rename-file(2), files:delete-files(4). files/plan.js returns {actionId, payload, narration} or {error}.
+- kb ids: kb:add-folder(2), kb:remove-folder(2), kb:reindex(2), kb:query(1), kb:list-folders(1), kb:open-source(2).
+- vision: vision:capture-screen level READ(0); runVisionQuery(question) → {ok, value:{answer, mode}}.
+- notes: notes:add-note(1), notes:add-reminder(1), notes:add-task(1), edit/delete(2). notes/plan.js planNoteAction(text, ctx) → {actionId, payload} or {error}.
+- control: compilePlan(instruction) → {ok, plan:[{label, action, level?, ...}], error, summary}; sequence.reviewing(id). Control steps in automations ALWAYS flag needs-confirmation.
+- runVisionQuery is passed to dispatcher.run as opts.runVisionQuery; automation runner should call it the same way (needs mainWindow? vision-query IPC in main.js handles).
+- actionLog.append({actionId, level, outcome, taskId, reason, detail}); outcome must be success|failed|cancelled|blocked|dry-run. list(limit) newest first.
+- main.js IPC: nova:agent-run → dispatcher.run(text, {getKey, mainWindow, runVisionQuery}); runVisionQuery wraps vision query.
+- Notifications: src/main/notes/reminders.js new Notification({title,body,silent:false}).show(); has setNotifierForTesting.
+- preload bridges pattern: invoke("nova:X") + on("nova:Y", listener) return unsubscribe. Progress channels: nova:agent-progress (dispatcher emitter: progress events), kb:index-progress.
+- Dispatcher run() needs mainWindow; agent emits "progress" event (narrate) — renderer listens via nova:agent-progress; main.js wires dispatcher.emitter.on("progress")→mainWindow.webContents.send("nova:agent-progress")? (verify line in main.js near nova:agent-run, likely yes)
+- Notes store: store.all() → {notes, tasks, reminders}.
+- Cron design: 5-field, * ranges lists; scheduler polls every 10s; nextRun = first t>now matching cron, t>lastRunAt.
+
+## Stage 9 smoke results (Phase 3, in progress)
+Parser fixed (AT_TIME leak, leading AND artifact, delete-verb classification). Cron eval good (weekday/15min/nextMatch).
+
+Module results:
+- safe add ("Downloads check"): OK status=safe, steps [files:L0]
+- check-then-organize: allowed, status=safe (L0 first, L2 second — permitted since max level check for needs-confirmation is only L3+) — NOTE: L2 steps are reversible so unattended is fine per req 2.
+- "open calculator and type 12 x 8" classified kind=files (default fallback!) — BUG: parser step "open calculator" is classified FILES (default) because RE_CONTROL matches "open (calculator|notepad|notes app)"... it did match RE_CONTROL? Output says control step ok=false. Actually it was refused? console shows "control step: false safe" — the refusal message printed? r4.ok=false... and store.list()[2] undefined. Actually log shows only 2 success + 1 failed action-log entries. So r4 failed = refused? Need to check: r4 error text. Hmm — "open calculator" → RE_CONTROL test... but RE_FILES_SEARCH / RE_FILES_STATS? "open calculator" no. It should be CONTROL kind → level SENSITIVE(3), and since it's the ONLY step (first step L3+) → refused by store.validateCandidate. That's CORRECT behavior! But console order confusing. Verify in test suite.
+- delete-first: expected refused — the `!r1.ok` bash-history expansion garbled output; verify via script file in tests.
+- NOTE: r3 "check-then-organize" status=safe because organize=L2 < SENSITIVE threshold. Req 2: Level 0–2 run unattended. Correct.
+
+## Wiring TODO (Phase 4)
+- main.js: require automation/dispatch + scheduler; on boot scheduler.start(); IPC handlers nova:auto-list/add/toggle/delete/run-now/confirm; hook scheduler emitter "automation-firing" → runner.runAutomation(id, {mainWindow, runVisionQuery, getKey}); hook "automation-pending" → OS Notification (use reminders notifier pattern) + mainWindow send "nova:auto-pending"; after run post text via webContents.send("nova:auto-result") or into chat history.
+- preload.js bridges: autoList, autoAdd, autoToggle, autoDelete, autoRunNow, autoConfirm, onAutoProgress/onAutoPending.
+- classifier.js: add AUTOMATION intent? Simpler: keep voice creation via explicit verbs ("create automation"/"set up automation"/"every ... at ...") — planAutomation parser in classifier before KB, intent AUTOMATION, dispatch in dispatcher.js → automation dispatch.addAutomation + scheduler.scheduleNextRuns + spoken result.
+- Renderer: Automations side section (after KB) — list w/ toggle, nextRun, status chip, Run now, Delete; pending-confirm card; result banner.
+- dispatcher.run needs {mainWindow, getKey, runVisionQuery} for automation runs.
+- Action Log tagging: automation-run via runner's actionLog.append (done in runner.js).
+- Tests: test-automation.js (~60), smoke-auto-e2e.js (1-min fire test, L3+ pause, refusal rules), npm test chain green.
+- README: Automation row in Features table + Stage 9 section + architecture kb/ list.
+
+## Phase 4 progress (wiring)
+Done so far:
+- classifier.js: AUTOMATION intent added, AUTOMATION_RE regex, parseAutomationSafe lazy load, route before KB branch (automation-firing + planningError handling), quickClassify choices updated.
+- dispatcher.js: dispatchAutomation() added (before run()), run() branch INTENTS.AUTOMATION → dispatchAutomation, narrates.
+- main.js: requires automation/dispatch, automation/runner, automation/scheduler, notes/reminders (as remindersNotifier). IPC handlers nova:auto-list, auto-run-now, auto-toggle, auto-delete, auto-confirm added BEFORE nova:kb-run section. scheduler hook automation-firing → runner.runAutomation(id,{mainWindow,runVisionQuery,getKey}); if result.status==="awaiting-confirmation" → notifier (remindersNotifier.getNotifier()) send OS notif; emit nova:auto-run-result + nova:auto-pending to renderer. Boot: scheduleNextRuns() + scheduler.start() after permissions log line.
+- ISSUE: remindersNotifier.getNotifier() may not be exported — CHECK exports of src/main/notes/reminders.js (exports {start, stop, setNotifierForTesting, ...}?) — if getNotifier not exported, add export.
+- main.js line ~130 has stray dead lines: `const notifier = remindersNotifier.getNotifierForTesting ? null : null;` — REMOVE that try block.
+- main.js ipcMain.handle order: handlers placed at top of file (before nova:get-settings? verify position — inserted at line 68 area, fine).
+- runVisionQuery and getKey imported? main.js already has runVisionQuery from vision-query require and getKey/requireKeyOnce from keys — VERIFY getKey is in scope at automation-firing hook (it's required at top: yes `const { getKey, requireKeyOnce, ... }`).
+Remaining:
+1. Fix main.js dead notifier block; ensure remindersNotifier.getNotifier exported (edit reminders.js to export getNotifier if missing).
+2. preload.js bridges: autoList, autoToggle, autoDelete, autoRunNow, autoConfirm, onAutoRunResult(cb), onAutoPending(cb).
+3. app.js + index.html + hud.css: Automations side section.
+4. dispatcher.runAutomationNow passes opts to runner — runner.runAutomation(id, deps) uses deps.runVisionQuery; runner also has dep.runVisionQuery param naming ok.
+5. Reminder: scheduler SCAN_MS is 10s but tests use 1s (Math.min(SCAN_MS,1000) in start()) — verify that line exists.
+6. test-automation.js write (~60 tests: cron parse/match/next, parser NL cases, store limits/validate, runner gating, refusal), smoke-auto-e2e.js (1-min fire test using setNowForTesting to advance clock OR real 60s wait; L3+ pause path), npm test chain add test:auto, boot Xvfb test.
+7. README automation row + Stage 9 section; commit push; docs/STAGE9-SUMMARY.md; deliver.
+
+## Module API quick ref
+- automation/parser: parseAutomation(text, opts{name}) → {ok, automation:{name,cron,steps:[{kind,text}],...}|error string}
+- automation/cron: parse(expr)→{test(date),expr}, nextMatch(matcher, after)→Date|null
+- automation/store: clearForTesting(), add(automation), get(id), list(), toggle(id,enabled), remove(id), updateRun(id,status,{confirming}), setNextRun(id,iso), validateCandidate, statusFromSteps; exports MAX_AUTOMATIONS=25 MAX_STEPS=10
+- automation/scheduler: start(), stop(), setNowForTesting(fn), resetForTesting(), isDue, emitter("automation-firing",{id,name,cron,firedAt}), emitter("automation-pending",{id,name,maxLevel,completedSteps})
+- automation/runner: runAutomation(id, deps{runVisionQuery,confirming}), resolveStepLevel, annotateLevels, executeStep, emitter
+- automation/dispatch: addAutomation(text,opts), listAutomations(), toggleAutomation, deleteAutomation, runAutomationNow(id,opts{mainWindow,runVisionQuery}), confirmAutomation(id), scheduleNextRuns()
+- notifications: reminders.js setNotifierForTesting(fn); getNotifier NOT exported yet — need to add export.
+- IPC new channels: nova:auto-list, nova:auto-toggle, nova:auto-delete, nova:auto-run-now, nova:auto-confirm; main→renderer nova:auto-run-result {id,name,ok,status,text,...}, nova:auto-pending {id,name}
+
+## Phase 4 status (updated)
+DONE: classifier + dispatcher + main.js wiring + reminders.js getNotifier export + preload.js bridges (autoList/autoRunNow/autoToggle/autoDelete/autoConfirm/onAutoRunResult/onAutoPending) + shim-electron.js upgraded (app.whenReady/on/quit/isReady/getName/getVersion, BrowserWindow class w/ once/on/emit/webContents, Menu.buildFromTemplate, globalShortcut stub) + scripts/shim-load-main.js helper (loads main.js OK — 46 actions, scheduler started 1s scan, 0 automations loaded).
+
+REMAINING Phase 4:
+1. index.html: add Automations side section (mirror KB section structure: <section class="panel-section" id="automation-section"> with header, list container #automation-list, empty state, pending card container).
+2. hud.css: append KB-like styles for #automation-section (copy .kb-* classes, rename auto-*).
+3. app.js: init automations panel: load via nova.autoList(), render cards w/ toggle checkbox, next-run time, status chip (safe=green / needs-confirmation=amber), "Run now" button (nova.autoRunNow), Delete (nova.autoDelete), pending banner via nova.onAutoPending; handle agentRun automation intent output (detail.automationId) in result handler; listen nova.onAutoRunResult for spoken result + panel refresh.
+4. Verify app.js has KB init renderAutomationPanel pattern — check existing kbPanel init in app.js initAllPanels() and copy.
+Then Phase 5: test-automation.js, smoke-auto-e2e.js, npm test (add test:automation to test chain), boot Xvfb test (automation section renders, scheduler started log), README row + Stage 9 section, docs/STAGE9-SUMMARY.md, commit push, deliver.
+
+## Renderer wiring status (Phase 4, almost done)
+DONE: index.html Automations side-section added (after KB section, before "Type instead"); hud.css auto-* styles appended after .kb-source-link; app.js: el map has autoList/autoAdd/autoRefreshBtn/autoPendingCard; added cronLabel(), renderAutoPanel(), refreshAutoPanel(), autoResultToHistory(), runAutoNow(), runAutoDelete(), runAutoCommand(), showAutoToast(), showAutoPending(), initAutoPanel() — all inserted AFTER initKbPanel (after line ~378, before CONTROL section).
+
+REMAINING edits in app.js:
+1. In agentRun result handler (~line 1280-1289, right after `if (res.intent === "kb") { ... }`): add `if (res.intent === "automation") { const txt = res.text || "Done."; addHistoryEntry({ role: "nova", text: txt, src: source }); speak(txt); el.liveLine.textContent = ""; refreshAutoPanel(); return; }`
+2. At bottom near `initKbPanel();` (~line 1726): add `initAutoPanel();`
+3. runAutoCommand currently has a dead placeholder nova.autoRunNow("__create__") call — replace function body: remove that try/catch block; creation just calls window.nova.agentRun(text) then handles res.ok && res.intent === "automation" (history+toast) else showAutoToast(res.text) — keep renderAutoPanel() at end.
+4. Then Phase 5: test-automation.js (~60 tests), scripts/smoke-auto-e2e.js (13 E2E: parser→store→scheduler fire via setNowForTesting advancing clock, L3+ pause, refusal, runNow through dispatcher), add test:automation to npm test chain, full npm test EXIT 0, Xvfb boot test (grep automation scheduler started), README automation row + Stage 9 section + test:automation script, docs/STAGE9-SUMMARY.md, commit + push, deliver.
+npm test chain (package.json): test:kb && test:notes — add test:automation before them.
+Existing test script names: src/main/test-permissions.js test-vision.js test-control.js src/main/agent/test-agent.js src/main/test-files.js src/main/test-notes.js src/main/test-kb.js; smoke harness at scripts/smoke-kb-e2e.js (uses embedFallbackForTesting pattern); boot test uses Xvfb :98 + npm start + grep "6 kb:* actions" log pattern.
+
+## Phase 5 status (test-automation.js)
+test-automation.js written at src/main/test-automation.js. Issues found+fixed so far:
+- require("./vision/actions") → "./vision/vision-actions"; require("./permissions/actions") → notes/kb/files actions requires.
+- cron.parse throws on invalid → wrap try/catch in tests.
+- store.storePath is a FUNCTION (not prop): store.storePath().
+- clearForTesting → persist no-op; removed fs read round-trip check.
+- Gating is L3+ (SENSITIVE=3 / DESTRUCTIVE=4) NOT L2; REVERSIBLE routine stores as "safe" correctly. Rewrote L3+ tests to use direct control/destructive-level entries. Tests now include: gating-flip test, blind-act refusal, blind-control refusal (duplicate with prior "check-then-act L3" block removed — NOTE: the old block 161-170 was replaced by two new blocks but there's still an EARLIER 4. runner block (~line ~213) that tests 'every day at 9 AM, tell me what's in Downloads, then move old installers' expecting awaiting-confirmation — THAT MUST ALSO BE UPDATED (it was left in place) or it will fail. CHECK and fix: replace its expectations to status==='partial'? Actually runner.runAutomation for maxLevel>=SENSITIVE... this routine max level is REVERSIBLE(2) so needsConfirmation=false → runs unattended; test expects awaiting-confirmation → will FAIL. Also its follow-up confirm test.
+- scheduler test fixed: advance to Tuesday Aug 18 08:00 (cron 0 8 weekday fires only at :00).
+- runner block for 'check-then-click' was duplicated by my new block — two consecutive `}` — verify no syntax error.
+- run notes: npm test chain must add test:automation; final npm test must EXIT 0; then smoke-auto-e2e.js; boot Xvfb; README; summary; commit push; deliver.
+Remaining steps after fixing runner L3 expectation: run test-automation.js to green; check duplicate block syntax; add npm script test:automation + chain; run full npm test; write smoke-auto-e2e.js (~13 tests: creates automation via parser+store, advances clock with setNowForTesting, verifies emitter fire + isDue + lastRunAt guard, L3+ pause path via runner+confirm, deletion, action-log tags); Xvfb boot test (grep "[automation] scheduler started"); README + docs/STAGE9-SUMMARY.md; commit+push; deliver.
+smoke-kb-e2e.js pattern ref: scripts/smoke-kb-e2e.js uses embedFallbackForTesting export; smoke-auto-e2e can just test engine modules directly (no model needed).

@@ -49,6 +49,24 @@ contextBridge.exposeInMainWorld("nova", {
   // --- File preview confirmation (Stage 6) ---
   filesExecute: (previewToken) => ipcRenderer.invoke("nova:files-execute", previewToken),
 
+  // --- Automation engine (Stage 9 — local scheduling + chaining of existing
+  // tools; Level 3+ steps pause for in-app confirmation) ---
+  autoList: () => ipcRenderer.invoke("nova:auto-list"),
+  autoRunNow: (id) => ipcRenderer.invoke("nova:auto-run-now", id),
+  autoToggle: (req) => ipcRenderer.invoke("nova:auto-toggle", req),
+  autoDelete: (id) => ipcRenderer.invoke("nova:auto-delete", id),
+  autoConfirm: (id) => ipcRenderer.invoke("nova:auto-confirm", id),
+  onAutoRunResult: (cb) => {
+    const listener = (_evt, data) => cb(data);
+    ipcRenderer.on("nova:auto-run-result", listener);
+    return () => ipcRenderer.removeListener("nova:auto-run-result", listener);
+  },
+  onAutoPending: (cb) => {
+    const listener = (_evt, data) => cb(data);
+    ipcRenderer.on("nova:auto-pending", listener);
+    return () => ipcRenderer.removeListener("nova:auto-pending", listener);
+  },
+
   // --- Knowledge base (Stage 8 — fully local; RAG sends only snippets) ---
   kbRun: (text) => ipcRenderer.invoke("nova:kb-run", text),
   kbList: () => ipcRenderer.invoke("nova:kb-list"),

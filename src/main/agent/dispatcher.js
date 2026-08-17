@@ -272,6 +272,23 @@ async function dispatchCombined(text, opts) {
   return { visionAnswer: vis.text, ...(await dispatchControl(text)) };
 }
 
+/** Automation management (Stage 9) — local only, works in Private Mode. */
+async function dispatchAutomation(text, opts = {}) {
+  // The classifier may already carry a planning error (failed parse with a
+  // clear schedule attempt) — surface the friendly nudge directly.
+  if (opts.planningError) {
+    return {
+      ok: false, intent: "automation",
+      text: opts.planningError,
+      detail: { planningError: opts.planningError },
+    };
+  }
+  const automationDispatch = require("../automation/dispatch");
+  const res = await automationDispatch.addAutomation(text, { mainWindow: opts.mainWindow });
+  narrate(lastTask.id, "automation", res.ok ? `Setting up "${res.detail?.name || "the automation"}"…` : "");
+  return res;
+}
+
 // ---------------------------------------------------------------------------
 // Public entry point
 // ---------------------------------------------------------------------------
@@ -331,6 +348,13 @@ async function run(text, opts = {}) {
       const out = await dispatchNotes(text, opts);
       lastTask.output = { type: "notes", ...out, error: !out.ok };
       if (out.narration) narrateNotes(taskId, "notes", out.narration);
+      return { ok: true, intent, ...out };
+    }
+    // Automations (Stage 9): creation/management through the automation
+    // dispatcher; scheduling is local so this works fully offline.
+    if (intent === INTENTS.AUTOMATION) {
+      const out = await dispatchAutomation(text, opts);
+      lastTask.output = { type: "automation", ...out, error: !out.ok };
       return { ok: true, intent, ...out };
     }
     // COMBINED

@@ -19,6 +19,14 @@ const { FILE_RE } = require("../files/plan");
 const { planNoteAction } = require("../notes/plan");
 const { planKbAction } = require("../kb/plan");
 
+/**
+ * Automations (Stage 9) route EARLY: creation requests carry an explicit
+ * schedule marker ("every day at …") plus at least one step verb, so they
+ * never get mistaken for a plain notes/files/kb request.
+ */
+const AUTOMATION_RE =
+  /^\s*(?:nova,?\s*)?(?:set up|create|make|start|add)\s+(?:a |an |my )?(?:recurring |scheduled )?(?:automation|routine|scheduled task)\b|every\s+(?:day|weekday|weekend|morning|evening|night|noon|monday|tuesday|wednesday|thursday|friday|saturday|sunday)s?\b.*\bat\s+\d{1,2}(?::\d{2})?\s*(?:am|pm)\b|weekdays?\s+at\s+\d{1,2}(?::\d{2})?\s*(?:am|pm)\b|at\s+\d{1,2}(?::\d{2})?\s*(?:am|pm)\s+(?:every|each)\s+(?:day|morning|evening|night)\b/i;
+
 /** Intent names returned by classify(). */
 const INTENTS = Object.freeze({
   CONVERSATION: "conversation",
@@ -27,6 +35,7 @@ const INTENTS = Object.freeze({
   KB: "kb",
   FILES: "files",
   NOTES: "notes",
+  AUTOMATION: "automation",
   COMBINED: "combined",
 });
 
@@ -59,13 +68,14 @@ async function quickClassify(text) {
     return null; // router failure → never route on a failed model pick
   }
   const prompt =
-    "Classify the user message into exactly one of: conversation, vision, control, kb, files, notes, combined.\n" +
+    "Classify the user message into exactly one of: conversation, vision, control, kb, files, notes, automation, combined.\n" +
     "conversation = chat / questions / anything that needs no tooling.\n" +
     "vision = the user wants to know what is on their screen (e.g. read an error).\n" +
     "control = the user wants the assistant to do something (open an app, click, type).\n" +
     "files = the user wants file management (search, organize, move, delete files).\n" +
     "notes = the user wants to create a note, set a reminder, manage tasks, search notes, or summarize notes.\n" +
     "kb = the user wants to add, manage, or query their knowledge base (index a folder, ask what they wrote about a topic, search their documents).\n" +
+    "automation = the user wants a SCHEDULED recurring routine (contains a schedule like \"every day at 9am\" or \"weekdays at 8am\" plus steps to run).\n" +
     "combined = the user wants BOTH (check the screen AND act, e.g. verify the app opened).\n" +
     "Answer with a single lowercase word only.\n\n" +
     `Message: "${text}"`;
@@ -111,6 +121,22 @@ async function classify(text = "", opts = {}) {
   // folder to my knowledge base", "what did I write about X", "search my
   // kb") and routes before FILES/NOTES so that "find my notes on X" lands
   // in the KB pipeline when a planner confirms it is a real KB request.
+  // Automations: explicit schedule marker + step verbs (e.g. "every day at
+  // 9 AM, check my Downloads folder"). Only count it when the parser
+  // confirms a real schedule and at least one step (so "I go to the gym
+  // every day at 6pm" stays conversation).
+  if (!isVision && AUTOMATION_RE.test(trimmed) && parseAutomationSafe) {
+    const parsed = parseAutomationSafe(trimmed);
+    if (parsed && parsed.ok) {
+      return { intent: INTENTS.AUTOMATION, method: "rules", confidence: "high" };
+    }
+    if (parsed && parsed.error && /schedule/i.test(parsed.error)) {
+      // Clearly an automation attempt that failed to parse — route there so
+      // the user hears the helpful nudge instead of a chat reply.
+      return { intent: INTENTS.AUTOMATION, method: "rules", confidence: "high", planningError: parsed.error };
+    }
+  }
+
   const kbAction = planKbActionSafe(trimmed, opts);
   if (!isVision && kbAction) {
     if (kbAction.error) {
@@ -192,4 +218,13 @@ try {
   planNoteActionSafe = () => null;
 }
 
-module.exports = { classify, quickClassify, INTENTS, VISION_RE, CONTROL_RE };
+let parseAutomationSafe;
+try {
+  // Lazy-load the automation parser; if it fails, no automation requests
+  // route to the automation dispatcher (safer than mis-routing).
+  parseAutomationSafe = require("../automation/parser").parseAutomation;
+} catch {
+  parseAutomationSafe = null;
+}
+
+module.exports = { classify, quickClassify, INTENTS, VISION_RE, CONTROL_RE, AUTOMATION_RE };

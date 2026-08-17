@@ -1,0 +1,122 @@
+[
+  {
+    "ts": "2026-08-17T08:27:34.437Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-mswz0qsk-x0gp39",
+      "name": "weekday morning automation",
+      "steps": 2,
+      "status": "needs-confirmation"
+    }
+  },
+  {
+    "ts": "2026-08-17T08:27:34.426Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "reason": "I won’t create a routine that only does sensitive or destructive things. Start it with a read-only or safe step — like “check my Downloads folder, then …”."
+  },
+  {
+    "ts": "2026-08-17T08:27:18.059Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-mswz0e5m-hngyrn",
+      "name": "weekday morning automation",
+      "steps": 2,
+      "status": "safe"
+    }
+  },
+  {
+    "ts": "2026-08-17T08:27:18.043Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-mswz0e55-bxwfwq",
+      "name": "weekday morning automation",
+      "steps": 1,
+      "status": "safe"
+    }
+  },
+  {
+    "ts": "2026-08-17T08:27:06.315Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "reason": "I won’t create a routine that only does sensitive or destructive things. Start it with a read-only or safe step — like “check my Downloads folder, then …”."
+  },
+  {
+    "ts": "2026-08-17T08:27:06.314Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-mswz053e-njwru3",
+      "name": "morning automation",
+      "steps": 2,
+      "status": "safe"
+    }
+  },
+  {
+    "ts": "2026-08-17T08:27:06.310Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-mswz0539-r2p7nh",
+      "name": "morning automation",
+      "steps": 1,
+      "status": "safe"
+    }
+  },
+  {
+    "ts": "2026-08-17T08:27:06.296Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-mswz052t-hkbu5l",
+      "name": "weekday morning automation",
+      "steps": 1,
+      "status": "safe"
+    }
+  },
+  {
+    "ts": "2026-08-17T08:26:52.235Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-mswyzu89-7342dz",
+      "name": "weekday morning automation",
+      "steps": 1,
+      "status": "safe"
+    }
+  },
+  {
+    "ts": "2026-08-17T08:26:52.227Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-mswyzu82-qr8src",
+      "name": "morning automation",
+      "steps": 1,
+      "status": "safe"
+    }
+  }
+]

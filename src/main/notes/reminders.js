@@ -94,4 +94,4 @@ function stop() {
   }
 }
 
-module.exports = { start, stop, scanOnce, setNotifierForTesting, SCAN_MS };
+module.exports = { start, stop, scanOnce, setNotifierForTesting, getNotifier, SCAN_MS };
