@@ -231,6 +231,30 @@ node scripts/smoke-kb-e2e.js   # end-to-end: add a 4-document sample folder, que
 
 **Known limitations:** the MiniLM model is a first-run network download (~80 MB quantized, from the HuggingFace CDN) — everything else is offline; the fallback hasher guarantees zero-network operation and identical results across runs. `.docx`/`.pdf` text extraction captures text only (no tables/images/captions). Re-indexed folders cap at 5 folders / 2000 files / depth 8.
 
+## Automation engine (Stage 9)
+
+Scheduled, user-defined routines built **entirely from the existing tools** (vision, control, files, notes, kb) — Stage 9 adds scheduling and chaining only. Voice phrases like `"every weekday at 8 AM, tell me my tasks for today and check for new files in Downloads"` parse into a stored cron-like schedule (local timezone) plus an ordered list of existing tool calls.
+
+| Concept | Rule |
+|---------|------|
+| Levels | Every step keeps its **original risk level and confirmation requirements** from the permission framework — an automation can never bypass them |
+| Level 0–2 | Run unattended; their own toasts/dry-run previews already apply inside each stage's dispatcher |
+| Level 3+ | Pause the run with an **OS notification + pending-confirmation card** in the side panel; L0–2 "check" steps still run first, then the sequence waits for an in-app Confirm |
+| Control steps | Always self-pause for in-app review — a control sequence can never fire headless |
+| Limits | Max 10 steps per routine, 25 routines; creation is **refused** when the routine's first/only steps are Level 3+ (nudging toward "check something, then maybe act"); creation and deletion are Level 1 (only the schedule is affected) |
+| History | Every run — success / partial / failed / awaiting confirmation — lands in the Action Log, tagged by automation name |
+
+**Side panel:** the Automations section lists active routines with an on/off toggle, next-run time, and a **Run now** test button; pending confirmations surface as Confirm/Cancel cards.
+
+```bash
+npm run test:automation   # headless — cron + NL parser + store limits/refusals +
+npm run smoke:auto        # gated runner + scheduler clock injection + 1-minute firing + action-log tags
+```
+
+**Demo:** say or type `"every day at 9 AM, tell me what's in my Downloads folder"`, watch it appear in the Automations panel with its next-run time, click **Run now**, and find the run in the Action Log. In Private Mode a knowledge-base step inside a routine fails with the standard KB refusal — no silent degradation.
+
+**Known limitations:** routines only fire while Nova is running (same as the notes reminder scheduler); the NL parser covers the tested phrasings (every day/weekday/<weekday> at HH:MM, every morning/evening) — unusual schedules can still be set via a raw cron entry through the store's testing/admin paths.
+
 ## Test the model router headlessly
 
 ```bash
@@ -260,6 +284,8 @@ src/
 │   ├── notes/     On-device notes, reminders, tasks — keyword search, OS notifications, side-panel tab
 │   └── kb/        Personal knowledge base — local embeddings, folder indexing, chokidar watching,
 │                  snippet-only RAG query with Private Mode guard, source citation
+│   └── automation/ Stage 9 — cron parser + local scheduler, NL routine parser, persistent store,
+│                   risk-gated runner chaining the existing dispatchers, end-to-end dispatcher
 ```
 ├── preload/preload.js contextBridge API — renderer has no Node access
 └── renderer/
