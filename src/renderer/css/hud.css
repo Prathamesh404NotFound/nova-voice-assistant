@@ -838,3 +838,107 @@ html, body {
   pointer-events: none;
 }
 .notes-toast.show { opacity: 1; transform: translateY(0); }
+
+/* ==========================================================================
+   Stage 8 — Knowledge Base side panel (fully local indexing + RAG)
+   ========================================================================== */
+.kb-folders {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+.kb-folder-item {
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: rgba(57, 210, 255, 0.045);
+}
+.kb-folder-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+.kb-folder-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.kb-folder-count {
+  font-size: 10.5px;
+  color: var(--text-faint);
+  white-space: nowrap;
+  font-family: var(--font-mono);
+}
+.kb-folder-path {
+  font-size: 10.5px;
+  color: var(--text-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 2px;
+}
+.kb-folder-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+.kb-danger {
+  color: var(--red, #ff5a6e);
+  border-color: rgba(255, 90, 110, 0.35);
+}
+.kb-progress-line {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--cyan-dim);
+  margin-top: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.kb-query-form {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+.kb-query-form input {
+  flex: 1;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 10px;
+  color: var(--text);
+  font-size: 12px;
+  font-family: var(--font-body);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.kb-query-form input:focus { border-color: var(--cyan-dim); }
+.kb-answer {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-dim);
+  border-left: 2px solid var(--line-strong);
+  padding-left: 8px;
+}
+/* Chat-history source citations for KB answers */
+.kb-msg-sources {
+  margin-top: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.kb-source-link {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--cyan);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  border: none;
+  background: none;
+  padding: 0;
+  text-align: left;
+}
+.kb-source-link:hover { color: #7be4ff; }

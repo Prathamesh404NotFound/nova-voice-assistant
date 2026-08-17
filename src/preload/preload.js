@@ -49,6 +49,16 @@ contextBridge.exposeInMainWorld("nova", {
   // --- File preview confirmation (Stage 6) ---
   filesExecute: (previewToken) => ipcRenderer.invoke("nova:files-execute", previewToken),
 
+  // --- Knowledge base (Stage 8 — fully local; RAG sends only snippets) ---
+  kbRun: (text) => ipcRenderer.invoke("nova:kb-run", text),
+  kbList: () => ipcRenderer.invoke("nova:kb-list"),
+  kbOpenSource: (filePath) => ipcRenderer.invoke("nova:kb-open-source", filePath),
+  onKbProgress: (cb) => {
+    const listener = (_evt, evt) => cb(evt);
+    ipcRenderer.on("kb:index-progress", listener);
+    return () => ipcRenderer.removeListener("kb:index-progress", listener);
+  },
+
   // --- Notes / reminders / tasks (Stage 7 — fully local) ---
   getNotesStore: () => ipcRenderer.invoke("nova:get-notes-store"),
   notesRun: (text) => ipcRenderer.invoke("nova:notes-run", text),

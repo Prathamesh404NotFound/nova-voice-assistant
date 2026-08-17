@@ -35,9 +35,12 @@ const RE_REMIND_CANCEL = /^cancel reminder\s+(["“]?[\w-]+["”]?)\s*$/i;
 // "delete note <id>" / "delete task <id>" (side-panel mouse path)
 const RE_DELETE_ID = /^delete\s+(note|task|reminder)\s+(["“]?[\w-]+["”]?)\s*$/i;
 
-// "what did I note about dentist" / "search my notes for milk"
+// "what did I note about dentist" / "search my notes for milk" — the bare
+// "what did I note/write/say about X" phrasing belongs to the NOTES stage
+// (keyword search over stored notes); the knowledge-base stage claims the
+// same phrasing only with an explicit kb-context suffix ("in my kb").
 const RE_SEARCH_NOTES =
-  /what did i note about\s+(.+)|search my notes for\s+(.+)|notes about\s+(.+)|what('s| is) in my notes about\s+(.+)|find in my notes:\s*(.+)/i;
+  /what did i (?:note|write|say) about\s+(.+)|search my notes for\s+(.+)|notes about\s+(.+)|what('s| is) in my notes about\s+(.+)|find in my notes:\s*(.+)|find my notes on\s+(.+)/i;
 
 // "show my notes" / "list my notes"
 const RE_NOTES_LIST = /^(?:show|list|what('s| is))\s+(?:my\s+)?notes$/i;
@@ -265,7 +268,10 @@ function planNoteAction(text, ctx = {}) {
 
   m = RE_SEARCH_NOTES.exec(t);
   if (m) {
-    const query = (m[1] || m[2] || m[3] || m[4] || m[5] || "").trim();
+    // The new "what did I (note|write|say) about X" alternative uses a
+    // non-capturing verb group, so its topic lands in m[1]; "find my notes
+    // on X" lands in m[6]. First non-empty group wins either way.
+    const query = (m[1] || m[2] || m[3] || m[4] || m[5] || m[6] || "").trim();
     if (!query) return { error: "Search your notes for what? Try \"search my notes for dentist\"." };
     return { actionId: "notes:search-notes", payload: { query } };
   }

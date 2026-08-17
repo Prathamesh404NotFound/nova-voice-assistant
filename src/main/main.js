@@ -50,6 +50,13 @@ const { executePreview } = require("./files/dispatch");
 require("./notes/actions");
 const reminders = require("./notes/reminders");
 
+// Knowledge base (Stage 8) — fully local: folder indexing with MiniLM
+// embeddings (transformers.js), chokidar watchers for incremental re-index,
+// RAG queries that send ONLY snippets to the model router. All kb:* actions
+// go through the existing permission gate (L1 read / L2 reversible).
+require("./kb/actions");
+const kbWatcher = require("./kb/watcher");
+
 log.transports.file.level = "info";
 log.transports.console.level = "info";
 
@@ -84,6 +91,9 @@ function createWindow() {
   // Graceful show once rendered to avoid flash
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
+    // Start watching all indexed folders for incremental re-indexing.
+    // No folders indexed yet on a fresh launch — startAll is a no-op then.
+    kbWatcher.startAll();
   });
 
   mainWindow.on("closed", () => {
@@ -336,6 +346,56 @@ ipcMain.handle("nova:notes-run", async (_evt, text) => {
   } catch (err) {
     log.error("[notes] notes-run failed:", err?.message || err);
     return { ok: false, intent: "notes", text: "Something went wrong — details are in Developer Mode.", error: String(err?.message || err) };
+  }
+});
+
+// ---------------------------------------------------------------------------
+// IPC: knowledge base (Stage 8) — side panel management + click-to-open
+// ---------------------------------------------------------------------------
+
+/** Run a KB message through the dispatcher (voice path runs it via agent). */
+ipcMain.handle("nova:kb-run", async (_evt, text) => {
+  try {
+    const { runKbAction } = require("./kb/dispatch");
+    // Bridge indexing progress + watcher start/stop to the renderer.
+    global.__kbProgressBridge = (evt) => {
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        try { mainWindow.webContents.send("kb:index-progress", evt); } catch {}
+      }
+    };
+    global.__kbWatcherBridge = (action, id) => {
+      try {
+        if (action === "stop") kbWatcher.stopWatching(id);
+        else kbWatcher.startWatching(id);
+      } catch {}
+    };
+    return await runKbAction(String(text || ""));
+  } catch (err) {
+    log.error("[kb] kb-run failed:", err?.message || err);
+    return { ok: false, intent: "kb", text: "Something went wrong — details are in Developer Mode.", error: String(err?.message || err) };
+  }
+});
+
+/** Open an answer's source file in the default app (L2 confirmed in dispatch). */
+ipcMain.handle("nova:kb-open-source", async (_evt, filePath) => {
+  try {
+    await require("electron").shell.openPath(filePath);
+    return { ok: true };
+  } catch (err) {
+    log.error("[kb] open-source failed:", err?.message || err);
+    return { ok: false, error: String(err?.message || err) };
+  }
+});
+
+/** List indexed folders + index stats (L1 safe). */
+ipcMain.handle("nova:kb-list", async () => {
+  try {
+    const kbIndex = require("./kb/index");
+    const [folders, st] = [kbIndex.listFolders(), await kbIndex.stats()];
+    return { ok: true, folders, stats: st };
+  } catch (err) {
+    log.error("[kb] kb-list failed:", err?.message || err);
+    return { ok: false, error: String(err?.message || err) };
   }
 });
 

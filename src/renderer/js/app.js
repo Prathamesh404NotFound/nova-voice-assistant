@@ -44,6 +44,9 @@
     ctrlStopBtn: $("ctrlStopBtn"),
     notesTabs: $("notesTabs"), notesList: $("notesList"), notesAdd: $("notesAdd"),
     notesRefreshBtn: $("notesRefreshBtn"),
+    kbFolders: $("kbFolders"), kbAdd: $("kbAdd"), kbRefreshBtn: $("kbRefreshBtn"),
+    kbProgressLine: $("kbProgressLine"), kbQueryForm: $("kbQueryForm"),
+    kbQueryInput: $("kbQueryInput"), kbAnswer: $("kbAnswer"),
   };
 
   // ------------------------------------------------------------------ clock
@@ -251,6 +254,126 @@
       // works and Private Mode stays irrelevant — TTS is fully local).
       if (document.hasFocus()) speak(msg);
     });
+  }
+
+  // ======================================================================
+  // KNOWLEDGE BASE SIDE PANEL (Stage 8 — fully local indexing + RAG)
+  // ======================================================================
+
+  function humanBytes(n) {
+    if (!n || n < 1024) return `${n || 0} bytes`;
+    if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`;
+    if (n < 1024 * 1024 * 1024) return `${(n / 1024 / 1024).toFixed(1)} MB`;
+    return `${(n / 1024 / 1024 / 1024).toFixed(2)} GB`;
+  }
+
+  /** Render indexed folder list + add-folder affordance from the local index. */
+  async function renderKbPanel() {
+    const res = await window.nova.kbList().catch(() => null);
+    const folders = res?.ok ? res.folders || [] : [];
+    const st = res?.stats || {};
+    if (!folders.length) {
+      el.kbFolders.innerHTML = `<p class="history-empty">No folders indexed yet. Say “add this folder to my knowledge base” or click below.</p>`;
+    } else {
+      el.kbFolders.innerHTML = folders.map((f) => `
+        <div class="kb-folder-item" data-kb-id="${escapeAttr(f.id)}">
+          <div class="kb-folder-head">
+            <span class="kb-folder-name" title="${escapeAttr(f.root)}">${escapeHtml(f.root.split(/[\\/]/).filter(Boolean).pop() || f.root)}</span>
+            <span class="kb-folder-count">${f.fileCount} files · ${f.chunkCount} chunks · ${humanBytes(f.bytes || 0)}</span>
+          </div>
+          <div class="kb-folder-path">${escapeHtml(f.root)}</div>
+          <div class="kb-folder-actions">
+            <button class="flat-btn small" data-kb-action="reindex">Re-index now</button>
+            <button class="flat-btn small kb-danger" data-kb-action="remove">Remove from index</button>
+          </div>
+        </div>`).join("");
+    }
+    const addNote = folders.length >= (st.maxFolders || 5)
+      ? `Index full (${folders.length}/${st.maxFolders || 5}) — remove a folder first.`
+      : `Click to choose a folder — it will be indexed locally (text, markdown, PDF, Word).`;
+    el.kbAdd.innerHTML = `<button id="kbPickFolderBtn" class="flat-btn" ${folders.length >= (st.maxFolders || 5) ? "disabled" : ""}>+ Add folder to knowledge base</button><div class="settings-note">${addNote}</div>`;
+    document.getElementById("kbPickFolderBtn")?.addEventListener("click", async () => {
+      // The L2 gate (cancellable toast) is handled in the main process via
+      // nova:kb-run — "add this folder" triggers the dialog there.
+      await runKbCommand("add this folder to my knowledge base", { pickDialog: true });
+    });
+    el.kbFolders.querySelectorAll("[data-kb-action]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const item = btn.closest(".kb-folder-item");
+        const name = item.dataset.kbId;
+        if (btn.dataset.kbAction === "remove") await runKbCommand(`remove folder ${name} from the index`);
+        else if (btn.dataset.kbAction === "reindex") await runKbCommand("re-index my knowledge base now");
+      });
+    });
+  }
+
+  async function refreshKbPanel() { renderKbPanel(); }
+
+  function setKbProgress(text) {
+    if (text) {
+      el.kbProgressLine.textContent = text;
+      el.kbProgressLine.hidden = false;
+    } else {
+      el.kbProgressLine.hidden = true;
+    }
+  }
+
+  /** Run a KB request via nova:kb-run (shared voice + mouse path; voice also
+   *  goes through the agent loop, which lands here after dispatching). */
+  async function runKbCommand(text, opts = {}) {
+    try {
+      const res = await window.nova.kbRun(text);
+      if (res?.ok) {
+        addHistoryEntry({ role: "nova", text: res.text, src: "panel", kbSources: res.detail?.sources || null });
+        speak(res.narration || res.text);
+      } else {
+        showKbToast(res?.text || "That request could not be completed.");
+      }
+      renderKbPanel();
+    } catch {
+      showKbToast("Something went wrong — see Developer Mode.");
+    }
+  }
+
+  function showKbToast(text) {
+    const existing = document.getElementById("kbToast");
+    if (existing) existing.remove();
+    const div = document.createElement("div");
+    div.id = "kbToast";
+    div.className = "notes-toast";
+    div.textContent = text;
+    document.body.appendChild(div);
+    setTimeout(() => div.classList.add("show"), 10);
+    setTimeout(() => {
+      div.classList.remove("show");
+      setTimeout(() => div.remove(), 300);
+    }, 3500);
+  }
+
+  function initKbPanel() {
+    el.kbRefreshBtn.addEventListener("click", () => renderKbPanel());
+    el.kbQueryForm.addEventListener("submit", (ev) => {
+      ev.preventDefault();
+      const q = el.kbQueryInput.value.trim();
+      if (!q) return;
+      el.kbQueryInput.value = "";
+      setKbProgress("Searching your knowledge base…");
+      runKbCommand(`search my kb for ${q}`);
+    });
+    // Indexing progress from the main process (files scanned, status).
+    if (window.nova.onKbProgress) {
+      window.nova.onKbProgress((evt) => {
+        if (!evt) return;
+        if (evt.status === "done") { setKbProgress(null); renderKbPanel(); return; }
+        // Resolve the folder's on-disk root for a friendlier label.
+        window.nova.kbList().then((res) => {
+          const f = (res?.ok ? res.folders || [] : []).find((x) => x.id === evt.folderId);
+          const label = f ? f.root.split(/[\\/]/).filter(Boolean).pop() : (evt.folderId || "folder");
+          setKbProgress(`Indexing ${escapeHtml(label)}: ${evt.filesDone || 0}/${evt.filesTotal || "?"} files…`);
+        }).catch(() => setKbProgress(`Indexing… ${evt.filesDone || 0}/${evt.filesTotal || "?"} files…`));
+      });
+    }
+    renderKbPanel();
   }
 
   // ======================================================================
@@ -803,8 +926,8 @@
 let historyItems = [];
   const MAX_HISTORY = 40;
 
-  function addHistoryEntry({ role, text, src, small }) {
-    historyItems.push({ role, text, src, small: !!small });
+  function addHistoryEntry({ role, text, src, small, kbSources }) {
+    historyItems.push({ role, text, src, small: !!small, kbSources: kbSources || null });
     if (historyItems.length > MAX_HISTORY) historyItems = historyItems.slice(-MAX_HISTORY);
     renderHistory();
   }
@@ -815,8 +938,20 @@ let historyItems = [];
       return;
     }
     el.history.innerHTML = historyItems
-      .map((m) => `<div class="msg ${m.role}${m.small ? " small" : ""}"><span class="src">${m.src}</span>${escapeHtml(m.text)}</div>`)
+      .map((m) => {
+        const textHtml = escapeHtml(m.text);
+        const sourcesHtml = (m.role === "nova" && Array.isArray(m.kbSources) && m.kbSources.length)
+          ? `<div class="kb-msg-sources">${m.kbSources.map((s) => `<a class="kb-source-link" data-kb-file="${escapeAttr(s.file)}" title="Open the source file">${escapeHtml(s.title || s.file.split(/[\\/]/).pop())}</a>`).join(" · ")}</div>`
+          : "";
+        return `<div class="msg ${m.role}${m.small ? " small" : ""}"><span class="src">${m.src}</span>${textHtml}${sourcesHtml}</div>`;
+      })
       .join("");
+    el.history.querySelectorAll(".kb-source-link").forEach((a) => {
+      a.addEventListener("click", async (ev) => {
+        ev.stopPropagation();
+        await window.nova.kbOpenSource(a.dataset.kbFile);
+      });
+    });
     el.history.scrollTop = el.history.scrollHeight;
   }
 
@@ -942,6 +1077,16 @@ let historyItems = [];
         }
         el.liveLine.textContent = "";
         refreshNotesPanel();
+        return;
+      }
+      if (res.intent === "kb") {
+        // Knowledge base: show the answer in chat with view-source links
+        // for each cited file, and refresh the side-panel folder list.
+        const txt = res.text || res.narration || "Done.";
+        addHistoryEntry({ role: "nova", text: txt, src: source, kbSources: res.detail?.sources || null });
+        speak(res.narration || txt);
+        el.liveLine.textContent = "";
+        refreshKbPanel();
         return;
       }
       if (res.plan) {
@@ -1380,6 +1525,7 @@ let historyItems = [];
 
   if (window.nova.onOnboarding) window.nova.onOnboarding((data) => showOnboarding(data.pending, data.state));
   initNotesPanel();
+  initKbPanel();
 
   el.onboardingAck?.addEventListener("click", async () => {
     try {

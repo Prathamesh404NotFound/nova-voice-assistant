@@ -118,6 +118,24 @@
         <div class="settings-note" style="margin-top:6px;">Everything below lives only on this machine — nothing is ever sent to a cloud service unless you explicitly ask Nova to summarize your notes.</div>
       </div>
 
+      <!-- Stage 8: Knowledge Base — fully local folder indexing + RAG -->
+      <div class="side-section">
+        <div class="side-label">Knowledge Base
+          <span class="log-actions">
+            <button id="kbRefreshBtn" class="flat-btn small" title="Refresh the indexed folder list">&#8635; Refresh</button>
+          </span>
+        </div>
+        <div id="kbFolders" class="kb-folders"></div>
+        <div id="kbAdd" class="kb-add"></div>
+        <div id="kbProgressLine" class="kb-progress-line" hidden></div>
+        <form id="kbQueryForm" class="kb-query-form" autocomplete="off">
+          <input id="kbQueryInput" type="text" placeholder="Ask about your indexed documents…" maxlength="500" />
+          <button type="submit" class="flat-btn small send-btn">Ask</button>
+        </form>
+        <div id="kbAnswer" class="kb-answer" hidden></div>
+        <div class="settings-note" style="margin-top:6px;">Indexing, embeddings and search all run on this machine — only short answer snippets ever reach the model, and never while Private Mode is on.</div>
+      </div>
+
       <div class="side-section input-section">
         <div class="side-label">Type instead</div>
         <form id="typeForm" autocomplete="off">

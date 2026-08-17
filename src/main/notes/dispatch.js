@@ -78,12 +78,15 @@ async function runNoteAction(text, opts = {}) {
     const userMessage = buildSummaryUserMessage(noteTexts);
     log.info(`[notes] summarize: sending ${noteTexts.length} note(s) via ${model} (only these texts leave the machine)`);
     const result = await sendSummary(key, model, userMessage);
-    if (result && result.error) {
-      return { ok: false, intent: "notes", text: result.error, actionId, detail: { kind: "summarize" } };
+    // sendSummary runs through retryOnce, which wraps the summary in
+    // {ok, value} — unwrap it so the chat text is a plain string.
+    const summary = (typeof result === "string") ? result : (result && typeof result.value === "string" ? result.value : "");
+    if (!summary) {
+      return { ok: false, intent: "notes", text: "The model returned no summary — try again.", actionId, detail: { kind: "summarize" } };
     }
     return {
       ok: true, intent: "notes",
-      text: result,
+      text: summary,
       narration: "Here's a quick summary of your notes…",
       actionId, detail: { kind: "summarize" },
     };

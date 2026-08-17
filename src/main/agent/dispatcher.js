@@ -23,6 +23,14 @@ const { plainError, retryOnce } = require("./retry");
 const control = require("../control");
 const { runFileAction, executePreview, getContext } = require("../files/dispatch");
 const notesDispatch = require("../notes/dispatch");
+const kbDispatch = require("../kb/dispatch");
+const { planKbAction } = require("../kb/plan");
+
+// Lazy read of the live index — avoids hard-loading the kb modules when the
+// knowledge base feature is never used, and keeps tests free of surprises.
+function kbIndexList() {
+  try { return require("../kb/index").listFolders(); } catch { return []; }
+}
 
 const emitter = new EventEmitter();
 
@@ -56,6 +64,11 @@ function narrateNotes(taskId, step, text) {
   log.info(`[agent:narrate] [${step}] ${text}`);
 }
 
+function narrateKb(taskId, step, text) {
+  emitter.emit("progress", { type: "narration", taskId, step, text });
+  log.info(`[agent:narrate] [${step}] ${text}`);
+}
+
 /** Notes/reminders/tasks: fully local except the explicit summarize flow. */
 async function dispatchNotes(text, opts = {}) {
   // The classifier may have already detected a notes planning error (empty
@@ -84,6 +97,42 @@ async function dispatchNotes(text, opts = {}) {
     mainWindow: opts.mainWindow,
   });
   recordStep(lastTask?.id, "notes " + (res.actionId || "plan"), null, Date.now() - (lastTask?.startedAt || Date.now()));
+  return res;
+}
+
+/** Knowledge base: fully local indexing/search; RAG sends only snippets. */
+async function dispatchKb(text, opts = {}) {
+  // The classifier may have already detected a KB planning error (no indexed
+  // folder matches a named reference) — honor it directly like the notes path.
+  if (opts.planningError) {
+    return {
+      ok: false, intent: "kb",
+      text: opts.planningError,
+      detail: { planningError: opts.planningError },
+    };
+  }
+  // Bridge progress/watcher events from the main-process modules to the
+  // renderer (index progress line, watcher start/stop).
+  if (opts.mainWindow) {
+    try {
+      global.__kbProgressBridge = (evt) => { try { opts.mainWindow.webContents.send("kb:index-progress", evt); } catch {} };
+      global.__kbWatcherBridge = (action, id) => {
+        try {
+          const watcher = require("../kb/watcher");
+          if (action === "stop") watcher.stopWatching(id);
+          else watcher.startWatching(id);
+        } catch {}
+      };
+    } catch {}
+  }
+  narrateKb(lastTask.id, "kb", opts.step || "Checking your knowledge base…");
+  const started = Date.now();
+  const res = await kbDispatch.runKbAction(text, {
+    taskId: lastTask?.id,
+    ctx: opts.ctx || {},
+  });
+  recordStep(lastTask?.id, "kb " + (res.actionId || "plan"), null, Date.now() - started);
+  if (res.narration) narrateKb(lastTask.id, "kb", res.narration);
   return res;
 }
 
@@ -239,7 +288,9 @@ async function run(text, opts = {}) {
 
   let intent;
   try {
-    const c = await classify(text);
+    let kbFolders = [];
+    try { kbFolders = kbIndexList().map((f) => f.root); } catch {}
+    const c = await classify(text, { kbFolders });
     intent = c.intent;
     lastTask.classification = { intent: c.intent, method: c.method, confidence: c.confidence };
   } catch (err) {
@@ -269,6 +320,11 @@ async function run(text, opts = {}) {
     if (intent === INTENTS.FILES) {
       const out = await dispatchFiles(text);
       lastTask.output = { type: "files", ...out, error: !!out.error };
+      return { ok: true, intent, ...out };
+    }
+    if (intent === INTENTS.KB) {
+      const out = await dispatchKb(text, opts);
+      lastTask.output = { type: "kb", ...out, error: !out.ok };
       return { ok: true, intent, ...out };
     }
     if (intent === INTENTS.NOTES) {

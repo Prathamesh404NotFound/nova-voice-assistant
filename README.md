@@ -25,6 +25,7 @@ Nova is a cross-platform (Windows + macOS) desktop AI assistant built with **Ele
 | Mouse/keyboard control | Rule-based task planner compiles instructions like "open the system calculator and compute 12 x 8" into a checklist shown before execution; `@nut-tree-fork/nut-js` simulation (move/click/right-click/double-click/scroll/drag/type/press-keys) at L0–L3 with `physical` flag (L2+ blocked in Private Mode); hard kill-switch: `Ctrl+Shift+Esc` global hotkey + STOP button + "nova stop" barge-in; mid-sequence vision verification (screenshot + OCR confirms expected text before continuing); every step logged with outcome |
 | Voice file management | "find my resume", "find duplicate files in Downloads", "clean up my Downloads folder", "move this file to Documents" — hash-based dup detection, mandatory dry-run preview for organize/remove-duplicates (one-shot preview token, only-loose files), cancellable 5 s toast for move/copy/rename, L4 delete to OS Recycle Bin only, vague-delete refusal, all through the gate/Action Log/undo |
 | Local notes & reminders | Fully on-device `userData/notes.json` store; "Nova, note that [X]" timestamped notes, timed reminders via 30 s polling scheduler firing the Electron Notification API once-only (spoken aloud when focused), flat task list with "mark done", keyword search, Notes/Tasks side-panel tab, note content never sent to OpenRouter — only an explicit "summarize my notes" (refused in Private Mode) |
+| Knowledge base | Point Nova at folders (voice: "add this folder to my knowledge base") — walks the folder with depth/file limits and a progress line, extracts `.txt/.md/.pdf/.docx` locally, chunks with overlap, and builds a **fully local** 384-d embeddings index (ONNX MiniLM via transformers.js, cached on disk; deterministic local hasher fallback, no network ever needed for indexing); folders are watched with chokidar and only changed/new files re-index; queries embed locally, retrieve the top chunks, and only then send **just those snippets + the question** to `pickModel("chat")` — never raw documents; answers always name their source files with clickable "view source" links that open the file; Private Mode refuses KB search outright with a plain explanation; removal deletes index data only, never the originals |
 | Safety framework | 5 risk levels (L0 Read → L4 Destructive), per-action permission gate (L0–1 immediate / L2 cancellable 5s toast / L3–4 explicit Confirm modal in plain language), persistent action log (JSON, newest first, exportable), dry-run `simulate()` paths for L2+, global Private Mode (blocks all outbound network except OpenRouter, persistent 🔒 PRIVATE badge) |
 
 ## Run
@@ -136,7 +137,7 @@ npm run test:agent   # headless self-test — 38 checks: classification rules, q
 ```
 
 ```bash
-npm run test         # everything: agent + permissions + control + vision + files
+npm run test:agent && npm run test:kb   # agent loop + knowledge base (Stage 8)
 ```
 
 ## Voice-driven file management (Stage 6)
@@ -196,6 +197,40 @@ node scripts/smoke-notes-e2e.js   # end-to-end: note + timed reminder fires +
 
 **Demo:** say or type `"Nova, note that my sister's birthday is June 12"`, `"remind me to take the chicken out at 3pm"`, `"add pick up the dry cleaning to my tasks"`, `"what did I note about birthday"`.
 
+## Personal knowledge base (Stage 8)
+
+Everything in `src/main/kb/` is **fully on-device**. No document content is ever sent to OpenRouter — not for indexing (whole documents never leave the machine), and not at query time (only the small retrieved snippets plus the question are handed to `pickModel("chat")`, see `kb/query.js` compose). Document content is also kept out of the model router's system prompt and conversation stream by design.
+
+| Module | Role |
+|--------|------|
+| `embeddings.js` | 384-d local embeddings: `@xenova/transformers` ONNX MiniLM (cached in `userData/kb-model/`, downloaded once, fully local) with a **deterministic TF-IDF-style char-ngram fallback hasher** (seeded, identical vectors across runs) used automatically when the model cannot load — so the pipeline works fully offline and in CI with no network at all |
+| `extractor.js` | Local text extraction for `.txt` / `.md` / `.pdf` (`pdf-parse` — offline) / `.docx` (`mammoth` — offline); unknown extensions are skipped, never sent anywhere |
+| `chunker.js` | Sentence-bucket chunking with overlap for long texts; chunk ids are `folderHash:relPath:seq` (with `:hN` suffixes for hard splits) — deterministic and stable across re-indexes |
+| `index.js` | Folder walking with caps (5 folders, 2000 files, depth 8), progress events, manifest + per-folder index persistence in `userData/kb-index/` |
+| `watcher.js` | chokidar per-folder watch (debounced 1.5 s) — changed and new files re-index incrementally, never the whole folder |
+| `search.js` | Embeds the query locally, cosine-ranks all chunks (top-K 6, at most 3 source files), dedupes by file |
+| `query.js` | Composes the answer from snippets only: `compose()` embeds locally → retrieves → sends *snippets + question* to the router; **Private Mode refusal is exact and explicit**: `"Knowledge base search needs Private Mode off — I won't send your documents anywhere while it's on."` — no silent degradation |
+| `plan.js` / `dispatch.js` | Natural-language planner + end-to-end dispatcher (same narrate/progress/undo conventions as the notes stage) |
+| `actions.js` | `kb:add-folder`, `kb:remove-folder`, `kb:reindex` (L2 reversible toasts — removal deletes index data only, originals untouched), `kb:query`, `kb:list-folders` (L1 immediate), `kb:open-source` (L2 — opens the file via `shell.openPath`) |
+
+**Side panel:** a Knowledge Base section (between Notes/Tasks and the Type-instead input) lists indexed folders with file/chunk counts, an **Add folder** button, a query form, a live indexing-progress line, and per-answer **"view source"** links that open the cited file in the OS. Mouse-driven management (`kbRun` IPC) goes through the same dispatcher and gate as the voice loop, so every add/remove/re-index is logged to the Action Log.
+
+```bash
+npm run test:kb      # headless self-test — 85 checks: extraction formats, chunking,
+                     # embedding determinism + cosine sanity, incremental indexing
+                     # and restoration, watcher events, search ranking, RAG compose
+                     # (only snippets reach the model, sources cited), the exact
+                     # Private Mode refusal, action levels + undo, and classifier routing
+node scripts/smoke-kb-e2e.js   # end-to-end: add a 4-document sample folder, query
+                               # sunset questions cite the right files, Private Mode
+                               # refusal, remove (index gone, originals intact),
+                               # incremental re-index picks up edited files
+```
+
+**Demo:** copy a folder of documents somewhere, then say or type `"add this folder to my knowledge base"` (or click Add folder in the side panel), and follow with `"what did I write about [topic]"` / `"find my notes on [topic]"`. Toggle **Private Mode** on and ask the same question to hear the explicit refusal. Edit a file inside an indexed folder and watch chokidar re-index it; `"remove this folder from the index"` drops the index data while the originals stay untouched.
+
+**Known limitations:** the MiniLM model is a first-run network download (~80 MB quantized, from the HuggingFace CDN) — everything else is offline; the fallback hasher guarantees zero-network operation and identical results across runs. `.docx`/`.pdf` text extraction captures text only (no tables/images/captions). Re-indexed folders cap at 5 folders / 2000 files / depth 8.
+
 ## Test the model router headlessly
 
 ```bash
@@ -221,6 +256,11 @@ src/
 │   ├── vision/ Screenshot capture, offline OCR, UI detection, vision-query pipeline
 │   └── control/ nut-js input wrapper, cross-platform launcher, rule-based planner, kill-switch,
 │                 vision verification, step runner
+│   ├── files/     File search, dup detection, organize previews, move/copy/rename/delete (all gated)
+│   ├── notes/     On-device notes, reminders, tasks — keyword search, OS notifications, side-panel tab
+│   └── kb/        Personal knowledge base — local embeddings, folder indexing, chokidar watching,
+│                  snippet-only RAG query with Private Mode guard, source citation
+```
 ├── preload/preload.js contextBridge API — renderer has no Node access
 └── renderer/
     ├── index.html     Single-screen HUD

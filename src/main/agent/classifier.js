@@ -17,12 +17,14 @@
 const router = require("../router");
 const { FILE_RE } = require("../files/plan");
 const { planNoteAction } = require("../notes/plan");
+const { planKbAction } = require("../kb/plan");
 
 /** Intent names returned by classify(). */
 const INTENTS = Object.freeze({
   CONVERSATION: "conversation",
   VISION: "vision",
   CONTROL: "control",
+  KB: "kb",
   FILES: "files",
   NOTES: "notes",
   COMBINED: "combined",
@@ -57,12 +59,13 @@ async function quickClassify(text) {
     return null; // router failure → never route on a failed model pick
   }
   const prompt =
-    "Classify the user message into exactly one of: conversation, vision, control, files, notes, combined.\n" +
+    "Classify the user message into exactly one of: conversation, vision, control, kb, files, notes, combined.\n" +
     "conversation = chat / questions / anything that needs no tooling.\n" +
     "vision = the user wants to know what is on their screen (e.g. read an error).\n" +
     "control = the user wants the assistant to do something (open an app, click, type).\n" +
     "files = the user wants file management (search, organize, move, delete files).\n" +
     "notes = the user wants to create a note, set a reminder, manage tasks, search notes, or summarize notes.\n" +
+    "kb = the user wants to add, manage, or query their knowledge base (index a folder, ask what they wrote about a topic, search their documents).\n" +
     "combined = the user wants BOTH (check the screen AND act, e.g. verify the app opened).\n" +
     "Answer with a single lowercase word only.\n\n" +
     `Message: "${text}"`;
@@ -96,7 +99,7 @@ async function quickClassify(text) {
  * Classify a message.
  * @returns {{ intent: string, method: "rules"|"quick"|"fallback", confidence: "high"|"low" }}
  */
-async function classify(text = "") {
+async function classify(text = "", opts = {}) {
   const trimmed = text.trim();
   const isVision = VISION_RE.test(trimmed);
   const isControl = CONTROL_RE.test(trimmed);
@@ -104,6 +107,20 @@ async function classify(text = "") {
   // "note that / remind me / add to my tasks / mark done / search my notes"
   // always means NOTES. Only count it when the parser confirms it is a real
   // request (so "I'll remind you later" does not route to the notes module).
+  // Knowledge base has its own dedicated planner and verb set ("add this
+  // folder to my knowledge base", "what did I write about X", "search my
+  // kb") and routes before FILES/NOTES so that "find my notes on X" lands
+  // in the KB pipeline when a planner confirms it is a real KB request.
+  const kbAction = planKbActionSafe(trimmed, opts);
+  if (!isVision && kbAction) {
+    if (kbAction.error) {
+      // A planning ERROR is still clearly a KB request (e.g. "remove the
+      // sunset folder from the index" when sunset is not indexed) — route
+      // to the KB dispatcher so the user hears the friendly nudge.
+      return { intent: INTENTS.KB, method: "rules", confidence: "high", planningError: kbAction.error };
+    }
+    return { intent: INTENTS.KB, method: "rules", confidence: "high" };
+  }
   const noteAction = planNoteActionSafe(trimmed, {});
   if (!isVision && noteAction && !noteAction.error) {
     return { intent: INTENTS.NOTES, method: "rules", confidence: "high" };
@@ -155,6 +172,15 @@ try {
   planFileActionSafe = require("../files/plan").planFileAction;
 } catch {
   planFileActionSafe = () => null;
+}
+
+let planKbActionSafe;
+try {
+  // Lazy-load planKbAction: if the loader fails, no KB messages route to
+  // the KB dispatcher (safer than mis-routing into files or notes).
+  planKbActionSafe = planKbAction;
+} catch {
+  planKbActionSafe = () => null;
 }
 
 let planNoteActionSafe;
