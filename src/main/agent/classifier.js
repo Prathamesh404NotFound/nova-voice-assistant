@@ -16,6 +16,7 @@
 
 const router = require("../router");
 const { FILE_RE } = require("../files/plan");
+const { planNoteAction } = require("../notes/plan");
 
 /** Intent names returned by classify(). */
 const INTENTS = Object.freeze({
@@ -23,6 +24,7 @@ const INTENTS = Object.freeze({
   VISION: "vision",
   CONTROL: "control",
   FILES: "files",
+  NOTES: "notes",
   COMBINED: "combined",
 });
 
@@ -55,11 +57,12 @@ async function quickClassify(text) {
     return null; // router failure → never route on a failed model pick
   }
   const prompt =
-    "Classify the user message into exactly one of: conversation, vision, control, files, combined.\n" +
+    "Classify the user message into exactly one of: conversation, vision, control, files, notes, combined.\n" +
     "conversation = chat / questions / anything that needs no tooling.\n" +
     "vision = the user wants to know what is on their screen (e.g. read an error).\n" +
     "control = the user wants the assistant to do something (open an app, click, type).\n" +
     "files = the user wants file management (search, organize, move, delete files).\n" +
+    "notes = the user wants to create a note, set a reminder, manage tasks, search notes, or summarize notes.\n" +
     "combined = the user wants BOTH (check the screen AND act, e.g. verify the app opened).\n" +
     "Answer with a single lowercase word only.\n\n" +
     `Message: "${text}"`;
@@ -97,6 +100,22 @@ async function classify(text = "") {
   const trimmed = text.trim();
   const isVision = VISION_RE.test(trimmed);
   const isControl = CONTROL_RE.test(trimmed);
+  // Notes/reminders/tasks have their own verb set and never ambiguous —
+  // "note that / remind me / add to my tasks / mark done / search my notes"
+  // always means NOTES. Only count it when the parser confirms it is a real
+  // request (so "I'll remind you later" does not route to the notes module).
+  const noteAction = planNoteActionSafe(trimmed, {});
+  if (!isVision && noteAction && !noteAction.error) {
+    return { intent: INTENTS.NOTES, method: "rules", confidence: "high" };
+  }
+  // Even a notes PLANNING ERROR is still clearly a notes request (e.g.
+  // "mark pay rent done" on an empty task list, "delete the note about X"
+  // when nothing matches, "remind me to" with no body) — route to the
+  // notes dispatcher so the user hears the friendly nudge, not a chat reply.
+  if (!isVision && noteAction?.error) {
+    return { intent: INTENTS.NOTES, method: "rules", confidence: "high", planningError: noteAction.error };
+  }
+
   // File management is recognized by its own verb set and never ambiguous —
   // "find / clean up / move / rename / delete … files" always means FILES.
   // Only count it when the parser confirms it is a real file request (so
@@ -135,7 +154,16 @@ try {
   // "I could not find …" instead of acting blindly).
   planFileActionSafe = require("../files/plan").planFileAction;
 } catch {
-  planFileActionSafe = () => true;
+  planFileActionSafe = () => null;
+}
+
+let planNoteActionSafe;
+try {
+  // Lazy-load planNoteAction the same way: if the loader fails, no notes
+  // messages route to the notes dispatcher (safer than mis-routing).
+  planNoteActionSafe = planNoteAction;
+} catch {
+  planNoteActionSafe = () => null;
 }
 
 module.exports = { classify, quickClassify, INTENTS, VISION_RE, CONTROL_RE };

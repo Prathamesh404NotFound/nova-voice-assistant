@@ -1,6 +1,6 @@
 # Nova — Voice-First Desktop AI Assistant
 
-Nova is a cross-platform (Windows + macOS) desktop AI assistant built with **Electron + Node.js**, developed stage by stage with the safety scaffolding built BEFORE any feature that can touch the user's mouse, keyboard, files, or screen. Every message now flows through one **unified agent loop**: an intent classifier (conversation / vision / control / combined) dispatches each message, and Nova narrates each step out loud ("Opening Notepad now…"). Nova can *see* the screen (screenshot + local OCR + optional vision-model reasoning, Level 0 read-only), *act* on it through a safety-gated, rule-based task planner (Level 0–3, strictly routed through the permission framework), *undo* reversible L2 file/text actions for 5 minutes, and *inspect its own behavior* in a Developer Mode panel. No file-system tools are implemented yet.
+Nova is a cross-platform (Windows + macOS) desktop AI assistant built with **Electron + Node.js**, developed stage by stage with the safety scaffolding built BEFORE any feature that can touch the user's mouse, keyboard, files, or screen. Every message now flows through one **unified agent loop**: an intent classifier (conversation / vision / control / files / notes / combined) dispatches each message, and Nova narrates each step out loud ("Opening Notepad now…"). Nova can *see* the screen (screenshot + local OCR + optional vision-model reasoning, Level 0 read-only), *act* on it through a safety-gated, rule-based task planner (Level 0–3, strictly routed through the permission framework), *manage files* by voice (search, duplicate detection, organize-tidy with mandatory dry-run preview, move/copy/rename, OS-Recycle-Bin delete — Level 0/2/4), keep *fully on-device notes, reminders and tasks* with OS notifications and keyword search, *undo* reversible L2 actions for 5 minutes, and *inspect its own behavior* in a Developer Mode panel.
 
 **Distribution-ready:** electron-builder produces an unsigned Windows NSIS installer and macOS `.dmg` (`npm run build:win` / `npm run build:mac`); first-run onboarding screens explain every OS permission before the OS prompt appears (macOS Screen Recording + Accessibility; Windows needs none). See `docs/SIGNING.md` for how to add code signing later.
 
@@ -23,6 +23,8 @@ Nova is a cross-platform (Windows + macOS) desktop AI assistant built with **Ele
 | Indicators | Small model chip in top bar (click = refresh list / open side panel) + Developer Mode panel in side panel |
 | Screen vision | Saying or typing "what's on my screen", "what am I looking at", "what does this error say", "describe my screen" captures the screen via `desktopCapturer`, runs fully offline tesseract.js OCR (works in Private Mode), detects button-like / input-like UI regions from OCR bounding boxes, and — when not in Private Mode and a free vision model is available — sends the screenshot + question to a vision-capable model via the router; otherwise answers from OCR text alone; every capture is logged to the Action Log as Level 0 with a note (never the image bytes) |
 | Mouse/keyboard control | Rule-based task planner compiles instructions like "open the system calculator and compute 12 x 8" into a checklist shown before execution; `@nut-tree-fork/nut-js` simulation (move/click/right-click/double-click/scroll/drag/type/press-keys) at L0–L3 with `physical` flag (L2+ blocked in Private Mode); hard kill-switch: `Ctrl+Shift+Esc` global hotkey + STOP button + "nova stop" barge-in; mid-sequence vision verification (screenshot + OCR confirms expected text before continuing); every step logged with outcome |
+| Voice file management | "find my resume", "find duplicate files in Downloads", "clean up my Downloads folder", "move this file to Documents" — hash-based dup detection, mandatory dry-run preview for organize/remove-duplicates (one-shot preview token, only-loose files), cancellable 5 s toast for move/copy/rename, L4 delete to OS Recycle Bin only, vague-delete refusal, all through the gate/Action Log/undo |
+| Local notes & reminders | Fully on-device `userData/notes.json` store; "Nova, note that [X]" timestamped notes, timed reminders via 30 s polling scheduler firing the Electron Notification API once-only (spoken aloud when focused), flat task list with "mark done", keyword search, Notes/Tasks side-panel tab, note content never sent to OpenRouter — only an explicit "summarize my notes" (refused in Private Mode) |
 | Safety framework | 5 risk levels (L0 Read → L4 Destructive), per-action permission gate (L0–1 immediate / L2 cancellable 5s toast / L3–4 explicit Confirm modal in plain language), persistent action log (JSON, newest first, exportable), dry-run `simulate()` paths for L2+, global Private Mode (blocks all outbound network except OpenRouter, persistent 🔒 PRIVATE badge) |
 
 ## Run
@@ -162,6 +164,37 @@ npm run test:files   # headless self-test — 80+ checks: registration + risk le
 **Demo:** say or type `"find my resume"`, `"how much space is Downloads taking up"`, `"clean up my Downloads folder"`, `"move this file to Documents"`. The last one shows the 5 s cancellable toast before moving; the organize flow shows the preview card first and moves nothing until you confirm it.
 
 **Design note on the undo bridge:** bulk reversals (organize/move/copy) need the actual moved/copied list, which only exists after `execute()`. `gate.js` now stores the execute result on the registry entry (`action.lastResult`), and `undo.js` merges it into the reverse payload — single-file reversals (rename) keep using the original payload.
+
+## Local notes, reminders & tasks (Stage 7)
+
+Everything in this module is **fully on-device**. The store is a single JSON file at `userData/notes.json` (atomic writes, no cloud account, no external calendar), and note content **never leaves the machine** — the model router is never handed notes text. The only exception is an explicit user request to `"summarize my notes"`: that one action sends only the note texts for that single request through the normal router flow, and it is refused outright in Private Mode.
+
+All notes actions are registered through the same permission gate and Action Log as every other stage:
+
+| Action | Level | Notes |
+|--------|-------|-------|
+| `notes:add-note`, `notes:add-task`, `notes:add-reminder`, `notes:search-notes`, `notes:list-notes`, `notes:list-tasks`, `notes:list-reminders` | L1 | Safe — create/read, runs immediately |
+| `notes:complete-task`, `notes:delete-note`, `notes:delete-task`, `notes:cancel-reminder`, `notes:summarize-notes` | L2 | Reversible — cancellable 5 s toast; each mutating action has a `reverse` fn so Nova's Undo restores within 5 minutes |
+
+**Voice commands supported:** `"Nova, note that [X]"` (timestamped note), `"remind me to [X] at [time]"` / `"in [duration]"` (timed reminder), `"add [X] to my tasks"`, `"mark [X] done"`, `"what did I note about [topic]"` (keyword search — reads matches back aloud). `"summarize my notes"` is the single deliberate network path.
+
+**Timed reminders fire as OS notifications** (`new Notification({ title, body }).show()` — `notifications: false` so the sound policy is yours) via a 30 s polling scheduler in `src/main/notes/reminders.js`; each reminder fires exactly once (persisted `fired` flag). If the app window is focused, the reminder is also emitted to the renderer as `nova:reminder-fired` so Nova can speak it out loud. Reminders only fire while the app is running (documented limitation — no system-level persistence beyond the stored JSON).
+
+**Side panel:** a new Notes/Tasks tab (between Action Log and Type-instead) shows notes, tasks, and pending reminders, each editable by mouse/keyboard — add/edit/mark-done/delete without voice. Mouse-driven actions talk to the dispatcher through the same `nova:notes-run` IPC path as the voice loop, so mouse clicks are logged to the Action Log at the same levels as voice commands.
+
+```bash
+npm run test:notes   # headless self-test — 78 checks: local JSON store +
+                     # atomic saves, NL planning + intent classification,
+                     # all 12 action levels + simulate/describe text,
+                     # L1 immediate / L2 gate paths, undo reversals for
+                     # completed tasks and deleted notes, mock OS notification
+                     # firing (once-only), and the privacy guard (summarize is
+                     # the only network path; refused in Private Mode)
+node scripts/smoke-notes-e2e.js   # end-to-end: note + timed reminder fires +
+                                  # task add/complete + keyword search
+```
+
+**Demo:** say or type `"Nova, note that my sister's birthday is June 12"`, `"remind me to take the chicken out at 3pm"`, `"add pick up the dry cleaning to my tasks"`, `"what did I note about birthday"`.
 
 ## Test the model router headlessly
 

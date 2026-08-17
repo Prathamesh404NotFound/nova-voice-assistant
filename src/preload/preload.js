@@ -48,6 +48,15 @@ contextBridge.exposeInMainWorld("nova", {
   agentRun: (text) => ipcRenderer.invoke("nova:agent-run", text),
   // --- File preview confirmation (Stage 6) ---
   filesExecute: (previewToken) => ipcRenderer.invoke("nova:files-execute", previewToken),
+
+  // --- Notes / reminders / tasks (Stage 7 — fully local) ---
+  getNotesStore: () => ipcRenderer.invoke("nova:get-notes-store"),
+  notesRun: (text) => ipcRenderer.invoke("nova:notes-run", text),
+  onReminderFired: (cb) => {
+    const listener = (_evt, data) => cb(data);
+    ipcRenderer.on("nova:reminder-fired", listener);
+    return () => ipcRenderer.removeListener("nova:reminder-fired", listener);
+  },
   onAgentProgress: (cb) => {
     const listener = (_evt, event) => cb(event);
     ipcRenderer.on("nova:agent-progress", listener);

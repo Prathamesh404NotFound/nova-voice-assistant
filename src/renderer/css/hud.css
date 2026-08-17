@@ -751,3 +751,90 @@ html, body {
 .file-preview[data-state="cancelled"] { border-color: #4a3036; }
 .file-preview[data-state="cancelled"] .fp-title { color: #e08080; }
 .file-preview[data-state="running"] { opacity: 0.55; pointer-events: none; }
+
+/* ------------------------------------------------------------------ Stage 7
+   Notes / Reminders / Tasks side panel — fully local (userData) store.
+   Tabs, item rows, add form + toast. Dark HUD palette. */
+.notes-tabs { display: flex; gap: 2px; margin: 6px 0 4px; }
+.notes-tab {
+  flex: 1;
+  background: #10121a;
+  border: 1px solid #23263a;
+  color: #7c84a8;
+  font: 500 11px/1.2 var(--font-mono, "JetBrains Mono", monospace);
+  padding: 5px 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.notes-tab:hover { background: #161a28; color: #a9b2d6; }
+.notes-tab.active { background: #1d2240; border-color: var(--cyan-dim, #4a5aff); color: #eef0ff; }
+.notes-list {
+  max-height: 160px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.notes-item {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid #1c1f30;
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 12px;
+  color: #d7d9ea;
+}
+.notes-item.done { opacity: 0.55; }
+.notes-item.done .notes-text { text-decoration: line-through; }
+.notes-text { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.notes-sub { color: #6a719a; font-size: 10px; flex-shrink: 0; }
+.notes-check { flex-shrink: 0; }
+.notes-check input[type="checkbox"] { accent-color: var(--cyan, #39d2ff); width: 13px; height: 13px; cursor: pointer; margin: 0; }
+.notes-del {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: #8a3b4f;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 3px;
+}
+.notes-del:hover { color: var(--red, #ff5a6e); }
+.notes-add form { display: flex; gap: 4px; margin-top: 6px; }
+.notes-add input[type="text"] {
+  flex: 1;
+  background: var(--bg-elev, #10131e);
+  border: 1px solid #23263a;
+  border-radius: 6px;
+  color: #eef0ff;
+  font-size: 12px;
+  padding: 6px 8px;
+  outline: none;
+  font-family: var(--font-body, inherit);
+  user-select: text;
+}
+.notes-add input[type="text"]:focus { border-color: var(--cyan-dim, #4a5aff); }
+.notes-toast {
+  position: fixed;
+  top: 64px;
+  right: 24px;
+  max-width: 340px;
+  background: #1d2240;
+  border: 1px solid var(--cyan-dim, #4a5aff);
+  border-left: 4px solid var(--cyan, #39d2ff);
+  color: #eef0ff;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font: 500 13px/1.4 var(--font-body, system-ui, sans-serif);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 50;
+  pointer-events: none;
+}
+.notes-toast.show { opacity: 1; transform: translateY(0); }

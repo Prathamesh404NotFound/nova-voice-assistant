@@ -42,6 +42,8 @@
     permLog: $("permLog"), permExportBtn: $("permExportBtn"), permClearBtn: $("permClearBtn"),
     screenPermHelp: $("screenPermHelp"), openScreenSettingsBtn: $("openScreenSettingsBtn"),
     ctrlStopBtn: $("ctrlStopBtn"),
+    notesTabs: $("notesTabs"), notesList: $("notesList"), notesAdd: $("notesAdd"),
+    notesRefreshBtn: $("notesRefreshBtn"),
   };
 
   // ------------------------------------------------------------------ clock
@@ -64,6 +66,192 @@
   }
   el.sideToggle.addEventListener("click", () => setSidePanel(!el.sidePanel.classList.contains("open")));
   el.sideClose.addEventListener("click", () => setSidePanel(false));
+
+  // ======================================================================
+  // NOTES / REMINDERS / TASKS SIDE PANEL (Stage 7 — fully local store)
+  // ======================================================================
+
+  const NOTES_STATE = { tab: "notes" };
+
+  /** Tab switching (notes | tasks | reminders). */
+  function setNotesTab(tab) {
+    NOTES_STATE.tab = tab;
+    document.querySelectorAll("[data-notes-tab]").forEach((b) => b.classList.toggle("active", b.dataset.notesTab === tab));
+    refreshNotesList();
+  }
+
+  function whenHuman(iso) {
+    if (!iso) return "—";
+    try {
+      const d = new Date(iso);
+      return d.toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+    } catch {
+      return iso;
+    }
+  }
+
+  /** Render the active tab from the local store (no network — reads userData). */
+  async function refreshNotesList() {
+    const res = await window.nova.getNotesStore().catch(() => null);
+    const store = res?.store;
+    const tab = NOTES_STATE.tab;
+    const emptyMsg = {
+      notes: "No notes yet. Voice: “Nova, note that …” — or type below.",
+      tasks: "No tasks yet. Voice: “add X to my tasks” — or type below.",
+      reminders: "No reminders yet. Voice: “remind me to X at 3pm” — or type below.",
+    }[tab];
+    if (!store || !Array.isArray(store[tab + "s"])) {
+      el.notesList.innerHTML = `<p class="history-empty">${emptyMsg}</p>`;
+      return;
+    }
+    const items = store[tab + "s"] || [];
+    if (!items.length) {
+      el.notesList.innerHTML = `<p class="history-empty">${emptyMsg}</p>`;
+      return;
+    }
+    if (tab === "tasks") {
+      el.notesList.innerHTML = items
+        .map((t) => `
+        <div class="notes-item${t.done ? " done" : ""}">
+          <label class="notes-check"><input type="checkbox" ${t.done ? "checked" : ""} data-notes-action="task-toggle" data-notes-id="${escapeAttr(t.id)}" /></label>
+          <span class="notes-text">${escapeHtml(String(t.text || ""))}</span>
+          <span class="notes-sub">${t.done ? "done" : ""}</span>
+          <button class="notes-del" data-notes-action="delete" data-notes-id="${escapeAttr(t.id)}" title="Delete">&times;</button>
+        </div>`).join("");
+      return;
+    }
+    if (tab === "reminders") {
+      el.notesList.innerHTML = items
+        .map((r) => `
+        <div class="notes-item${r.fired ? " done" : ""}">
+          <span class="notes-check"></span>
+          <span class="notes-text">${escapeHtml(String(r.text || ""))}</span>
+          <span class="notes-sub">${r.fired ? "fired " : ""}${whenHuman(r.dueAt)}</span>
+          <button class="notes-del" data-notes-action="cancel" data-notes-id="${escapeAttr(r.id)}" title="Cancel">&times;</button>
+        </div>`).join("");
+      return;
+    }
+    el.notesList.innerHTML = items
+      .map((n) => `
+      <div class="notes-item">
+        <span class="notes-text">${escapeHtml(String(n.text || ""))}</span>
+        <span class="notes-sub">${whenHuman(n.at)}</span>
+        <button class="notes-del" data-notes-action="delete" data-notes-id="${escapeAttr(n.id)}" title="Delete">&times;</button>
+      </div>`).join("");
+  }
+
+  function renderNotesAddForm() {
+    const tab = NOTES_STATE.tab;
+    if (tab === "notes") {
+      el.notesAdd.innerHTML = `
+      <form id="notesForm" autocomplete="off">
+        <input id="notesInput" type="text" placeholder="Note that …" maxlength="2000" />
+        <button type="submit" class="send-btn">&#10148;</button>
+      </form>`;
+      $("notesForm").addEventListener("submit", (ev) => {
+        ev.preventDefault();
+        const v = $("notesInput").value.trim();
+        if (!v) return;
+        $("notesInput").value = "";
+        runNotesCommand(`note that ${v}`);
+      });
+      return;
+    }
+    if (tab === "tasks") {
+      el.notesAdd.innerHTML = `
+      <form id="notesForm" autocomplete="off">
+        <input id="notesInput" type="text" placeholder="Add to my tasks …" maxlength="2000" />
+        <button type="submit" class="send-btn">&#10148;</button>
+      </form>`;
+      $("notesForm").addEventListener("submit", (ev) => {
+        ev.preventDefault();
+        const v = $("notesInput").value.trim();
+        if (!v) return;
+        $("notesInput").value = "";
+        runNotesCommand(`add ${v} to my tasks`);
+      });
+      return;
+    }
+    el.notesAdd.innerHTML = `
+    <form id="notesForm" autocomplete="off">
+      <input id="notesInput" type="text" placeholder="Remind me to … (e.g. call mom at 5pm)" maxlength="2000" />
+      <button type="submit" class="send-btn">&#10148;</button>
+    </form>`;
+    $("notesForm").addEventListener("submit", (ev) => {
+      ev.preventDefault();
+      const v = $("notesInput").value.trim();
+      if (!v) return;
+      $("notesInput").value = "";
+      runNotesCommand(`remind me to ${v}`);
+    });
+  }
+
+  /**
+   * Run a notes command through the same permission-gated path as voice.
+   * Used by the side panel (mouse/keyboard) so mouse and voice share the
+   * exact same actions, levels and Action Log entries.
+   */
+  async function runNotesCommand(text) {
+    try {
+      const res = await window.nova.notesRun(text);
+      if (!res?.ok) {
+        showNotesToast(res?.text || "That request could not be completed.");
+        return;
+      }
+      showNotesToast(res.narration || res.text || "Done.");
+      refreshNotesList();
+    } catch (err) {
+      showNotesToast("Something went wrong — see Developer Mode.");
+    }
+  }
+
+  function showNotesToast(text) {
+    const existing = document.getElementById("notesToast");
+    if (existing) existing.remove();
+    const div = document.createElement("div");
+    div.id = "notesToast";
+    div.className = "notes-toast";
+    div.textContent = text;
+    document.body.appendChild(div);
+    setTimeout(() => div.classList.add("show"), 10);
+    setTimeout(() => {
+      div.classList.remove("show");
+      setTimeout(() => div.remove(), 300);
+    }, 3500);
+  }
+
+  async function refreshNotesPanel() {
+    refreshNotesList();
+    renderNotesAddForm();
+  }
+
+  function initNotesPanel() {
+    document.querySelectorAll("[data-notes-tab]").forEach((b) => {
+      b.addEventListener("click", () => setNotesTab(b.dataset.notesTab));
+    });
+    el.notesRefreshBtn.addEventListener("click", () => refreshNotesList());
+    el.notesList.addEventListener("click", async (ev) => {
+      const btn = ev.target.closest("[data-notes-action]");
+      if (!btn) return;
+      const action = btn.dataset.notesAction;
+      const id = btn.dataset.notesId;
+      if (action === "delete") await runNotesCommand(`delete note ${id}`);
+      else if (action === "cancel") await runNotesCommand(`cancel reminder ${id}`);
+      else if (action === "task-toggle") await runNotesCommand(`mark task ${id} done`);
+    });
+    refreshNotesPanel();
+    // OS notifications fire in the main process; the renderer speaks them
+    // aloud when Nova is focused and shows a small banner either way.
+    window.nova.onReminderFired((data) => {
+      if (!data) return;
+      const msg = `Reminder: ${data.text}`;
+      showNotesToast(msg);
+      // Speak only when the window is focused (the main process already
+      // emitted to both; the spoken version is renderer-side so barge-in
+      // works and Private Mode stays irrelevant — TTS is fully local).
+      if (document.hasFocus()) speak(msg);
+    });
+  }
 
   // ======================================================================
   // CONTROL PLAN REVIEW + PROGRESS CHECKLIST
@@ -718,7 +906,7 @@ let historyItems = [];
           const groups = res.detail?.groups || [];
           const dupCount = groups.reduce((n, g) => n + Math.max(0, g.files.length - 1), 0);
           const txt = dupCount
-            ? `Found ${dupCount} duplicate file${dupCount === 1 ? "" : "s"} across ${groups.length} group${groups.length === 1 ? "" : "s"} — same content, not just the name. Say \"remove the duplicates\" to send them to the Recycle Bin.`
+            ? `Found ${dupCount} duplicate file${dupCount === 1 ? "" : "s"} across ${groups.length} group${groups.length === 1 ? "" : "s"} — same content, not just the name. Say "remove the duplicates" to send them to the Recycle Bin.`
             : "No duplicates found — every file in that folder has unique content.";
           addHistoryEntry({ role: "nova", text: txt, src: source });
           speak(txt);
@@ -742,6 +930,18 @@ let historyItems = [];
           speak(txt);
         }
         el.liveLine.textContent = "";
+        return;
+      }
+      if (res.intent === "notes") {
+        // Notes/reminders/tasks: always shown in chat AND refresh the local
+        // side-panel so the list stays in sync (voice + mouse paths share it).
+        const txt = res.narration || res.text;
+        if (txt) {
+          addHistoryEntry({ role: "nova", text: txt, src: source });
+          speak(txt);
+        }
+        el.liveLine.textContent = "";
+        refreshNotesPanel();
         return;
       }
       if (res.plan) {
@@ -1179,6 +1379,7 @@ let historyItems = [];
   }
 
   if (window.nova.onOnboarding) window.nova.onOnboarding((data) => showOnboarding(data.pending, data.state));
+  initNotesPanel();
 
   el.onboardingAck?.addEventListener("click", async () => {
     try {

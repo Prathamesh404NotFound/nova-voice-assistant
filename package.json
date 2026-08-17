@@ -22,7 +22,8 @@
     "test:control": "node src/main/test-control.js",
     "test:agent": "node src/main/test-agent.js",
     "test:files": "node src/main/test-files.js",
-    "test": "npm run test:permissions && npm run test:vision && npm run test:control && npm run test:agent && npm run test:files"
+    "test": "npm run test:permissions && npm run test:vision && npm run test:control && npm run test:agent && npm run test:files",
+    "test:notes": "node src/main/test-notes.js"
   },
   "build": {
     "appId": "com.nova.assistant",

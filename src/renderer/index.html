@@ -101,6 +101,23 @@
         </div>
       </div>
 
+      <!-- Stage 7: Notes / Reminders / Tasks — fully local (userData) -->
+      <div class="side-section">
+        <div class="side-label">Notes / Tasks
+          <span class="log-actions">
+            <button id="notesRefreshBtn" class="flat-btn small" title="Refresh from the local store">&#8635; Refresh</button>
+          </span>
+        </div>
+        <div id="notesTabs" class="notes-tabs" role="tablist">
+          <button class="notes-tab active" data-notes-tab="notes" role="tab">Notes</button>
+          <button class="notes-tab" data-notes-tab="tasks" role="tab">Tasks</button>
+          <button class="notes-tab" data-notes-tab="reminders" role="tab">Reminders</button>
+        </div>
+        <div id="notesList" class="notes-list"></div>
+        <div id="notesAdd" class="notes-add"></div>
+        <div class="settings-note" style="margin-top:6px;">Everything below lives only on this machine — nothing is ever sent to a cloud service unless you explicitly ask Nova to summarize your notes.</div>
+      </div>
+
       <div class="side-section input-section">
         <div class="side-label">Type instead</div>
         <form id="typeForm" autocomplete="off">

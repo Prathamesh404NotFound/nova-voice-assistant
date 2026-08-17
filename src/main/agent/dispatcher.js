@@ -22,6 +22,7 @@ const { classify, INTENTS } = require("./classifier");
 const { plainError, retryOnce } = require("./retry");
 const control = require("../control");
 const { runFileAction, executePreview, getContext } = require("../files/dispatch");
+const notesDispatch = require("../notes/dispatch");
 
 const emitter = new EventEmitter();
 
@@ -48,6 +49,42 @@ function recordStep(taskId, label, level, ms) {
 function narrateFiles(taskId, step, text) {
   emitter.emit("progress", { type: "narration", taskId, step, text });
   log.info(`[agent:narrate] [${step}] ${text}`);
+}
+
+function narrateNotes(taskId, step, text) {
+  emitter.emit("progress", { type: "narration", taskId, step, text });
+  log.info(`[agent:narrate] [${step}] ${text}`);
+}
+
+/** Notes/reminders/tasks: fully local except the explicit summarize flow. */
+async function dispatchNotes(text, opts = {}) {
+  // The classifier may have already detected a notes planning error (empty
+  // list, no match, incomplete phrase) — honor it directly so the user hears
+  // the friendly nudge without a redundant re-plan pass.
+  if (opts.planningError) {
+    return {
+      ok: false, intent: "notes",
+      text: opts.planningError,
+      detail: { planningError: opts.planningError },
+    };
+  }
+  const planned = notesDispatch.planNoteAction(text, notesDispatch.storeContext());
+  // The ONLY notes path that ever leaves the machine. Private Mode refuses
+  // it outright (Stage 7 req 5) — no model call, nothing sent.
+  if (planned?.actionId === "notes:summarize-notes" && settings.isPrivateMode()) {
+    return {
+      ok: false, intent: "notes", actionId: planned.actionId,
+      text: "Private Mode is on — I can't send your notes anywhere, not even to summarize them. Turn Private Mode off first if you want this.",
+      detail: { kind: "summarize", privateMode: true },
+    };
+  }
+  const res = await notesDispatch.runNoteAction(text, {
+    taskId: lastTask?.id,
+    getKey: opts.getKey,
+    mainWindow: opts.mainWindow,
+  });
+  recordStep(lastTask?.id, "notes " + (res.actionId || "plan"), null, Date.now() - (lastTask?.startedAt || Date.now()));
+  return res;
 }
 
 function recordError(taskId, ctx, err) {
@@ -232,6 +269,12 @@ async function run(text, opts = {}) {
     if (intent === INTENTS.FILES) {
       const out = await dispatchFiles(text);
       lastTask.output = { type: "files", ...out, error: !!out.error };
+      return { ok: true, intent, ...out };
+    }
+    if (intent === INTENTS.NOTES) {
+      const out = await dispatchNotes(text, opts);
+      lastTask.output = { type: "notes", ...out, error: !out.ok };
+      if (out.narration) narrateNotes(taskId, "notes", out.narration);
       return { ok: true, intent, ...out };
     }
     // COMBINED

@@ -42,6 +42,14 @@ const { globalShortcut } = require("electron");
 require("./files/actions");
 const { executePreview } = require("./files/dispatch");
 
+// Notes / reminders / tasks (Stage 7) — fully local (userData/nova-notes.json)
+// except the explicit "summarize my notes" flow. Notes:* actions are L1 safe
+// for create/read and L2 reversible for edit/delete/summarize, all gated
+// through the existing permission gate. Registration must happen before the
+// first agent run so the gate knows the actions.
+require("./notes/actions");
+const reminders = require("./notes/reminders");
+
 log.transports.file.level = "info";
 log.transports.console.level = "info";
 
@@ -299,12 +307,45 @@ ipcMain.handle("nova:files-execute", async (_evt, previewToken) => {
   }
 });
 
+// ---------------------------------------------------------------------------
+// IPC: notes / reminders / tasks (Stage 7)
+// ---------------------------------------------------------------------------
+/** Read-only mirror of the local store for the side panel (L0-equivalent). */
+ipcMain.handle("nova:get-notes-store", () => {
+  try {
+    return { ok: true, store: require("./notes/store").all() };
+  } catch (err) {
+    return { ok: false, error: String(err?.message || err) };
+  }
+});
+
+/**
+ * Run a notes message through the permission gate directly (side panel
+ * mouse/keyboard path — same actions as the voice path, same levels).
+ * Summarize is the only action that ever leaves the machine.
+ */
+ipcMain.handle("nova:notes-run", async (_evt, text) => {
+  try {
+    const { getKey } = require("./keys");
+    const keyPromise = getKey().catch(() => null);
+    const { runNoteAction } = require("./notes/dispatch");
+    return await runNoteAction(String(text || ""), {
+      getKey: async () => (await keyPromise) || null,
+      mainWindow,
+    });
+  } catch (err) {
+    log.error("[notes] notes-run failed:", err?.message || err);
+    return { ok: false, intent: "notes", text: "Something went wrong — details are in Developer Mode.", error: String(err?.message || err) };
+  }
+});
+
 ipcMain.handle("nova:agent-run", async (_evt, text) => {
   try {
     const { getKey } = require("./keys");
     const keyPromise = getKey().catch(() => null);
     const out = await dispatcher.run(text, {
       getKey: async () => (await keyPromise) || null,
+      mainWindow,
       runVisionQuery: async (question) => {
         try {
           return await runVisionQuery(question);
@@ -364,6 +405,10 @@ app.whenReady().then(async () => {
   // 3. Register the hard kill-switch hotkey (must happen after app is ready)
   registerKillHotkey();
   createWindow();
+  // 4. Start the local reminder scheduler (boots scan catches anything due
+  //    while the app was closed; 15 s polling thereafter). Reminders only
+  //    fire while the app is running.
+  reminders.start(mainWindow);
   // First-run onboarding: tell the renderer which OS permissions are still
   // pending so the why-needed screens can appear BEFORE the OS prompts.
   try {
