@@ -197,6 +197,53 @@ registerAction({
   },
 });
 
+// Round 34: recurring reminders/tasks — create is L2 (REVERSIBLE) because a
+// recurring reminder can ring every day forever if created by mistake; the
+// reverse() tears down the spec (and its armed reminder row) cleanly.
+// Removal is also L2 with an exact re-creation reverse: re-add the spec and
+// re-arm its reminder row at the stored nextDue, so "undo" is lossless.
+registerAction({
+  id: "notes:add-recurring",
+  level: RISK_LEVEL.REVERSIBLE,
+  description: "Create a recurring reminder or task",
+  simulate: async (p) => ({
+    title: `Nova wants to add a recurring ${p.mode || "reminder"}: "${(p.text || "").slice(0, 80)}"`,
+    body: `This will repeat ${p.cadence || "daily"}${p.time ? ` at ${new Date(p.time).toLocaleTimeString()}` : ""}. You can cancel it anytime.`,
+  }),
+  execute: async (p) => {
+    const item = store.addRecurring(p);
+    return { item, kind: "recurring" };
+  },
+  reverse: async (p, result) => {
+    const id = (result && result.item && result.item.id) || null;
+    if (!id) return { undone: false, error: "nothing recorded to remove" };
+    const removed = store.removeRecurring(id);
+    return removed ? { undone: true } : { undone: false, error: "item already removed" };
+  },
+});
+registerAction({
+  id: "notes:remove-recurring",
+  level: RISK_LEVEL.REVERSIBLE,
+  description: "Remove a recurring reminder or task",
+  simulate: async (p) => ({
+    title: `Nova wants to remove the recurring item "${(p.text || p.id || "").slice(0, 80)}"`,
+    body: "It stops repeating and its pending reminder is cancelled. You can undo this.",
+  }),
+  execute: async (p) => {
+    const removed = store.removeRecurring(p.id);
+    if (!removed) throw new Error("recurring item not found");
+    return { removed, kind: "recurring-removed" };
+  },
+  reverse: async (p, result) => {
+    const item = (result && result.removed) || null;
+    if (!item) return { undone: false, error: "nothing recorded to restore" };
+    const restored = store.addRecurring({
+      text: item.text, mode: item.mode, cadence: item.cadence,
+      day: item.day, weekdays: !!item.weekdays, time: item.time,
+    });
+    return restored ? { undone: true, item: restored } : { undone: false, error: "could not restore the recurring item" };
+  },
+});
 registerAction({
   id: "notes:cancel-reminder",
   level: RISK_LEVEL.REVERSIBLE,

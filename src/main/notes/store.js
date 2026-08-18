@@ -5,8 +5,10 @@
 // module — nothing in this file can reach OpenRouter or any cloud service.
 // Writes are atomic-ish: serialize to .tmp, then fs.rename over the real file.
 //
-// Shape: { notes: [...], reminders: [...], tasks: [...] }
+// Shape: { notes: [...], reminders: [...], tasks: [...], focus: [...], recurring: [...] }
 // Each item: { id, text, (done|dueAt|fired as applicable), createdAt, updatedAt }
+// Round 34 adds `recurring` — recurring spec rows (cadence + mode); task-mode
+// recurring items do NOT carry a reminder row (a new task row is created at each fire).
 
 const fs = require("fs");
 const path = require("path");
@@ -54,6 +56,7 @@ function load() {
         reminders: Array.isArray(parsed.reminders) ? parsed.reminders : [],
         tasks: Array.isArray(parsed.tasks) ? parsed.tasks : [],
         focus: Array.isArray(parsed.focus) ? parsed.focus : [],
+        recurring: Array.isArray(parsed.recurring) ? parsed.recurring : [],
       };
     }
   } catch (err) {
@@ -92,6 +95,7 @@ function all() {
     reminders: __data.reminders.map(stripInternal),
     tasks: __data.tasks.map(stripInternal),
     focus: (__data.focus || []).map(stripInternal),
+    recurring: (__data.recurring || []).map(stripInternal),
   };
 }
 
@@ -128,6 +132,148 @@ function rearmReminder(id, dueAt) {
   if (!item) return null;
   item.fired = false;
   if (dueAt) item.dueAt = new Date(dueAt).toISOString();
+  item.updatedAt = nowISO();
+  save();
+  return stripInternal(item);
+}
+
+// ---------------------------------------------------------------------------
+// Round 34: recurring reminders/tasks.
+//
+// A recurring item is a *spec* (cadence + optional time + reminder or task
+// mode) stored in the new `recurring` collection. When mode is "reminder",
+// a single reminder row is armed to the next due instant; when the scheduler
+// fires it, requeueFired() computes the NEXT occurrence and re-arms the same
+// row — so the reminder row's lifetime mirrors the spec's, and cancelling the
+// spec simply cancels the row. Task-mode recurring items do NOT carry a
+// reminder row at all — they create a new task row at each fire instead.
+//
+// Cadence tokens accepted by computeNextDue: "day" | "week" | "month" |
+// "weekday" (Mon–Fri) | "morning" | "afternoon" | "evening" | "night" |
+// "monday".."sunday" (numeric weekday via `day`).
+// ---------------------------------------------------------------------------
+
+function ensureRecurring() {
+  if (!Array.isArray(__data.recurring)) __data.recurring = [];
+}
+
+/**
+ * Pure next-occurrence math. `now` may be pinned by the test clock. Returns
+ * a Date STRICTLY in the future — same-day occurrences that are still ahead
+ * of now are fair game, but anything at/before now rolls to the next cycle.
+ */
+function computeNextDue(item, now) {
+  const d = new Date(now || Date.now());
+  const t = item.time ? new Date(item.time) : null;
+  const base = t ? new Date(d) : d;
+  // Half-day cadences without an explicit clock anchor to a fixed hour
+  // (matching plan.js parseRecurring anchors: morning 7:00, afternoon 13:00,
+  // evening 18:00, night 21:00).
+  const halfAnchor = { morning: "7:00", afternoon: "13:00", evening: "18:00", night: "21:00" }[(item.cadence || "")] || null;
+  const [h, m] = t ? [t.getHours(), t.getMinutes()] : (halfAnchor ? halfAnchor.split(":").map(Number) : [9, 0]);
+  base.setHours(h, m, 0, 0);
+
+  if (item.day !== undefined && item.day !== null) {
+    // named weekday (0=Sun .. 6=Sat)
+    while (base.getTime() <= d.getTime()) base.setDate(base.getDate() + 1);
+    while (base.getDay() !== item.day) base.setDate(base.getDate() + 1);
+    return base;
+  }
+  const cadence = item.cadence || "day";
+  if (cadence === "weekday") {
+    // next Mon–Fri: skip today-only-same-time and weekends
+    while (base.getTime() <= d.getTime() || base.getDay() === 0 || base.getDay() === 6) base.setDate(base.getDate() + 1);
+    return base;
+  }
+  if (["morning", "afternoon", "evening", "night"].includes(cadence)) {
+    // half-day anchored times — advance a day at a time until strictly future
+    if (base.getTime() > d.getTime()) return base;
+    base.setDate(base.getDate() + 1);
+    return base;
+  }
+  if (cadence === "week") {
+    // same clock daily + 7-day cycle: next eligible occurrence >= tomorrow
+    if (base.getTime() <= d.getTime()) base.setDate(base.getDate() + 1);
+    while (base.getTime() <= d.getTime()) base.setDate(base.getDate() + 7);
+    return base;
+  }
+  if (cadence === "month") {
+    // 1st of each month at the given time (or next valid occurrence)
+    base.setDate(1);
+    base.setHours(h, m, 0, 0);
+    while (base.getTime() <= d.getTime()) base.setMonth(base.getMonth() + 1);
+    return base;
+  }
+  // "day" (default): daily at the anchored time — must be strictly future
+  if (base.getTime() <= d.getTime()) base.setDate(base.getDate() + 1);
+  return base;
+}
+
+/** Add a recurring spec. Arms the reminder row when mode === "reminder". */
+function addRecurring(spec) {
+  load();
+  ensureRecurring();
+  const text = String(spec.text || "").trim();
+  if (!text) throw new Error("recurring item requires text");
+  const item = {
+    id: genId(),
+    text,
+    mode: spec.mode === "task" ? "task" : "reminder",
+    cadence: spec.cadence || "day",
+    active: true,
+    createdAt: nowISO(),
+    updatedAt: nowISO(),
+  };
+  if (spec.day !== undefined && spec.day !== null && spec.day !== undefined) item.day = spec.day;
+  if (spec.weekdays) item.weekdays = true;
+  if (spec.time) item.time = new Date(spec.time).toISOString();
+  const nextDue = computeNextDue(item, liveNow());
+  item.nextDue = nextDue.toISOString();
+  if (item.mode === "reminder") {
+    const reminder = addReminder(text, nextDue.toISOString());
+    item.reminderId = reminder.id;
+  }
+  __data.recurring.push(item);
+  save();
+  return stripInternal(item);
+}
+
+/** Cancel a recurring spec: deactivate + cancel its armed reminder row. */
+function removeRecurring(id) {
+  load();
+  ensureRecurring();
+  const item = __data.recurring.find((r) => r.id === id);
+  if (!item) return null;
+  item.active = false;
+  item.updatedAt = nowISO();
+  if (item.reminderId) cancelReminder(item.reminderId);
+  save();
+  return stripInternal(item);
+}
+
+/** List all active recurring specs (snapshot). */
+function getRecurring() {
+  load();
+  ensureRecurring();
+  return __data.recurring.filter((r) => r.active).map(stripInternal);
+}
+
+/**
+ * Round 34: called by reminders.js AFTER a recurring reminder fires — re-arm
+ * the same row at the next occurrence (or mark the spec inactive if the user
+ * removed it in the meantime). Task-mode recurring specs carry no reminder
+ * row, so this is a pure no-op for them (tasks are created at fire time by
+ * the dispatcher hook instead).
+ */
+function requeueFired(reminderId) {
+  load();
+  ensureRecurring();
+  const item = __data.recurring.find((r) => r.active && r.reminderId === reminderId);
+  if (!item) return null;
+  const next = computeNextDue(item, liveNow());
+  const rearmed = rearmReminder(reminderId, next.toISOString());
+  if (!rearmed) { item.active = false; save(); return null; }
+  item.nextDue = next.toISOString();
   item.updatedAt = nowISO();
   save();
   return stripInternal(item);
@@ -473,8 +619,9 @@ function summarizeOf(ids) {
 }
 
 /** Reminders due now or in the past that haven't fired. */
-function dueReminders(at = new Date()) {
+function dueReminders(at) {
   load();
+  if (at === undefined) at = liveNow();
   return __data.reminders
     .filter((r) => !r.fired && new Date(r.dueAt) <= at)
     .map(stripInternal);
@@ -495,15 +642,6 @@ function markFired(ids) {
 function stripInternal(item) {
   const { __internal, ...rest } = item;
   return rest;
-}
-
-/** Wipe the store — tests only. */
-function resetForTesting() {
-  __data = { notes: [], reminders: [], tasks: [] };
-  __loaded = true;
-  if (__filePath && fs.existsSync(filePath())) {
-    try { fs.unlinkSync(filePath()); } catch { /* ignore */ }
-  }
 }
 
 /**
@@ -615,7 +753,7 @@ function focusMinutesToday(now) {
 
 /** Wipe the store — tests only. */
 function resetForTesting() {
-  __data = { notes: [], reminders: [], tasks: [], focus: [] };
+  __data = { notes: [], reminders: [], tasks: [], focus: [], recurring: [] };
   __nowForTesting = null;
   __loaded = true;
   if (__filePath && fs.existsSync(filePath())) {
@@ -628,6 +766,8 @@ module.exports = {
   dailyBriefing, weeklyDigest,
   deleteNote, deleteTask, cancelReminder, searchNotes, searchTasks, topicSearchNotes, summarizeOf,
   dueReminders, markFired,
+  // Round 34: recurring specs + next-occurrence math (pure: computeNextDue)
+  addRecurring, removeRecurring, getRecurring, computeNextDue, requeueFired,
   startFocus, stopFocus, focusHistory, latestFocus, focusMinutesThisWeek, focusMinutesToday,
   setStorePathForTesting, resetForTesting, filePath,
   setNowForTesting, // test-only: pins the clock for end-time math

@@ -1,0 +1,10 @@
+README state (Round 33):
+- Insert "## Topic note search (Round 33)" section BEFORE line 301 ("## Plan my day (Round 31)").
+- Then update the chain footnote inside "## Plan my day (Round 31)" section (line ~302) tail: append ", and Round 33 extended it to **32 suites, 1,278 tests, EXIT 0** (see above)".
+- Also update "## Focus stats (Round 32)" section (line ~297) tail footnote to mention Round 33 if present; its current tail ends "...31 suites, 1,221 tests, EXIT 0." — append " — and Round 33 extended the chain to **32 suites, 1,278 tests, EXIT 0** (see below)".
+- Feature table: find "Natural language task search" row (~line 36 area "## Features") — append mention of ranked topic note search? Table row 36 tail from R30: "task list and daily plate" — add "topic note search" mention.
+- Section style to mimic (R31/R32): paragraph explaining new action + behavior, phrasings, additive/zero-outbound, bugs fixed, harness line ("The harness (`src/main/test-topic-search-notes.js`, 57 tests) covers …") then "Wired as `test:topic-search-notes` — the full chain is now **32 suites, 1,278 tests, EXIT 0**."
+- R33 feature facts for the section: RE_TOPIC_NOTES routed BEFORE keyword search; scoring whole-word-over-substring token scoring (tokenize subject + note text; whole-word match > substring; ties by recency/updatedAt desc); cap 5 spoken + "…and N more in the full results." tail; age ladder just now/5m/30m/1h/a few hours/this week/this month/this year/a while ago (30-day floor); bare forms ("notes about X", "my notes on X") stay in Stage 7 keyword action for byte-identical contract; "what did i note/say about X" and "search my notes for X" stay Stage 7; stage-7 wording untouched; additive + zero outbound (fetch blocker). Bug: ellipsis char (U+2026) mismatch between formatter and harness literal needed regex without ellipsis.
+- Total: harness 57 tests; chain 32 suites; 1,221+57 = 1,278 tests.
+- After README: git add -A; commit message: "Round 33: topic note search — ranked whole-word note search with recency tagging; 57 tests; 32 suites, 1,278 tests, EXIT 0"; push; report; start Round 34.
+- Commit 6dfb3d1 = R32. R31 = 5b4888e.

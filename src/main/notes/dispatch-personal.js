@@ -493,4 +493,48 @@ function topicSearchText({ matches = [], subject = "", now } = {}) {
   return head + "\n" + lines.join("\n") + tail;
 }
 
-module.exports = { personalizeNarration, applyTimePreference, userFacts, greetSnapshot, latestMood, moodAge, moodNarration, moodGreet, LOW_ENERGY_RE, prioritize, planDay, focusStatsSummary, ageOf, topicSearchText };
+// ---------------------------------------------------------------------------
+// Round 34: recurring reminder/task confirmation wording.
+//
+// Pure (no store, no network): the dispatcher hands in the created item and
+// the original parse spec; this module decides how the confirmation sounds.
+// Additive: the spoken text field repeats exactly what the user said plus
+// the cadence, so nothing the user said is ever rewritten or dropped.
+// ---------------------------------------------------------------------------
+const RECUR_WEEKDAYS = { monday: "Mondays", tuesday: "Tuesdays", wednesday: "Wednesdays", thursday: "Thursdays", friday: "Fridays", saturday: "Saturdays", sunday: "Sundays" };
+const RECUR_CADENCE_W = { day: "every day", week: "every week", month: "every month", weekday: "every weekday", morning: "every morning", afternoon: "every afternoon", evening: "every evening", night: "every night" };
+function fmtTimeLocal(iso) {
+  if (!iso) return null;
+  try { return new Date(iso).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }); } catch { return null; }
+}
+function cadenceWords(spec) {
+  const dayName = Object.keys(RECUR_WEEKDAYS).find((k) => spec.day !== undefined && spec.day !== null && spec.cadence === k);
+  if (dayName) return `every ${RECUR_WEEKDAYS[dayName]}`; // RECUR_WEEKDAYS values are capitalized ("Mondays")
+  return RECUR_CADENCE_W[spec.cadence] || `every ${spec.cadence || "day"}`;
+}
+/** Spoken + written confirmation for a newly created recurring item. */
+function recurringConfirmText({ item, cadence, mode, time, weekdays } = {}) {
+  const text = (item && item.text) || "";
+  const words = cadenceWords({ cadence, time, weekdays, day: (item && item.day) !== undefined ? (item && item.day) : undefined });
+  const when = time ? ` at ${fmtTimeLocal(time)}` : "";
+  if (mode === "task") {
+    return {
+      text: `Added a recurring task: "${text}" — ${words}${when}. It'll show up on your task list each time it fires.`,
+      narration: `Recurring task added: ${text} — ${words.replace("every ", "")}.`,
+    };
+  }
+  return {
+    text: `Got it — I'll remind you to ${text} ${words}${when}.`,
+    narration: `Recurring reminder set: ${words.replace("every ", "")}${when ? ` at ${when.replace(" at ", "")}` : ""}.`,
+  };
+}
+/** Spoken + written confirmation for removing a recurring item. */
+function recurringRemoveText({ removed } = {}) {
+  if (!removed) return { text: "I couldn't find that recurring item — nothing was removed.", narration: "Couldn't find that one." };
+  return {
+    text: `Removed the recurring ${removed.mode || "item"} for "${removed.text}" — it won't repeat anymore.`,
+    narration: `Recurring ${removed.mode === "task" ? "task" : "reminder"} removed.`,
+  };
+}
+
+module.exports = { personalizeNarration, applyTimePreference, userFacts, greetSnapshot, latestMood, moodAge, moodNarration, moodGreet, LOW_ENERGY_RE, prioritize, planDay, focusStatsSummary, ageOf, topicSearchText, recurringConfirmText, recurringRemoveText };

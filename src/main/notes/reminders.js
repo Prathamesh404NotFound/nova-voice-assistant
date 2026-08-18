@@ -129,6 +129,9 @@ function scanOnce(mainWindow) {
   const ids = due.map((r) => r.id);
   const n = store.markFired(ids);
   for (const r of due) fireReminder(r, mainWindow);
+  // Round 34: re-arm recurring reminders at their next occurrence AFTER the
+  // notification path completes — same row, next due, no orphan rows.
+  for (const r of due) store.requeueFired(r.id);
   return due;
 }
 

@@ -22,7 +22,7 @@ function storeContext() {
   const a = store.all();
   // reminders must be included — the planner needs them for id-based
   // "cancel reminder <id>" (and id-based delete) from the side panel.
-  return { tasks: a.tasks, notes: a.notes, reminders: a.reminders };
+  return { tasks: a.tasks, notes: a.notes, reminders: a.reminders, recurring: a.recurring };
 }
 
 /**
@@ -152,6 +152,23 @@ function formatLocalResult(actionId, payload, detail) {
         narration: "Added to your tasks.",
         actionId, detail: { kind: "task", task: t },
       };
+    }
+    // Round 34: recurring reminders/tasks — confirmation text is composed by
+    // dispatch-personal (pure module) so the wording stays testable and the
+    // spoken line always repeats the user's own words verbatim (additive).
+    case "notes:add-recurring": {
+      const pc = detail.item || {};
+      const { text: confText, narration } = recurringConfirmText({
+        item: pc, cadence: (pc.cadence || payload.cadence || "day"), mode: (pc.mode || payload.mode || "reminder"),
+        day: pc.day !== undefined ? pc.day : (payload.day !== undefined ? payload.day : null),
+        time: payload.time, weekdays: payload.weekdays,
+      });
+      return { ok: true, intent: "notes", text: confText, narration, actionId, detail: { kind: "recurring", item: pc } };
+    }
+    case "notes:remove-recurring": {
+      const rc = detail.removed || {};
+      const { text: remText, narration: remNarr } = recurringRemoveText({ removed: rc });
+      return { ok: true, intent: "notes", text: remText, narration: remNarr, actionId, detail: { kind: "recurring-removed", removed: rc } };
     }
     case "notes:list-notes": {
       const notes = detail.notes || [];
@@ -724,7 +741,7 @@ function formatLocalResult(actionId, payload, detail) {
 // Round 24: greeting helper — time-of-day greeting personalized by the user's
 // name and Nova's identity personality (tone only, never fact wording).
 const { get: identityGet } = require("../identity/identity");
-const { personalizeNarration, applyTimePreference, greetSnapshot, userFacts, latestMood, moodAge, moodNarration, moodGreet, prioritize, planDay, focusStatsSummary, topicSearchText } = require("./dispatch-personal");
+const { personalizeNarration, applyTimePreference, greetSnapshot, userFacts, latestMood, moodAge, moodNarration, moodGreet, prioritize, planDay, focusStatsSummary, topicSearchText, recurringConfirmText, recurringRemoveText } = require("./dispatch-personal");
 
 function greetLine(personality, userName) {
   const hour = new Date().getHours();

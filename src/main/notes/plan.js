@@ -191,6 +191,14 @@ const RE_TASK_SEARCH = /^(?:nova\s*,?\s*)?(?:(?:find|search|look for|show)\s+(?:
 // asking Nova to BUILD a schedule.
 const RE_PLAN_DAY = /^(?:nova\s*,?\s*)?(?:plan (?:my|the|this|today's|todays) day|plan today|make a plan for today|schedule my (?:tasks|day)|build me a schedule(?: for today)?|what should my day look like|give me a plan for today|organize my day|lay out my day)\s*$/i;
 
+// Round 34: recurring reminders/tasks — "every Monday at 9am remind me to
+// water the plants" / "weekly task: submit the report". Runs after the
+// one-shot "remind me" route is NOT intentional — this MUST run before it,
+// because "every Monday at 9am" would otherwise split into a literal task
+// text at the generic route. Also before RE_REMEMBER_FACT so "every Monday
+// remind me" is never stored as a personal fact about the user.
+const RE_RECURRING = /^(?:nova\s*,?\s*)?(?:(?:every|each)\s+(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday|day|weekday|week(?:ly)?|month(?:ly)?|morning|afternoon|evening|night)\s+(?:(?:at\s+)?(\d{1,2}(?::\d{2})?\s*(?:am|pm)?))?\s+(?:remind\s+me\s+(?:to\s+)?|remind me to\s+)(.+)|(?:every|each)\s+(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday|day|weekday|week(?:ly)?|month(?:ly)?|morning|afternoon|evening|night)\s+(?:(?:at\s+)?(\d{1,2}(?::\d{2})?\s*(?:am|pm)?))?(?:\s*(?:[:\-])?\s*(?:weekly\s+)?)?task\s*[:\s]+(.+)|(?:weekly|daily|every\s+day|every\s+week|every\s+month)\s+(?:task|recurring\s+task|recurring\s+reminder)\s*[:\s]+(.+))\s*$/i;
+
 // "delete my note about milk" / "delete the task buy milk"
 const RE_DELETE = /^delete\s+(?:my |the )?(note|task)\s+["“]?(.+?)["”]?\s*$/i;
 
@@ -479,7 +487,49 @@ const RE_FOCUS_STATS = /^(?:(?:nova\s*,?\s*)?(?:how\s+much\s+(?:time|focus(?:\s+
     }
     return { actionId: "notes:focus-start", payload: { durationMin } };
   }
-  // Round 32: focus stats — read-only accounting; the payload carries the
+  // Round 34: recurring reminder/task payload builder — the regex already
+// guarantees a cadence + non-empty text, so this only resolves the day and
+// time. Returns { text, mode, day, weekdays, time, cadence } or null.
+function parseRecurring(m) {
+  const m0 = m[0];
+  const remText = m[2];
+  const taskText = m[4] || m[5];
+  const timeExpr = remText ? (m[1] || "") : (m[3] || "");
+  const mode = remText ? "reminder" : "task";
+  const text = (remText || taskText || "").trim();
+  if (!text) return null;
+  const mC = /^(?:nova\s*,?\s*)?(?:every|each)\s+([a-z]+)(?:ly)?/i.exec(m0);
+  let dayName = mC ? mC[1].toLowerCase() : null;
+  if (!dayName) {
+    // bare-frequency prefix like "weekly task:" / "every week task:"
+    const freq = /^(?:nova\s*,?\s*)?((?:weekly|daily|every\s+(?:day|week|month)))\s/i.exec(m0);
+    if (freq) dayName = { weekly: "week", daily: "day", "every day": "day", "every week": "week", "every month": "month" }[freq[1].toLowerCase().trim()] || "day";
+  }
+  // half-day cadences: "every morning" without a clock → anchored time
+  const halfAnchor = { morning: "7:00", afternoon: "1:00", evening: "6:00", night: "9:00" }[dayName] || null;
+  let time = null;
+  const base = nowForTesting.now();
+  if (timeExpr) {
+    time = clockHm(timeExpr, base);
+  } else if (halfAnchor) {
+    const d = clockHm(halfAnchor, base);
+    time = d;
+  }
+  if (dayName && !time) {
+    // cadence like "every Monday" or "every morning" with no clock — default
+    // to the half-day anchor so the recurring item is still meaningful
+    const d = clockHm(halfAnchor || "9:00", base);
+    time = d;
+  }
+  const weekdays = dayName === "weekday";
+  // day is the numeric weekday (0=Sun..6=Sat) ONLY for named weekdays; all
+  // other cadences (day/week/month/morning/…) travel as plain tokens so
+  // computeNextDue can branch on them without ambiguity.
+  const day = DAY_INDEX[dayName] !== undefined ? (typeof DAY_INDEX[dayName] === "number" ? DAY_INDEX[dayName] : undefined) : null;
+  return { text, mode, day, weekdays, time: time ? time.toISOString() : null, cadence: dayName || "day" };
+}
+const DAY_INDEX = { monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6, sunday: 0 };
+// Round 32: focus stats — read-only accounting; the payload carries the
   // pinned test clock (same discipline as plan-day) so trailing-7-day and
   // today math stay deterministic in tests.
   if (RE_FOCUS_STATS.test(t)) {
@@ -508,6 +558,36 @@ const RE_FOCUS_STATS = /^(?:(?:nova\s*,?\s*)?(?:how\s+much\s+(?:time|focus(?:\s+
     return { actionId: "notes:add-note", payload: { text: body } };
   }
 
+  // Round 34: recurring reminders/tasks — "every Monday at 9am remind me to
+  // water the plants" / "weekly task: submit the report". Checked BEFORE the
+  // one-shot remind route: the cadence MUST win over a literal reading (the
+  // one-shot route would otherwise file "every Monday at 9am remind me to
+  // water the plants" as a one-time reminder with mangled text).
+  m = RE_RECURRING.exec(t);
+  if (m) {
+    const spec = parseRecurring(m);
+    if (!spec || !spec.text) {
+      return { error: "Remind you to do what? Say \"every Monday at 9am remind me to water the plants\"." };
+    }
+    const payload = { text: spec.text, mode: spec.mode, cadence: spec.cadence };
+    if (spec.weekdays) payload.weekdays = true;
+    if (spec.day !== null && spec.day !== undefined) payload.day = spec.day;
+    if (spec.time) payload.time = spec.time;
+    return { actionId: "notes:add-recurring", payload };
+  }
+
+  // Round 34: stop/remove a recurring item — "stop reminding me to X",
+  // "remove my recurring X", "cancel the weekly X". Matched against the
+  // active recurring specs (case-insensitive substring) — needs ctx.recurring.
+  const mStop = /^(?:nova\s*,?\s*)?(?:stop|remove|cancel|don'?t|do not|no more)\s+(?:remind(?:ing)?\s+me(?:\s+to)?\s+|the\s+(?:recurring\s+|weekly\s+|daily\s+|monthly\s+|weekday\s+)?|my\s+(?:recurring\s+)?|the\s+recurring\s+)/i.exec(t);
+  if (mStop) {
+    const rest = t.slice(mStop[0].length).trim().replace(/[.!?]+$/, "").trim();
+    if (rest) {
+      const pool = (ctx && ctx.recurring) || [];
+      const found = matchTask(pool, rest);
+      if (found) return { actionId: "notes:remove-recurring", payload: { id: found.id, text: found.text } };
+    }
+  }
   m = RE_REMIND.exec(t);
   if (m) {
     // "remind me to X at Y" → task=group1, time=group2
