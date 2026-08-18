@@ -424,7 +424,7 @@
             <span class="auto-item-name" title="${escapeAttr(a.cron)}">${escapeHtml(a.name)}</span>
             ${chip}
           </div>
-          <div class="auto-item-meta">${cronLabel(a.cron)} · next ${escapeHtml(next)} · last: ${last}</div>
+          <div class="auto-item-meta">${a.triggerLabel || cronLabel(a.cron)} · next ${escapeHtml(next)} · last: ${last}</div>
           <label class="auto-toggle">
             <input type="checkbox" data-auto-action="toggle" data-auto-id="${escapeAttr(a.id)}" ${a.enabled ? "checked" : ""} />
             enabled

@@ -66,6 +66,15 @@ const automationRunner = require("./automation/runner");
 const automationScheduler = require("./automation/scheduler");
 const remindersNotifier = require("./notes/reminders");
 
+// Event-triggered automations (Round 5) — file-change, time-of-day, app and
+// idle triggers sit alongside the cron scheduler. The global app-event bus
+// lets any subsystem (vision, control, reminders, ...) emit named events
+// that trigger automations via `type: "event"`.
+const automationEvents = new (require("events").EventEmitter)();
+const eventTriggers = require("./automation/event-triggers");
+if (typeof global.__novaAppEvents === "undefined") global.__novaAppEvents = automationEvents;
+eventTriggers.setAppEmitter(automationEvents);
+
 // --- Automation side panel + scheduler boot ---
 ipcMain.handle("nova:auto-list", async () => {
   try {
@@ -573,6 +582,11 @@ app.whenReady().then(async () => {
   try {
     await automationDispatch.scheduleNextRuns();
     automationScheduler.start();
+    // Round 5: event triggers boot after the cron scheduler (they refresh
+    // themselves whenever an automation with a trigger is added/toggled).
+    eventTriggers.start();
+    // Emit the "startup" event so "when Nova starts up…" automations fire.
+    automationEvents.emit("app-event", { name: "startup", at: new Date().toISOString() });
     log.info(`[automation] ${automationDispatch.listAutomations().length} automation(s) loaded`);
   } catch (err) {
     log.error("[automation] boot failed:", err?.message || err);
@@ -624,6 +638,8 @@ app.whenReady().then(async () => {
 app.on("before-quit", () => {
   // Release the tesseract.js worker (WASM memory) on shutdown.
   ocrShutdown().catch(() => {});
+  // Round 5: stop chokidar watchers and event trigger polls on shutdown.
+  try { eventTriggers.stop(); } catch {}
 });
 
 app.on("window-all-closed", () => {

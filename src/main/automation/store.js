@@ -20,6 +20,21 @@ const { RISK_LEVEL } = require("../permissions/risk-levels");
 
 const MAX_AUTOMATIONS = 25;
 
+function validateTriggerObj(trigger) {
+  if (!trigger || !trigger.type) return null;
+  if (!["file", "time", "event", "idle"].includes(trigger.type)) return null;
+  return {
+    type: trigger.type,
+    folder: trigger.type === "file" ? String(trigger.folder || "").trim() : undefined,
+    depth: trigger.type === "file" ? Number(trigger.depth ?? 4) : undefined,
+    debounceMs: trigger.type === "file" ? Number(trigger.debounceMs ?? 3000) : undefined,
+    match: trigger.type === "file" ? (trigger.match || null) : undefined,
+    at: trigger.type === "time" ? String(trigger.at || "").trim() : undefined,
+    name: trigger.type === "event" ? String(trigger.name || "").trim().toLowerCase() : undefined,
+    minutes: trigger.type === "idle" ? Number(trigger.minutes ?? 10) : undefined,
+  };
+}
+
 function dataDir() {
   try { return require("electron").app.getPath("userData"); } catch { return process.cwd(); }
 }
@@ -101,6 +116,9 @@ function add(automation) {
     id: automation.id || newId(),
     name: String(automation.name || "unnamed").slice(0, 80),
     cron: String(automation.cron || "").trim(),
+    // Round 5: an automation may be event-triggered (trigger object) instead
+    // of cron-scheduled. Legacy cron-only entries remain valid.
+    trigger: validateTriggerObj(automation.trigger) || null,
     tz: "local",
     enabled: automation.enabled !== false,
     steps: automation.steps.map((s, i) => ({ kind: s.kind, text: String(s.text || "").slice(0, 1000), level: Number(s.level ?? RISK_LEVEL.READ), order: i })),
@@ -111,8 +129,10 @@ function add(automation) {
     pendingConfirmation: false,
     nextRunAt: null,
   };
-  if (!/^[\d\*\-\/,\s]+$/.test(entry.cron) || entry.cron.split(/\s+/).length !== 5) {
-    return { ok: false, error: "Invalid schedule expression." };
+  if (!entry.trigger) {
+    if (!/^[\d\*\-\/,\s]+$/.test(entry.cron) || entry.cron.split(/\s+/).length !== 5) {
+      return { ok: false, error: "Invalid schedule expression." };
+    }
   }
   entries.push(entry);
   persist();
@@ -177,4 +197,5 @@ function clearForTesting() {
 module.exports = {
   add, get, list, toggle, remove, updateRun, setNextRun, validateCandidate,
   statusFromSteps, storePath, clearForTesting, MAX_AUTOMATIONS, MAX_STEPS,
+  validateTriggerObj,
 };

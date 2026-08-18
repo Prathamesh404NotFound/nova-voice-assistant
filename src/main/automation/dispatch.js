@@ -19,6 +19,7 @@ const { parseAutomation } = require("./parser");
 const { annotateLevels } = require("./runner");
 const store = require("./store");
 const cron = require("./cron");
+const eventTriggers = require("./event-triggers");
 
 async function scheduleNextRuns() {
   const t = new Date();
@@ -47,7 +48,8 @@ async function addAutomation(text, opts = {}) {
     return { ok: false, text: res.error };
   }
   const auto = res.automation;
-  scheduleNextRuns();
+  if (auto.trigger) eventTriggers.refreshForAutomation();
+  else scheduleNextRuns();
   actionLog.append({
     actionId: "automation:add", level: RISK_LEVEL.SAFE, outcome: "success",
     detail: { automationId: auto.id, name: auto.name, steps: auto.steps.length, status: auto.status },
@@ -62,12 +64,25 @@ async function addAutomation(text, opts = {}) {
   };
 }
 
+function triggerLabel(auto) {
+  if (!auto.trigger) return `cron ${auto.cron}`;
+  switch (auto.trigger.type) {
+    case "file": return `file:${auto.trigger.folder}${auto.trigger.match ? ` (/${auto.trigger.match}/)` : ""}`;
+    case "time": return `time at ${auto.trigger.at}`;
+    case "event": return `event:${auto.trigger.name}`;
+    case "idle": return `idle ≥ ${auto.trigger.minutes} min`;
+    default: return "event";
+  }
+}
+
 function listAutomations() {
   const t = new Date();
   return store.list().map((auto) => {
     let nextRunAt = null;
-    try { nextRunAt = cron.nextMatch(cron.parse(auto.cron), t)?.toISOString() || null; } catch {}
-    return { ...auto, nextRunAt };
+    if (!auto.trigger) {
+      try { nextRunAt = cron.nextMatch(cron.parse(auto.cron), t)?.toISOString() || null; } catch {}
+    }
+    return { ...auto, nextRunAt, triggerLabel: triggerLabel(auto) };
   });
 }
 
@@ -76,6 +91,7 @@ async function toggleAutomation(id, enabled) {
   if (!res.ok) return { ok: false, text: res.error };
   actionLog.append({ actionId: "automation:toggle", level: RISK_LEVEL.SAFE, outcome: "success", detail: { automationId: id, enabled } });
   if (enabled) scheduleNextRuns();
+  if (res.automation.trigger) eventTriggers.refreshForAutomation();
   return { ok: true, text: enabled ? "Automation enabled." : "Automation paused.", automation: res.automation };
 }
 
@@ -114,7 +130,36 @@ async function confirmAutomation(id) {
   };
 }
 
+// Round 5: create an event-triggered automation programmatically.
+async function addEventAutomation(name, trigger, steps) {
+  const validated = eventTriggers.validateTrigger(trigger);
+  if (!validated.ok) {
+    actionLog.append({ actionId: "automation:add", level: RISK_LEVEL.SAFE, outcome: "failed", reason: validated.error });
+    return { ok: false, text: validated.error };
+  }
+  const candidate = { name, trigger: validated.trigger, steps, enabled: true };
+  const res = store.add(candidate);
+  if (!res.ok) {
+    actionLog.append({ actionId: "automation:add", level: RISK_LEVEL.SAFE, outcome: "failed", reason: res.error });
+    return { ok: false, text: res.error };
+  }
+  const auto = res.automation;
+  eventTriggers.refreshForAutomation();
+  actionLog.append({
+    actionId: "automation:add", level: RISK_LEVEL.SAFE, outcome: "success",
+    detail: { automationId: auto.id, name: auto.name, steps: auto.steps.length, status: auto.status, trigger: auto.trigger.type },
+  });
+  const gating = auto.status === "needs-confirmation"
+    ? " It will ask for your confirmation before running sensitive steps."
+    : "";
+  return {
+    ok: true, intent: "automation",
+    text: `Saved "${auto.name}" — triggered by ${triggerLabel(auto)}${gating}`,
+    detail: { automationId: auto.id, name: auto.name, trigger: auto.trigger, status: auto.status, steps: auto.steps },
+  };
+}
+
 module.exports = {
   addAutomation, listAutomations, toggleAutomation, deleteAutomation,
-  runAutomationNow, confirmAutomation, scheduleNextRuns,
+  runAutomationNow, confirmAutomation, scheduleNextRuns, addEventAutomation,
 };
