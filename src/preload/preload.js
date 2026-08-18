@@ -31,6 +31,11 @@ contextBridge.exposeInMainWorld("nova", {
   submitKey: (key) => ipcRenderer.invoke("nova:submit-key", key),
   clearKey: () => ipcRenderer.invoke("nova:clear-key"),
 
+  // --- Porcupine AccessKey (wake word, Stage 10 Round 2) ---
+  getAccessKeyStatus: () => ipcRenderer.invoke("nova:get-access-key-status"),
+  submitAccessKey: (key) => ipcRenderer.invoke("nova:submit-access-key", key),
+  clearAccessKey: () => ipcRenderer.invoke("nova:clear-access-key"),
+
   // --- Model router ---
   refreshModels: () => ipcRenderer.invoke("nova:refresh-models"),
   getRouterLogs: () => ipcRenderer.invoke("nova:get-router-logs"),

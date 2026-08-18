@@ -204,6 +204,16 @@
         </div>
         <button id="setKeyBtn" class="flat-btn">Set / change key</button>
         <div class="settings-note">Key is stored with your OS keychain — never a plaintext file, never logged. You can also launch Nova with the <code>OPENROUTER_API_KEY</code> environment variable.</div>
+        <!-- Stage 10 Round 2: Wake word (Porcupine) -->
+        <div class="settings-row toggle-row" style="margin-top:8px;">
+          <span>Wake word ("Hey Nova")</span>
+          <label class="switch">
+            <input id="wakeWordToggle" type="checkbox" />
+            <span class="switch-slider"></span>
+          </label>
+        </div>
+        <div id="wakeWordStatus" class="settings-note">Requires a free Picovoice AccessKey from <a href="https://console.picovoice.ai/" target="_blank" rel="noopener">console.picovoice.ai</a>. Falls back to tap-to-arm if no key.</div>
+        <button id="setAccessKeyBtn" class="flat-btn">Set Picovoice AccessKey</button>
       </div>
       <!-- Stage 5: Developer Mode task inspector -->
   <div id="devTask" class="dev-task hidden">
@@ -226,6 +236,9 @@
     </div>
   </div>
 
+  <!-- Wake word (Stage 10, Round 2): Porcupine WebAssembly + detector -->
+  <script src="../node_modules/@picovoice/porcupine-web/dist/iife/index.js"></script>
+  <script src="js/wakeword.js"></script>
   <script src="js/app.js"></script>
 <!-- Stage 5: first-run permission onboarding overlay -->
 <div id="onboarding" class="onboarding hidden">

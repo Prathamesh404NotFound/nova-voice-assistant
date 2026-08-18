@@ -134,4 +134,26 @@ function showKeyDialog(win) {
     });
 }
 
-module.exports = { getKey, isKeyConfigured, storeKey, requireKeyOnce, showKeyDialog };
+// =============================================================================
+// Porcupine AccessKey (wake word, Stage 10 Round 2)
+// Stored in memory for the session; no plaintext file.
+// =============================================================================
+let cachedAccessKey = null;
+
+function isAccessKeyConfigured() {
+  return typeof cachedAccessKey === "string" && cachedAccessKey.length > 0;
+}
+
+function getAccessKey() {
+  return cachedAccessKey || null;
+}
+
+function storeAccessKey(key) {
+  cachedAccessKey = (typeof key === "string" && key.trim()) ? key.trim() : null;
+  log.info("Porcupine AccessKey stored in memory (never persisted to disk).");
+}
+
+module.exports = {
+  getKey, isKeyConfigured, storeKey, requireKeyOnce, showKeyDialog,
+  getAccessKey, isAccessKeyConfigured, storeAccessKey,
+};

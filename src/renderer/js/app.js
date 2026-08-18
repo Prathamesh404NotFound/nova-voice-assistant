@@ -15,6 +15,9 @@
     rec: null,               // SpeechRecognition instance
     ttsActive: false,
     wakeArmed: !!(window.SpeechRecognition || window.webkitSpeechRecognition),
+    wakeDetector: null,      // NovaWakeWordDetector (Stage 10 Round 2 — Porcupine)
+    wakeEnabled: false,
+    wakeApiKey: null,
   };
 
   // ------------------------------------------------------------------ dom
@@ -49,6 +52,8 @@
     kbQueryInput: $("kbQueryInput"), kbAnswer: $("kbAnswer"),
     autoList: $("autoList"), autoAdd: $("autoAdd"), autoRefreshBtn: $("autoRefreshBtn"),
     autoPendingCard: $("autoPendingCard"),
+    wakeWordToggle: $("wakeWordToggle"), wakeWordStatus: $("wakeWordStatus"),
+    setAccessKeyBtn: $("setAccessKeyBtn"),
   };
 
   // ------------------------------------------------------------------ clock
@@ -543,6 +548,141 @@
     document.getElementById("autoDismissPendingBtn")?.addEventListener("click", () => {
       el.autoPendingCard.hidden = true;
     });
+  }
+
+  // ======================================================================
+  // WAKE WORD (Stage 10 Round 2 — Porcupine, offline detection)
+  // ======================================================================
+
+  async function initWakeWord() {
+    // Load AccessKey from main process (stored in memory, never disk)
+    const keyRes = await window.nova.getAccessKeyStatus().catch(() => null);
+    state.wakeApiKey = keyRes?.configured ? keyRes.key || null : null;
+
+    if (el.wakeWordToggle) {
+      el.wakeWordToggle.checked = state.wakeEnabled;
+      updateWakeWordStatus();
+
+      el.wakeWordToggle.addEventListener("change", async (ev) => {
+        state.wakeEnabled = ev.target.checked;
+        updateWakeWordStatus();
+        if (state.wakeEnabled) {
+          await startWakeWord();
+        } else {
+          stopWakeWord();
+        }
+      });
+
+      if (el.setAccessKeyBtn) {
+        el.setAccessKeyBtn.addEventListener("click", () => {
+          // Reuse the existing key dialog pattern with a different IPC
+          el.keyInput.value = state.wakeApiKey || "";
+          el.keyOverlay.hidden = false;
+          el.keySaveBtn.onclick = async () => {
+            const key = el.keyInput.value.trim();
+            if (!key) return;
+            const r = await window.nova.submitAccessKey(key);
+            if (r.ok) {
+              state.wakeApiKey = key;
+              el.keyOverlay.hidden = true;
+              updateWakeWordStatus();
+              if (state.wakeEnabled) {
+                await stopWakeWord();
+                await startWakeWord();
+              }
+            }
+          };
+        });
+      }
+    }
+
+    // Auto-start if previously enabled (persistence via settings would go here)
+    if (state.wakeEnabled && state.wakeApiKey) {
+      await startWakeWord();
+    }
+  }
+
+  function updateWakeWordStatus() {
+    if (!el.wakeWordStatus) return;
+    if (!state.wakeApiKey) {
+      el.wakeWordStatus.textContent = "Requires a free Picovoice AccessKey from console.picovoice.ai. Falls back to tap-to-arm.";
+    } else if (state.wakeEnabled) {
+      el.wakeWordStatus.textContent = state.wakeDetector?.isActive
+        ? "Listening for “Hey Nova”…"
+        : "Wake word enabled — starting…";
+    } else {
+      el.wakeWordStatus.textContent = "Wake word disabled. Tap the orb to speak.";
+    }
+  }
+
+  async function startWakeWord() {
+    if (!state.wakeApiKey || !state.wakeEnabled) return;
+    if (!window.NovaWakeWordDetector) {
+      console.warn("[WakeWord] Detector not available");
+      return;
+    }
+    // Stop any existing detector
+    await stopWakeWord();
+
+    state.wakeDetector = new window.NovaWakeWordDetector({
+      enabled: true,
+      accessKey: state.wakeApiKey,
+      keyword: "NOVA",
+      sensitivity: 0.6,
+      onDetected: () => {
+        console.info("[WakeWord] “Hey Nova” detected — starting STT");
+        if (el.wakeWordStatus) el.wakeWordStatus.textContent = "Listening…";
+        startListening();
+        // Update status after 5s if still listening
+        setTimeout(() => {
+          if (state.mode === "listening") updateWakeWordStatus();
+        }, 5000);
+      },
+      onError: (err) => {
+        console.warn("[WakeWord] Error:", err);
+        if (el.wakeWordStatus) {
+          el.wakeWordStatus.textContent = "Wake word error — tap to speak.";
+        }
+      },
+    });
+
+    const ready = await state.wakeDetector.init();
+    if (!ready) return;
+
+    // Get mic stream for wake word audio processing
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          sampleRate: 16000,
+          channelCount: 1,
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+        },
+      });
+      const ok = await state.wakeDetector.start(stream);
+      if (ok) {
+        state.micStream = stream;
+        updateWakeWordStatus();
+      } else {
+        stream.getTracks().forEach((t) => t.stop());
+        console.warn("[WakeWord] Failed to start audio processing");
+      }
+    } catch (err) {
+      console.warn("[WakeWord] Mic access failed:", err);
+    }
+  }
+
+  async function stopWakeWord() {
+    if (state.wakeDetector) {
+      state.wakeDetector.stop();
+      await state.wakeDetector.destroy();
+      state.wakeDetector = null;
+    }
+    if (state.micStream) {
+      state.micStream.getTracks().forEach((t) => t.stop());
+      state.micStream = null;
+    }
   }
 
   function initAutoPanel() {
@@ -1731,6 +1871,7 @@ let historyItems = [];
   initNotesPanel();
   initKbPanel();
   initAutoPanel();
+  initWakeWord();
 
   el.onboardingAck?.addEventListener("click", async () => {
     try {

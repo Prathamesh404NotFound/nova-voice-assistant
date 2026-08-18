@@ -4,7 +4,8 @@
 const { app, BrowserWindow, ipcMain, dialog, Menu, nativeTheme } = require("electron");
 const path = require("path");
 const log = require("electron-log");
-const { getKey, requireKeyOnce, isKeyConfigured, storeKey } = require("./keys");
+const { getKey, requireKeyOnce, isKeyConfigured, storeKey,
+  getAccessKey, isAccessKeyConfigured, storeAccessKey } = require("./keys");
 const router = require("./router");
 
 // Permission & safety framework (exists BEFORE any real tooling is added).
@@ -277,6 +278,25 @@ ipcMain.handle("nova:submit-key", async (_evt, key) => {
 
 ipcMain.handle("nova:clear-key", async () => {
   storeKey(null);
+  return { ok: true };
+});
+
+// ---------------------------------------------------------------------------
+// IPC: Porcupine AccessKey (wake word, Stage 10 Round 2)
+// ---------------------------------------------------------------------------
+ipcMain.handle("nova:get-access-key-status", async () => {
+  return { configured: isAccessKeyConfigured(), key: getAccessKey() };
+});
+ipcMain.handle("nova:submit-access-key", async (_evt, key) => {
+  if (typeof key !== "string" || key.trim().length === 0) {
+    return { ok: false, error: "AccessKey must be a non-empty string." };
+  }
+  storeAccessKey(key.trim());
+  log.info("Porcupine AccessKey stored in memory (never persisted to disk).");
+  return { ok: true };
+});
+ipcMain.handle("nova:clear-access-key", async () => {
+  storeAccessKey(null);
   return { ok: true };
 });
 
