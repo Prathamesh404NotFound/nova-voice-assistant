@@ -93,11 +93,11 @@ async function runNoteAction(text, opts = {}) {
   }
 
   // --- All other notes actions: local, through the gate. ---
-  // Round 28: pin the clock for the priority-check action so tests (and a
-  // future "what should I do at 8pm" voice shape) stay deterministic — the
-  // store's today/overdue math is day-granular and must never drift with the
-  // live clock mid-run.
-  const effPayload = actionId === "notes:priority-check" && opts.now !== undefined
+  // Round 28/29: pin the clock for time-math actions (priority-check,
+  // focus-start/stop) so tests stay deterministic — the store's today/
+  // overdue / end-time math is day-granular or minute-granular and must
+  // never drift with the live clock mid-run.
+  const effPayload = (actionId === "notes:priority-check" || actionId === "notes:focus-start" || actionId === "notes:focus-stop") && opts.now !== undefined
     ? { ...payload, now: new Date(opts.now).getTime() }
     : payload;
   const res = await gate.runAction(actionId, effPayload, { taskId: opts.taskId });
@@ -509,6 +509,54 @@ function formatLocalResult(actionId, payload, detail) {
         text,
         narration: `Here's how I'd order your day${pc2.lowEnergy ? " — small wins first" : ""}\u2026`,
         actionId, detail: { kind: "priority-check", order: pc2.order, lowEnergy: pc2.lowEnergy, moodRecent: !!moodRecent },
+      };
+    }
+    // Round 29: focus mode / Pomodoro — start. Opens a local session, tells
+    // the user when it ends (local time) and how long it lasts. Zero network;
+    // the renderer's countdown HUD ticks down on the nova:focus-started event.
+    case "notes:focus-start": {
+      const sess = (detail && detail.session) || {};
+      if (!sess || !sess.startedAt) {
+        return { ok: false, intent: "notes", text: "I could not start the focus session — check the Action Log.", actionId, detail: { kind: "focus-start" } };
+      }
+      const started = new Date(sess.startedAt);
+      const endsAt = new Date(started.getTime() + sess.durationMin * 60_000);
+      const local = (d) => d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      const dur = sess.durationMin === 60 ? "1 hour" : sess.durationMin >= 60 && sess.durationMin % 60 === 0 ? `${Math.round(sess.durationMin / 60)} hours` : `${sess.durationMin} minutes`;
+      return {
+        ok: true, intent: "notes",
+        text: `Focus mode on — ${dur}, ${local(started)} to ${local(endsAt)}. When it ends I'll ping you — and if you ever want a plan for it, "what should I work on first" is ready.`,
+        narration: `Focus mode on — ${dur} until ${local(endsAt)}. I'll ping you when it's done.`,
+        actionId,
+        detail: { kind: "focus-start", session: { id: sess.id, durationMin: sess.durationMin, startedAt: sess.startedAt, endsAt: endsAt.toISOString() } },
+      };
+    }
+    // Round 29: focus mode / Pomodoro — stop. Closes the running session
+    // candidly (record says completed) and, when the task plate has pending
+    // items, suggests marking one done while momentum is high. No suggestion
+    // on an empty plate — no point celebrating an already-clear list.
+    case "notes:focus-stop": {
+      const ended = detail && detail.ended ? { id: detail.ended.id, durationMin: detail.ended.durationMin, startedAt: detail.ended.startedAt, stoppedAt: detail.ended.stoppedAt } : null;
+      if (!ended) {
+        return {
+          ok: true, intent: "notes",
+          text: "No focus session was running — say " + String.raw`"start focus mode"` + " whenever you want one.",
+          narration: "No focus session was running.",
+          actionId, detail: { kind: "focus-stop", ended: null },
+        };
+      }
+      const started = new Date(ended.startedAt);
+      const stopped = new Date(ended.stoppedAt);
+      const realMin = Math.max(1, Math.round((stopped.getTime() - started.getTime()) / 60_000));
+      const was = realMin === 1 ? "a minute" : `${realMin} minutes`;
+      const suggest = (detail && detail.pendingCount > 0)
+        ? " Want me to mark a task done while the momentum's there?"
+        : "";
+      return {
+        ok: true, intent: "notes",
+        text: `Focus ended after ${was}${suggest}`,
+        narration: `Nice — ${was} of deep work.${suggest}`,
+        actionId, detail: { kind: "focus-stop", ended },
       };
     }
     // Round 24: remember a fact about the user. L1 SAFE — acknowledgement

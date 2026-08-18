@@ -1,0 +1,108 @@
+{
+  "notes": [
+    {
+      "id": "n-msygy6lq-du197t",
+      "text": "focus mode now",
+      "createdAt": "2026-08-18T09:37:14.222Z",
+      "updatedAt": "2026-08-18T09:37:14.222Z"
+    },
+    {
+      "id": "n-msygxod8-zw1z14",
+      "text": "focus mode now",
+      "createdAt": "2026-08-18T09:36:50.588Z",
+      "updatedAt": "2026-08-18T09:36:50.588Z"
+    }
+  ],
+  "reminders": [],
+  "tasks": [],
+  "focus": [
+    {
+      "id": "n-msyguqw4-3cme1h",
+      "durationMin": 25,
+      "status": "cancelled",
+      "startedAt": "2026-08-19T10:00:00.000Z",
+      "stoppedAt": "2026-08-19T14:15:00.000Z",
+      "updatedAt": "2026-08-19T14:15:00.000Z"
+    },
+    {
+      "id": "n-msyguqwt-i564kx",
+      "durationMin": 45,
+      "status": "completed",
+      "startedAt": "2026-08-19T14:15:00.000Z",
+      "stoppedAt": "2026-08-19T15:02:00.000Z",
+      "updatedAt": "2026-08-19T15:02:00.000Z"
+    },
+    {
+      "id": "n-msygxoc2-aviz80",
+      "durationMin": 25,
+      "status": "cancelled",
+      "startedAt": "2026-08-19T10:00:00.000Z",
+      "stoppedAt": "2026-08-19T10:30:00.000Z",
+      "updatedAt": "2026-08-19T10:30:00.000Z"
+    },
+    {
+      "id": "n-msygxocr-prg4ka",
+      "durationMin": 25,
+      "status": "cancelled",
+      "startedAt": "2026-08-19T10:30:00.000Z",
+      "stoppedAt": "2026-08-19T11:00:00.000Z",
+      "updatedAt": "2026-08-19T11:00:00.000Z"
+    },
+    {
+      "id": "n-msygxoct-lrx3yb",
+      "durationMin": 120,
+      "status": "cancelled",
+      "startedAt": "2026-08-19T11:00:00.000Z",
+      "stoppedAt": "2026-08-19T11:30:00.000Z",
+      "updatedAt": "2026-08-19T11:30:00.000Z"
+    },
+    {
+      "id": "n-msygxocv-ldqbh9",
+      "durationMin": 30,
+      "status": "completed",
+      "startedAt": "2026-08-19T11:30:00.000Z",
+      "stoppedAt": "2026-08-19T12:15:00.000Z",
+      "updatedAt": "2026-08-19T12:15:00.000Z"
+    },
+    {
+      "id": "n-msygy6ki-aiof1u",
+      "durationMin": 25,
+      "status": "cancelled",
+      "startedAt": "2026-08-19T10:00:00.000Z",
+      "stoppedAt": "2026-08-19T10:30:00.000Z",
+      "updatedAt": "2026-08-19T10:30:00.000Z"
+    },
+    {
+      "id": "n-msygy6l8-tb9t50",
+      "durationMin": 25,
+      "status": "cancelled",
+      "startedAt": "2026-08-19T10:30:00.000Z",
+      "stoppedAt": "2026-08-19T11:00:00.000Z",
+      "updatedAt": "2026-08-19T11:00:00.000Z"
+    },
+    {
+      "id": "n-msygy6lb-9g1h7u",
+      "durationMin": 120,
+      "status": "cancelled",
+      "startedAt": "2026-08-19T11:00:00.000Z",
+      "stoppedAt": "2026-08-19T11:30:00.000Z",
+      "updatedAt": "2026-08-19T11:30:00.000Z"
+    },
+    {
+      "id": "n-msygy6ld-rgwxsc",
+      "durationMin": 30,
+      "status": "cancelled",
+      "startedAt": "2026-08-19T11:30:00.000Z",
+      "stoppedAt": "2026-08-19T12:00:00.000Z",
+      "updatedAt": "2026-08-19T12:00:00.000Z"
+    },
+    {
+      "id": "n-msygy6lf-i90ls4",
+      "durationMin": 25,
+      "status": "completed",
+      "startedAt": "2026-08-19T12:00:00.000Z",
+      "stoppedAt": "2026-08-19T12:15:00.000Z",
+      "updatedAt": "2026-08-19T12:15:00.000Z"
+    }
+  ]
+}

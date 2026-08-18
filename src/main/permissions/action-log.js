@@ -12,6 +12,12 @@ const { riskLabel } = require("./risk-levels");
 
 function logPath() {
   let dataDir;
+  // Round 29: test seam — env overrides the log location so harnesses run
+  // with an isolated log file (same pattern as the notes store and the
+  // identity/user-model modules).
+  if (process.env.__NOVA_ACTION_LOG_TEST) {
+    return path.join(process.env.__NOVA_ACTION_LOG_TEST, "actions.log.json");
+  }
   try {
     dataDir = require("electron").app.getPath("userData");
   } catch {

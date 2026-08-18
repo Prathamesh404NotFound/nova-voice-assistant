@@ -163,6 +163,40 @@ html, body {
   font-variant-numeric: tabular-nums;
 }
 
+/* Round 29: focus mode / Pomodoro HUD chip — appears next to the clock while
+   a local focus session runs (main → renderer via nova:focus-started). Cyan
+   while running (pulsing dot = active session), amber once the target time
+   is up — the user can keep going until they say “stop focus”. */
+.focus-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: rgba(57, 210, 255, 0.08);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--cyan);
+  cursor: pointer;
+  transition: background 0.25s var(--ease-out), color 0.25s var(--ease-out), border-color 0.25s var(--ease-out);
+  font-variant-numeric: tabular-nums;
+}
+.focus-chip:hover { background: rgba(57, 210, 255, 0.16); }
+.focus-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--cyan);
+  animation: focusPulse 1.4s ease-in-out infinite;
+}
+@keyframes focusPulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 var(--cyan-glow); }
+  50% { opacity: 0.4; box-shadow: 0 0 0 4px rgba(57, 210, 255, 0); }
+}
+.focus-chip-done { border-color: rgba(255, 179, 71, 0.5); background: rgba(255, 179, 71, 0.10); color: var(--amber); }
+.focus-chip-done .focus-dot { background: var(--amber); animation: none; }
+
 /* ------------------------------------------------------------------- stage */
 #stage {
   flex: 1 1 auto;

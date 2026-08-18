@@ -523,10 +523,21 @@ ipcMain.handle("nova:notes-run", async (_evt, text) => {
     const { getKey } = require("./keys");
     const keyPromise = getKey().catch(() => null);
     const { runNoteAction } = require("./notes/dispatch");
-    return await runNoteAction(String(text || ""), {
+    const result = await runNoteAction(String(text || ""), {
       getKey: async () => (await keyPromise) || null,
       mainWindow,
     });
+    // Round 29: focus mode live events — the renderer owns the visible
+    // countdown HUD; the store keeps the honest time record. Emitted only
+    // on success (a cancelled start never shows a countdown).
+    if (result && result.ok && mainWindow && mainWindow.webContents) {
+      if (result.actionId === "notes:focus-start" && result.detail && result.detail.session) {
+        mainWindow.webContents.send("nova:focus-started", result.detail.session);
+      } else if (result.actionId === "notes:focus-stop") {
+        mainWindow.webContents.send("nova:focus-stopped", result.detail || {});
+      }
+    }
+    return result;
   } catch (err) {
     log.error("[notes] notes-run failed:", err?.message || err);
     return { ok: false, intent: "notes", text: "Something went wrong — details are in Developer Mode.", error: String(err?.message || err) };

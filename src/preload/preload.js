@@ -109,6 +109,20 @@ contextBridge.exposeInMainWorld("nova", {
     ipcRenderer.on("nova:agent-progress", listener);
     return () => ipcRenderer.removeListener("nova:agent-progress", listener);
   },
+  // Round 29: focus mode / Pomodoro — main → renderer live events. The
+  // store keeps the honest time record; the renderer owns the visible
+  // countdown. `focus-started` carries {id, durationMin, startedAt, endsAt}
+  // (endsAt = hard target, renderer shows both real remaining and target).
+  onFocusStarted: (cb) => {
+    const listener = (_evt, data) => cb(data);
+    ipcRenderer.on("nova:focus-started", listener);
+    return () => ipcRenderer.removeListener("nova:focus-started", listener);
+  },
+  onFocusStopped: (cb) => {
+    const listener = (_evt, data) => cb(data);
+    ipcRenderer.on("nova:focus-stopped", listener);
+    return () => ipcRenderer.removeListener("nova:focus-stopped", listener);
+  },
 
   // --- Undo (Stage 5) ---
   getUndoInfo: () => ipcRenderer.invoke("nova:get-undo-info"),

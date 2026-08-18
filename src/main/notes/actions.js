@@ -9,6 +9,7 @@
 
 const { registerAction } = require("../permissions/action-registry");
 const { RISK_LEVEL } = require("../permissions/risk-levels");
+const actionLog = require("../permissions/action-log");
 const store = require("./store");
 const userModels = require("../identity/user-model");
 
@@ -350,6 +351,47 @@ registerAction({
   }),
   execute: async () => ({ kind: "summarized" }),
   reverse: async () => ({ undone: true, note: "summarize is idempotent — nothing to reverse" }),
+});
+
+// Round 29: focus mode / Pomodoro — "start focus mode (for N minutes)" opens
+// a local focus session and "stop/end/quit focus" closes the running one.
+// Purely local records: the countdown UI ticks in the renderer; the store
+// only keeps an honest append-only time log (running → completed/cancelled).
+// L1 SAFE — creates a record, zero network.
+registerAction({
+  id: "notes:focus-start",
+  level: RISK_LEVEL.SAFE,
+  description: "Start a local focus (Pomodoro) session",
+  simulate: async (p) => ({ summary: `would start a ${(p && p.durationMin) || 25}-minute focus session` }),
+  execute: async (p) => {
+    const durationMin = (p && Number.isFinite(Number(p.durationMin)) && Number(p.durationMin) > 0) ? Number(p.durationMin) : 25;
+    // Candid swap: a running session is candidly closed when a new one starts.
+    // The outer run log only records this start as 'success' — the replaced
+    // session needs its own honest entry so history never looks edited.
+    const running = store.latestFocus && store.latestFocus();
+    const session = store.startFocus(durationMin, p && p.now ? new Date(p.now).toISOString() : undefined);
+    if (running && running.status !== "running") {
+      actionLog.append({
+        actionId: "notes:focus-start",
+        level: RISK_LEVEL.SAFE,
+        outcome: "cancelled",
+        detail: { id: running.id, reason: "replaced by a new focus session" },
+      });
+    }
+    return { session, kind: "focus-start" };
+  },
+});
+
+registerAction({
+  id: "notes:focus-stop",
+  level: RISK_LEVEL.SAFE,
+  description: "End the running focus session (read-only close of the local record)",
+  simulate: async () => ({ summary: "would close your running focus session" }),
+  execute: async (p) => {
+    const ended = store.stopFocus("completed", p && p.now ? new Date(p.now).toISOString() : undefined);
+    const pending = store.all().tasks.filter((t) => !t.done);
+    return { ended, pendingCount: pending.length, kind: "focus-stop" };
+  },
 });
 
 module.exports = {};

@@ -37,6 +37,11 @@
     <button id="undoBtn" class="ctrl-stop-btn" title="Undo last reversible action" disabled>↶ Undo</button>&#9724; STOP</button>
       </div>
       <div class="topbar-right">
+        <!-- Round 29: focus mode / Pomodoro HUD chip — appears while a local
+             focus session runs (main → renderer via nova:focus-started). -->
+        <span id="focusChip" class="focus-chip" hidden title="Focus session running — click or say “stop focus” to end it">
+          <span class="focus-dot"></span><span id="focusChipLabel">—</span>
+        </span>
         <span id="clock" class="clock">--:--:--</span>
         <span id="privateBadge" class="private-badge" hidden title="Private Mode — all outbound network calls except OpenRouter are blocked">&#128274; PRIVATE</span>
         <button id="sideToggle" class="icon-btn" title="Toggle side panel">&#9776;</button>

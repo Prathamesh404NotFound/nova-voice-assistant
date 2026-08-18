@@ -393,12 +393,56 @@ function planNoteAction(text, ctx = {}) {
   if (RE_GREETING.test(t)) {
     return { actionId: "notes:greet", payload: {} };
   }
-  // Round 28: mood-aware prioritization. Exact-match read-only phrases run
+  // Round 29: focus mode / Pomodoro. "start focus mode", "focus mode for 25
+// minutes", "start a pomodoro", "pomodoro for 45 min", "focus for 1 hour",
+// "start 30-minute focus" → notes:focus-start with durationMin (default 25).
+// "stop focus" / "end focus mode" / "quit focus" → notes:focus-stop (closes
+// the running session candidly — the record says completed or cancelled).
+// Runs before RE_NOTE: "note focus mode" should still be a note, which it
+// is, because these are anchored exact-match sentences.
+// Grouping is deliberate: every alternation owns its own '(?:nova ...)?'
+// prefix AND its own duration group, and the outer '(?:…)' makes the ^/$
+// anchors apply to ALL branches (top-level | would let each branch anchor
+// independently — which is what caused 'end focus mode' to match via the
+// 'focus mode' branch in an earlier revision). Branch 2 must keep 'start
+// (a? )?pomodoro' as ONE alternation inside the group so the optional
+// duration '(?: for N min)?' belongs to 'pomodoro for …', not to a bare
+// 'start a pomodoro' alternation.
+const RE_FOCUS_START = /^(?:(?:nova\s*,?\s*)?(?:start\s+focus\s+(?:mode|session)|start\s+(?:a\s+)?focus(?:\s+(?:mode|session))?(?:\s+for\s+(\d+(?:\.\d+)?)\s*(?:minutes?|min))?|focus\s+mode(?:\s+for\s+(\d+(?:\.\d+)?)\s*(?:minutes?|min))?)|(?:nova\s*,?\s*)?(?:start\s+(?:a\s+)?pomodoro(?:\s+for\s+(\d+(?:\.\d+)?)\s*(?:minutes?|min))?)|(?:nova\s*,?\s*)?(?:pomodoro(?:\s+for\s+(\d+(?:\.\d+)?)\s*(?:minutes?|min))?)|(?:nova\s*,?\s*)?(?:focus\s+for\s+(\d+(?:\.\d+)?)\s*(?:minutes?|min|hour|h|hours?))|(?:nova\s*,?\s*)?(?:start\s+(\d+(?:\.\d+)?)\s*(?:-\s?)?(?:minutes?|min|hour|h|hours?)\s+focus)|(?:nova\s*,?\s*)?(?:focus\s+mode(?:\s+for\s+(\d+(?:\.\d+)?)\s*(?:hours?|h|hour))?|(\d+(?:\.\d+)?)\s*(?:minutes?|min|hour|h|hours?)\s+(?:of\s+)?focus))\s*$/i;
+const RE_FOCUS_STOP = /^(?:nova\s*,?\s*)?(?:stop\s+focus(?:\s+mode)?|end\s+focus(?:\s+mode)?|quit\s+focus(?:\s+mode)?|end\s+my\s+(?:focus )?session|stop\s+(?:my\s+)?(?:focus )?session|pomodoro\s+(?:done|over))\s*$/i;
+
+// Round 28: mood-aware prioritization. Exact-match read-only phrases run
   // right after mood check-in — before RE_NOTE and before every task-
   // creation/edit rule, so "prioritize my tasks" is never read as "add task
   // 'my tasks'" or "what should I work on first" as a plain note.
   if (RE_PRIORITY_CHECK.test(t)) {
     return { actionId: "notes:priority-check", payload: {} };
+  }
+  // Round 29: focus mode / Pomodoro — before RE_NOTE and before every
+  // task-creation rule so "start focus mode" is never read as a task.
+  // Round 29: focus STOP runs before START — 'end focus mode' / 'pomodoro
+  // done' share the word 'focus'/'pomodoro' with start phrases, and RE_
+  // FOCUS_START anchors at ^ so it can't swallow 'end/quit/pomodoro done';
+  // the explicit check here exists so a stop can't accidentally fall through
+  // to the start branch (they're separate anchors, order is defensive).
+  if (RE_FOCUS_STOP.test(t)) {
+    return { actionId: "notes:focus-stop", payload: {} };
+  }
+  if (RE_FOCUS_START.test(t)) {
+    const mm = RE_FOCUS_START.exec(t);
+    // mm[1..7] = the captured duration groups from each alternation branch;
+    // exactly one branch matches, so at most one group is populated.
+    const raw = (mm[1] || mm[2] || mm[3] || mm[4] || mm[5] || mm[6] || mm[7] || "").trim();
+    let durationMin = 25; // Pomodoro default
+    if (raw) {
+      const n = parseFloat(raw);
+      // An hour unit anywhere in the matched sentence means the captured
+      // number is in hours (mm[4] 'focus for X hour', mm[5] 'start X-hour
+      // focus', mm[6] 'focus mode for X hours').
+      const hourUnit = /\b(?:h|hour|hours)\b/i.test(t);
+      if (Number.isFinite(n) && n > 0) durationMin = Math.round(hourUnit ? n * 60 : n);
+    }
+    return { actionId: "notes:focus-start", payload: { durationMin } };
   }
   // Round 27: mood/energy check-in. Questions run first (they're exact-match
   // phrases, so they can't accidentally swallow real notes).

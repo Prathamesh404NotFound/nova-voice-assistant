@@ -14,8 +14,12 @@ const log = require("electron-log");
 
 const FILE = "nova-notes.json";
 let __filePath = null;
-let __data = { notes: [], reminders: [], tasks: [] };
+let __data = { notes: [], reminders: [], tasks: [], focus: [] };
 let __loaded = false;
+// Round 29: deterministic clock seam for focus end-time math (tests pin it).
+let __nowForTesting = null;
+function setNowForTesting(d) { __nowForTesting = d ? new Date(d) : null; }
+function liveNow() { return __nowForTesting || new Date(); }
 
 function dataDir() {
   let dir;
@@ -35,7 +39,8 @@ function filePath() {
 function setStorePathForTesting(p) {
   __filePath = p;
   __loaded = false;
-  __data = { notes: [], reminders: [], tasks: [] };
+  __nowForTesting = null;
+  __data = { notes: [], reminders: [], tasks: [], focus: [] };
 }
 
 function load() {
@@ -48,6 +53,7 @@ function load() {
         notes: Array.isArray(parsed.notes) ? parsed.notes : [],
         reminders: Array.isArray(parsed.reminders) ? parsed.reminders : [],
         tasks: Array.isArray(parsed.tasks) ? parsed.tasks : [],
+        focus: Array.isArray(parsed.focus) ? parsed.focus : [],
       };
     }
   } catch (err) {
@@ -85,6 +91,7 @@ function all() {
     notes: __data.notes.map(stripInternal),
     reminders: __data.reminders.map(stripInternal),
     tasks: __data.tasks.map(stripInternal),
+    focus: (__data.focus || []).map(stripInternal),
   };
 }
 
@@ -439,10 +446,103 @@ function resetForTesting() {
   }
 }
 
+/**
+ * Round 29: focus sessions (Pomodoro-style) — fully local, on-device.
+ * Records are append-only: a session is created with `running` status and
+ * closed (completed or cancelled) by stopFocus — the history is never
+ * edited, so a focus log is an honest time record.
+ *
+ * `startFocus(durationMin, now?)` → {id, durationMin, startedAt, status}.
+ * At most ONE running session at a time: starting while one runs cancels it
+ * first (recorded as cancelled — the user swapped mid-session). `now` is an
+ * injected epoch or ISO for deterministic tests; defaults to the live clock.
+ */
+function startFocus(durationMin, now) {
+  load();
+  durationMin = Number(durationMin);
+  if (!Number.isFinite(durationMin) || durationMin <= 0) {
+    throw new Error("focus duration must be a positive number of minutes");
+  }
+  if (durationMin > 600) durationMin = 600; // 10 h cap — sessions longer than a work day are a mistake
+  const running = (__data.focus || []).find((f) => f.status === "running");
+  if (running) stopFocusInternal(running.id, "cancelled", now); // swap: old session ends candidly
+  const when = now != null ? new Date(now) : liveNow();
+  const item = { id: genId(), durationMin, status: "running", startedAt: when.toISOString(), stoppedAt: null };
+  __data.focus.push(item);
+  save();
+  return stripInternal(item);
+}
+
+function stopFocusInternal(id, status, now) {
+  const item = (__data.focus || []).find((f) => f.id === id);
+  if (!item) return null;
+  if (item.status !== "running") return stripInternal(item);
+  const when = now != null ? new Date(now) : liveNow();
+  item.status = status;
+  item.stoppedAt = when.toISOString();
+  item.updatedAt = when.toISOString();
+  save();
+  return stripInternal(item);
+}
+
+/**
+ * Close the currently running session. status is "completed" (finished the
+ * full duration, caller's word for it) or "cancelled" (stopped early).
+ * No running session → null. `now` is the test-clock seam.
+ */
+function stopFocus(status = "completed", now) {
+  load();
+  const running = (__data.focus || []).find((f) => f.status === "running");
+  if (!running) return null;
+  return stopFocusInternal(running.id, status === "cancelled" ? "cancelled" : "completed", now);
+}
+
+/** All sessions, newest first (history view / side panel). */
+function focusHistory(limit) {
+  load();
+  const list = (__data.focus || []).slice().sort((a, b) => (b.startedAt || "").localeCompare(a.startedAt || ""));
+  if (Number.isFinite(limit) && limit > 0) return list.slice(0, limit).map(stripInternal);
+  return list.map(stripInternal);
+}
+
+/** Most recent running session, or null when nothing is in progress. */
+function latestFocus() {
+  load();
+  const list = (__data.focus || []).slice().sort((a, b) => (b.startedAt || "").localeCompare(a.startedAt || ""));
+  return list[0] ? stripInternal(list[0]) : null;
+}
+
+/** Sum of completed-focus minutes within the trailing 7 days (for stats). */
+function focusMinutesThisWeek(now) {
+  load();
+  const cutoff = (now != null ? new Date(now) : liveNow()).getTime() - 7 * 86_400_000;
+  let mins = 0;
+  for (const f of __data.focus || []) {
+    if (f.status !== "completed") continue;
+    const started = new Date(f.startedAt).getTime();
+    if (isNaN(started) || started < cutoff) continue;
+    const actual = Math.min(Number(f.durationMin) || 0, (Number(f.stoppedAt) ? new Date(f.stoppedAt).getTime() - started : f.durationMin * 60_000) / 60_000);
+    mins += actual > 0 ? actual : Number(f.durationMin) || 0;
+  }
+  return mins;
+}
+
+/** Wipe the store — tests only. */
+function resetForTesting() {
+  __data = { notes: [], reminders: [], tasks: [], focus: [] };
+  __nowForTesting = null;
+  __loaded = true;
+  if (__filePath && fs.existsSync(filePath())) {
+    try { fs.unlinkSync(filePath()); } catch { /* ignore */ }
+  }
+}
+
 module.exports = {
   all, addNote, addReminder, rearmReminder, addTask, setTaskDone, setTaskDue, taskStats,
   dailyBriefing, weeklyDigest,
   deleteNote, deleteTask, cancelReminder, searchNotes, summarizeOf,
   dueReminders, markFired,
+  startFocus, stopFocus, focusHistory, latestFocus, focusMinutesThisWeek,
   setStorePathForTesting, resetForTesting, filePath,
+  setNowForTesting, // test-only: pins the clock for end-time math
 };

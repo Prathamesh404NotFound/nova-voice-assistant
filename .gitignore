@@ -28,3 +28,4 @@ actions.log.json
 .nova-greeting-test-data/
 .nova-mood-test-data/
 .nova-mood-priority-test-data/
+.nova-focus-test-data/

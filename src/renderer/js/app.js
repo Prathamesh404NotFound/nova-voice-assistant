@@ -25,6 +25,7 @@
   const el = {
     statusDot: $("statusDot"), statusLabel: $("statusLabel"),
     clock: $("clock"), modelName: $("modelName"), modelBadge: $("modelBadge"),
+    focusChip: $("focusChip"), focusChipLabel: $("focusChipLabel"),
     modelChip: $("modelChip"), refreshBtn: $("refreshBtn"),
     orbCanvas: $("orbCanvas"), orbCore: $("orbCore"), orbLabel: $("orbLabel"),
     orbWrap: $("orbWrap"), liveLine: $("liveLine"), liveHear: $("liveHear"),
@@ -68,9 +69,38 @@
   };
 
   // ------------------------------------------------------------------ clock
+  // Round 29: the focus chip ticks inside the same 1 s interval as the
+  // clock — one cheap timer, not two; renderFocusChip() guards its own
+  // existence until a focus session actually starts.
+  let __focusChipVisible = null; // caches the last chip DOM state to avoid work
+  function renderFocusChip() {
+    if (!el.focusChip) return;
+    const s = state.focusSession;
+    if (!s) {
+      if (!el.focusChip.hidden) el.focusChip.hidden = true;
+      return;
+    }
+    el.focusChip.hidden = false;
+    const remain = Math.max(0, Math.round((s.endsAt - Date.now()) / 60_000));
+    const elapsed = Math.round((Date.now() - s.startedAt) / 60_000);
+    const label = remain > 0 ? `${remain}m left` : `done (${elapsed}m)`;
+    if (__focusChipVisible !== label) {
+      __focusChipVisible = label;
+      el.focusChipLabel.textContent = label;
+      el.focusChip.classList.toggle("focus-chip-done", remain <= 0);
+    }
+    // Ring once when the target hits zero: the main process follows with
+    // the real stop — the user may still run past the target.
+    if (remain <= 0 && !state.focusBell) {
+      state.focusBell = true;
+      showNotesToast("Focus session target reached — say “stop focus” to wrap up.");
+      if (document.hasFocus()) speak("Your focus session target is up. Say “stop focus” whenever you're done.");
+    }
+  }
   function tickClock() {
     const now = new Date();
     el.clock.textContent = now.toLocaleTimeString("en-GB");
+    renderFocusChip();
   }
   setInterval(tickClock, 1000);
   tickClock();
@@ -517,6 +547,30 @@
       if (!data || !data.text) return;
       showNotesToast(data.text);
       if (document.hasFocus()) speak(data.text);
+    });
+    // Round 29: focus mode / Pomodoro HUD chip — the main process emitted
+    // nova:focus-started on a successful start and nova:focus-stopped on
+    // end; the renderer owns the countdown. Clicking the chip ends the
+    // session via the same L1 voice path ("stop focus"), so mouse and voice
+    // share the exact action, level and Action Log entry.
+    window.nova.onFocusStarted((data) => {
+      if (!data || !data.durationMin) return;
+      state.focusSession = { id: data.id, durationMin: Number(data.durationMin), endsAt: new Date(data.endsAt).getTime(), startedAt: new Date(data.startedAt).getTime() };
+      renderFocusChip();
+      showNotesToast(`Focus mode on — ${data.durationMin} minutes until ${new Date(data.endsAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}. I'll ping you when it's done.`);
+    });
+    window.nova.onFocusStopped((data) => {
+      state.focusSession = null;
+      renderFocusChip();
+      const ended = data && data.ended;
+      if (ended) {
+        const mins = Math.max(1, Math.round((new Date(ended.stoppedAt).getTime() - new Date(ended.startedAt).getTime()) / 60_000));
+        const label = mins === 1 ? "a minute" : `${mins} minutes`;
+        showNotesToast(`Focus ended after ${label}${(data && data.pendingCount > 0) ? " — want me to mark a task done?" : ""}`);
+      }
+    });
+    el.focusChip.addEventListener("click", () => {
+      if (state.focusSession) runNotesCommand("stop focus");
     });
   }
   // ======================================================================
