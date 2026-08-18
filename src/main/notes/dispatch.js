@@ -181,6 +181,31 @@ function formatLocalResult(actionId, payload, detail) {
         actionId, detail: { kind: "list", tasks },
       };
     }
+    // Round 30: task search — numbered results with due badges (overdue /
+    // due today), ordered by the store's match score (whole-word > substring)
+    // then recency. Empty plate gets a plain "nothing matches X" answer.
+    case "notes:task-search": {
+      const matches = detail.matches || [];
+      const q = String(payload.query || "").trim();
+      if (!matches.length) return { ok: true, intent: "notes", text: `No tasks match "${q}".`, actionId, detail: { kind: "search", matches, query: q } };
+      // Due badges: overdue / due today only (same bucket math as priority-
+      // check) — the rest of the dates keep the list quiet.
+      const todayMs = new Date().setHours(0, 0, 0, 0);
+      const tag = (t) => {
+        if (!t.dueDate) return "";
+        try {
+          const d = new Date(t.dueDate);
+          d.setHours(0, 0, 0, 0);
+          return d.getTime() < todayMs ? " (overdue)" : d.getTime() === todayMs ? " (due today)" : "";
+        } catch { return ""; }
+      };
+      const line = (m, i) => `${i + 1}. ${m.task.text}${tag(m.task)}`;
+      return {
+        ok: true, intent: "notes",
+        text: `Found ${matches.length} task${matches.length === 1 ? "" : "s"} about "${q}":\n` + matches.map(line).join("\n"),
+        actionId, detail: { kind: "search", matches, query: q },
+      };
+    }
     case "notes:list-reminders": {
       const rems = detail.reminders || [];
       const pending = rems.filter((r) => !r.fired);

@@ -162,6 +162,16 @@ const RE_MOOD_STATEMENT = /^(?:nova\s*,?\s*)?(?:i feel|i'?m feeling|i am feeling
 // that run before/after this check.
 const RE_TASK_STATS = /(?:how(?: am i|('s| is)) (?:doing (?:with|on) my|is my task))\s*tasks?\b|(?<!\badd\b\s)(?<!\bmark\b\s)\b(?:create|new)\s+task stats(?:istics)?\b|(?<!\badd\b\s)(?<!\bmark\b\s)\b(?:task stats|task statistics)\b(?!\s+(?:sheet|review|list|for|about))|\bcompletion rate\b|how many tasks have i done|my task (?:completion rate|progress|stats|statistics)/i;
 
+// Round 30: "find tasks about the report" / "search my tasks for client" /
+// "tasks with billing" — fuzzy task search (L1 SAFE read). Runs before the
+// notes search ("find in my notes:") and the task list so task phrasings
+// never leak into either. The subject tail is stripped of voice padding
+// ("find tasks", "about", "with", "show", …) before matching against text.
+// Negatives deliberately kept out: "show my task list" / "what tasks do i
+// have" → task-list; "find a note about X" → notes search; "my tasks" alone
+// → task-list.
+const RE_TASK_SEARCH = /^(?:nova\s*,?\s*)?(?:(?:find|search|look for|show)\s+(?:my\s+)?tasks?(?:\s+(?:about|for|with|matching)\s+(.+))|(?:my\s+)?tasks?(?:\s+(?:about|for|with|matching)\s+(.+)))\s*$/i;
+
 // "delete my note about milk" / "delete the task buy milk"
 const RE_DELETE = /^delete\s+(?:my |the )?(note|task)\s+["“]?(.+?)["”]?\s*$/i;
 
@@ -544,6 +554,20 @@ const RE_FOCUS_STOP = /^(?:nova\s*,?\s*)?(?:stop\s+focus(?:\s+mode)?|end\s+focus
     return { error: "That looks like a task with a due date. Say \"add finish the report to my tasks by Friday\" so I can file it properly." };
   }
 
+  // Round 30: task search runs before the task list — "tasks with billing"
+  // is a search, "my tasks" alone is the list (the regex tail requires a
+  // preposition + content).
+  m = RE_TASK_SEARCH.exec(t);
+  if (m) {
+    // m[1]/m[2] = the tail after about/for/with/matching (exactly one branch)
+    let raw = (m[1] || m[2] || "").trim();
+    // Strip the last accidental preposition word if it swallowed none (e.g.
+    // "find tasks about") — the tail must carry at least one content word.
+    raw = raw.replace(/^(?:about|for|with|matching)\s*/i, "").trim();
+    if (!raw) return { error: "Find tasks about what? Try \"find tasks about the report\"." };
+    return { actionId: "notes:task-search", payload: { query: raw } };
+  }
+
   if (RE_TASKS_LIST.test(t)) {
     return { actionId: "notes:list-tasks", payload: {} };
   }
@@ -591,9 +615,13 @@ const RE_FOCUS_STOP = /^(?:nova\s*,?\s*)?(?:stop\s+focus(?:\s+mode)?|end\s+focus
   }
   const im = RE_IMPLICIT_SET_DUE.exec(t);
   if (im) {
+    // subj hoisted outside the if-block: the fallback below (no store ctx /
+    // no matching task) also needs it — the old const declaration was block-
+    // scoped and made the fallback ReferenceError (pre-existing latent bug,
+    // only triggered when ctx.tasks is empty or no task matches).
+    const subj = im[1].replace(/\s+is\s+(?:now\s+|no longer\s+|)?due$|\s+due\s+date\s+is$|\s+due$|^due\s+date\s+is\s+/i, "").trim();
     if (ctx.tasks && ctx.tasks.length) {
       const pend = ctx.tasks.filter((x) => !x.done);
-      const subj = im[1].replace(/\s+is\s+(?:now\s+|no longer\s+|)?due$|\s+due\s+date\s+is$|\s+due$|^due\s+date\s+is\s+/i, "").trim();
       const task = findById(pend, subj) || matchTask(pend, subj);
       if (task) {
         const due = parseDueDate(im[2], nowForTesting.now());

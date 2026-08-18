@@ -1,5 +1,3955 @@
 [
   {
+    "ts": "2026-08-18T09:52:26.309Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhhqdf-29ey08",
+            "text": "client onboarding",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.307Z",
+            "updatedAt": "2026-08-18T09:52:26.307Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:26.307Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhhqdf-29ey08",
+            "text": "client onboarding",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.307Z",
+            "updatedAt": "2026-08-18T09:52:26.307Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:26.305Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhhqdc-5ug24w",
+            "text": "task 2 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.304Z",
+            "updatedAt": "2026-08-18T09:52:26.304Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhhqdc-unnbkm",
+            "text": "task 3 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.304Z",
+            "updatedAt": "2026-08-18T09:52:26.304Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhhqdc-v6uciz",
+            "text": "task 4 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.304Z",
+            "updatedAt": "2026-08-18T09:52:26.304Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhhqdc-ywgrt8",
+            "text": "task 5 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.304Z",
+            "updatedAt": "2026-08-18T09:52:26.304Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhhqdc-i8fxgv",
+            "text": "task 6 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.304Z",
+            "updatedAt": "2026-08-18T09:52:26.304Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhhqdc-831h9u",
+            "text": "task 7 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.304Z",
+            "updatedAt": "2026-08-18T09:52:26.304Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhhqdc-wil2co",
+            "text": "task 8 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.304Z",
+            "updatedAt": "2026-08-18T09:52:26.304Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhhqdc-o4adw6",
+            "text": "task 9 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.304Z",
+            "updatedAt": "2026-08-18T09:52:26.304Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhhqdc-2gy8am",
+            "text": "task 10 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.304Z",
+            "updatedAt": "2026-08-18T09:52:26.304Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhhqdc-zubjya",
+            "text": "task 11 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.304Z",
+            "updatedAt": "2026-08-18T09:52:26.304Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "projectx",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:26.301Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [],
+      "query": "zzzqwerty",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:26.299Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhhqcv-qgzmz8",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.287Z",
+            "updatedAt": "2026-08-18T09:52:26.287Z",
+            "dueDate": "2026-08-17T09:52:26.287Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "rent",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:26.297Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhhqcw-uwkbdn",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.288Z",
+            "updatedAt": "2026-08-18T09:52:26.288Z",
+            "dueDate": "2026-08-18T09:52:26.288Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        },
+        {
+          "task": {
+            "id": "n-msyhhqcw-2z8989",
+            "text": "client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.288Z",
+            "updatedAt": "2026-08-18T09:52:26.288Z",
+            "dueDate": "2026-08-25T09:52:26.288Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        },
+        {
+          "task": {
+            "id": "n-msyhhqcv-qgzmz8",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.287Z",
+            "updatedAt": "2026-08-18T09:52:26.287Z",
+            "dueDate": "2026-08-17T09:52:26.287Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        }
+      ],
+      "query": "rent team report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:26.295Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhhqcw-uwkbdn",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.288Z",
+            "updatedAt": "2026-08-18T09:52:26.288Z",
+            "dueDate": "2026-08-18T09:52:26.288Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "standup",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:26.293Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhhqcw-2z8989",
+            "text": "client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.288Z",
+            "updatedAt": "2026-08-18T09:52:26.288Z",
+            "dueDate": "2026-08-25T09:52:26.288Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:26.291Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 1,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhhqcw-uwkbdn",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.288Z",
+            "updatedAt": "2026-08-18T09:52:26.288Z",
+            "dueDate": "2026-08-18T09:52:26.288Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "standup",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:26.288Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhhqcv-qgzmz8",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.287Z",
+            "updatedAt": "2026-08-18T09:52:26.287Z",
+            "dueDate": "2026-08-17T09:52:26.287Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        }
+      ],
+      "query": "pay rent",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:26.285Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [],
+      "query": "milk",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:26.283Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhhqcg-wpte7f",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.272Z",
+            "updatedAt": "2026-08-18T09:52:26.272Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhhqcf-weqs2h",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.271Z",
+            "updatedAt": "2026-08-18T09:52:26.271Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhhqcf-bkjhfx",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.271Z",
+            "updatedAt": "2026-08-18T09:52:26.271Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:26.281Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhhqcf-mv01f6",
+            "text": "buy milk",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.271Z",
+            "updatedAt": "2026-08-18T09:52:26.271Z"
+          },
+          "score": 5,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "mil",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:26.279Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhhqcf-i4r48h",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.271Z",
+            "updatedAt": "2026-08-18T09:52:26.271Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "billing",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:26.277Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhhqcf-i4r48h",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.271Z",
+            "updatedAt": "2026-08-18T09:52:26.271Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "billing",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:26.274Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhhqcg-wpte7f",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.272Z",
+            "updatedAt": "2026-08-18T09:52:26.272Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhhqcf-weqs2h",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.271Z",
+            "updatedAt": "2026-08-18T09:52:26.271Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhhqcf-bkjhfx",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.271Z",
+            "updatedAt": "2026-08-18T09:52:26.271Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:26.272Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhhqcg-wpte7f",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.272Z",
+            "updatedAt": "2026-08-18T09:52:26.272Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyhhqcf-weqs2h",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.271Z",
+            "updatedAt": "2026-08-18T09:52:26.271Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyhhqcf-bkjhfx",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.271Z",
+            "updatedAt": "2026-08-18T09:52:26.271Z"
+          },
+          "score": 10,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyhhqcf-i4r48h",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T09:52:26.271Z",
+            "updatedAt": "2026-08-18T09:52:26.271Z"
+          },
+          "score": 10,
+          "matchedTokens": 2
+        }
+      ],
+      "query": "client report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:26.268Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 3,
+    "detail": {
+      "matches": [],
+      "query": "the report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:09.705Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyhhdk9-rdsk9p",
+      "name": "tea-time",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "time"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:09.608Z",
+    "actionId": "automation:event-run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msyhhbow-qolk31",
+      "name": "tmp-watch",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:09.606Z",
+    "actionId": "automation:run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msyhhbow-qolk31-1787046729604",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyhhbow-qolk31",
+      "name": "tmp-watch",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:09.604Z",
+    "actionId": "automation:run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msyhhbow-qolk31-1787046729604",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyhhbow-qolk31",
+      "name": "tmp-watch",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:07.280Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyhhbow-qolk31",
+      "name": "tmp-watch",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "file"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:06.977Z",
+    "actionId": "automation:toggle",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyhhbge-ynvehv",
+      "enabled": false
+    }
+  },
+  {
+    "ts": "2026-08-18T09:52:06.974Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyhhbge-ynvehv",
+      "name": "wake-note",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:51:50.970Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyhgz3u-ycfh42",
+      "name": "idle-report",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "idle"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:51:49.986Z",
+    "actionId": "automation:event-run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msyhgmr9-82iypg",
+      "name": "idle-report",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:51:49.984Z",
+    "actionId": "automation:run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msyhgmr9-82iypg-1787046709981",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyhgmr9-82iypg",
+      "name": "idle-report",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T09:51:49.981Z",
+    "actionId": "automation:run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msyhgmr9-82iypg-1787046709981",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyhgmr9-82iypg",
+      "name": "idle-report",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T09:51:34.965Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyhgmr9-82iypg",
+      "name": "idle-report",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "idle"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:51:32.761Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyhgl21-8h460u",
+      "name": "tea-time",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "time"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:51:31.265Z",
+    "actionId": "automation:event-run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msyhgj4f-62g728",
+      "name": "tea-time",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:51:31.262Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msyhgj4f-62g728-1787046691260",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyhgj4f-62g728",
+      "name": "tea-time",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T09:51:31.260Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msyhgj4f-62g728-1787046691260",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyhgj4f-62g728",
+      "name": "tea-time",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T09:51:30.255Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyhgj4f-62g728",
+      "name": "tea-time",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "time"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:51:29.755Z",
+    "actionId": "automation:event-run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msyhgiqc-7dr0wi",
+      "name": "wake-note",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:51:29.754Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msyhgiqc-7dr0wi-1787046689751",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyhgiqc-7dr0wi",
+      "name": "wake-note",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T09:51:29.751Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msyhgiqc-7dr0wi-1787046689751",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyhgiqc-7dr0wi",
+      "name": "wake-note",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T09:51:29.748Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyhgiqc-7dr0wi",
+      "name": "wake-note",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:51:29.444Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyhgihw-msalwk",
+      "name": "wake-note",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:51:29.146Z",
+    "actionId": "automation:event-run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msyhgi8u-o1s150",
+      "name": "wake-note",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:51:29.144Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msyhgi8u-o1s150-1787046689122",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyhgi8u-o1s150",
+      "name": "wake-note",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T09:51:29.131Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msyhgi8u-o1s150-1787046689122",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyhgi8u-o1s150",
+      "name": "wake-note",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T09:51:29.118Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyhgi8u-o1s150",
+      "name": "wake-note",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:51:29.115Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
+  },
+  {
+    "ts": "2026-08-18T09:51:29.111Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyhgi8n-vsx7am",
+      "name": "ev",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:51:29.108Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyhgi8h-vdqmzg",
+      "name": "downloads-watcher",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "file"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:39.324Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhfftm-1wkm1u",
+            "text": "client onboarding",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.322Z",
+            "updatedAt": "2026-08-18T09:50:39.322Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:39.322Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhfftm-1wkm1u",
+            "text": "client onboarding",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.322Z",
+            "updatedAt": "2026-08-18T09:50:39.322Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:39.320Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhfftj-vedf54",
+            "text": "task 8 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.320Z",
+            "updatedAt": "2026-08-18T09:50:39.320Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhfftk-8m6hxa",
+            "text": "task 9 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.320Z",
+            "updatedAt": "2026-08-18T09:50:39.320Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhfftk-8hrcb7",
+            "text": "task 10 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.320Z",
+            "updatedAt": "2026-08-18T09:50:39.320Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhfftk-52gkjb",
+            "text": "task 11 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.320Z",
+            "updatedAt": "2026-08-18T09:50:39.320Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhfftj-vwghtk",
+            "text": "task 0 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.319Z",
+            "updatedAt": "2026-08-18T09:50:39.319Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhfftj-nq4yg7",
+            "text": "task 1 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.319Z",
+            "updatedAt": "2026-08-18T09:50:39.319Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhfftj-6ephpp",
+            "text": "task 2 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.319Z",
+            "updatedAt": "2026-08-18T09:50:39.319Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhfftj-cig0ln",
+            "text": "task 3 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.319Z",
+            "updatedAt": "2026-08-18T09:50:39.319Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhfftj-zvzwuv",
+            "text": "task 4 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.319Z",
+            "updatedAt": "2026-08-18T09:50:39.319Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhfftj-giqmig",
+            "text": "task 5 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.319Z",
+            "updatedAt": "2026-08-18T09:50:39.319Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "projectx",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:39.317Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [],
+      "query": "zzzqwerty",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:39.315Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhfft5-7ljs7a",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.305Z",
+            "updatedAt": "2026-08-18T09:50:39.305Z",
+            "dueDate": "2026-08-17T09:50:39.305Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "rent",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:39.314Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhfft5-7ljs7a",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.305Z",
+            "updatedAt": "2026-08-18T09:50:39.305Z",
+            "dueDate": "2026-08-17T09:50:39.305Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        },
+        {
+          "task": {
+            "id": "n-msyhfft5-s3w6jz",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.305Z",
+            "updatedAt": "2026-08-18T09:50:39.305Z",
+            "dueDate": "2026-08-18T09:50:39.305Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        },
+        {
+          "task": {
+            "id": "n-msyhfft5-1k1s4i",
+            "text": "client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.305Z",
+            "updatedAt": "2026-08-18T09:50:39.305Z",
+            "dueDate": "2026-08-25T09:50:39.305Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        }
+      ],
+      "query": "rent team report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:39.311Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhfft5-s3w6jz",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.305Z",
+            "updatedAt": "2026-08-18T09:50:39.305Z",
+            "dueDate": "2026-08-18T09:50:39.305Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "standup",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:39.310Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhfft5-1k1s4i",
+            "text": "client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.305Z",
+            "updatedAt": "2026-08-18T09:50:39.305Z",
+            "dueDate": "2026-08-25T09:50:39.305Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:39.308Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhfft5-s3w6jz",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.305Z",
+            "updatedAt": "2026-08-18T09:50:39.305Z",
+            "dueDate": "2026-08-18T09:50:39.305Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "standup",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:39.306Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhfft5-7ljs7a",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.305Z",
+            "updatedAt": "2026-08-18T09:50:39.305Z",
+            "dueDate": "2026-08-17T09:50:39.305Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        }
+      ],
+      "query": "pay rent",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:39.303Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [],
+      "query": "milk",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:39.301Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhffsq-z0pw9i",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.291Z",
+            "updatedAt": "2026-08-18T09:50:39.291Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhffsr-q47u00",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.291Z",
+            "updatedAt": "2026-08-18T09:50:39.291Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhffsr-ruc9sn",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.291Z",
+            "updatedAt": "2026-08-18T09:50:39.291Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:39.299Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhffsr-ouq088",
+            "text": "buy milk",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.291Z",
+            "updatedAt": "2026-08-18T09:50:39.291Z"
+          },
+          "score": 5,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "mil",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:39.297Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhffsr-b7rp21",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.291Z",
+            "updatedAt": "2026-08-18T09:50:39.291Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "billing",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:39.295Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhffsr-b7rp21",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.291Z",
+            "updatedAt": "2026-08-18T09:50:39.291Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "billing",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:39.293Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 1,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhffsq-z0pw9i",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.291Z",
+            "updatedAt": "2026-08-18T09:50:39.291Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhffsr-q47u00",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.291Z",
+            "updatedAt": "2026-08-18T09:50:39.291Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhffsr-ruc9sn",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.291Z",
+            "updatedAt": "2026-08-18T09:50:39.291Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:39.292Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 1,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhffsq-z0pw9i",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.291Z",
+            "updatedAt": "2026-08-18T09:50:39.291Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyhffsr-ruc9sn",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.291Z",
+            "updatedAt": "2026-08-18T09:50:39.291Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyhffsr-q47u00",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.291Z",
+            "updatedAt": "2026-08-18T09:50:39.291Z"
+          },
+          "score": 10,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyhffsr-b7rp21",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:39.291Z",
+            "updatedAt": "2026-08-18T09:50:39.291Z"
+          },
+          "score": 10,
+          "matchedTokens": 2
+        }
+      ],
+      "query": "client report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:39.287Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 2,
+    "detail": {
+      "matches": [],
+      "query": "the report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:18.447Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhezpr-nnmg64",
+            "text": "task 6 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.447Z",
+            "updatedAt": "2026-08-18T09:50:18.447Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhezpr-a7pd6n",
+            "text": "task 7 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.447Z",
+            "updatedAt": "2026-08-18T09:50:18.447Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhezpr-lt99j2",
+            "text": "task 8 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.447Z",
+            "updatedAt": "2026-08-18T09:50:18.447Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhezpr-a4bs2a",
+            "text": "task 9 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.447Z",
+            "updatedAt": "2026-08-18T09:50:18.447Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhezpr-n5u64z",
+            "text": "task 10 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.447Z",
+            "updatedAt": "2026-08-18T09:50:18.447Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhezpr-yq0t0d",
+            "text": "task 11 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.447Z",
+            "updatedAt": "2026-08-18T09:50:18.447Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhezpq-mee5od",
+            "text": "task 0 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.446Z",
+            "updatedAt": "2026-08-18T09:50:18.446Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhezpq-hwb77r",
+            "text": "task 1 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.446Z",
+            "updatedAt": "2026-08-18T09:50:18.446Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhezpq-otnpck",
+            "text": "task 2 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.446Z",
+            "updatedAt": "2026-08-18T09:50:18.446Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhezpq-67c4mw",
+            "text": "task 3 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.446Z",
+            "updatedAt": "2026-08-18T09:50:18.446Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "projectx",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:18.444Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [],
+      "query": "zzzqwerty",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:18.440Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhezp8-d06y31",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.428Z",
+            "updatedAt": "2026-08-18T09:50:18.428Z",
+            "dueDate": "2026-08-17T09:50:18.428Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "rent",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:18.438Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhezp8-d06y31",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.428Z",
+            "updatedAt": "2026-08-18T09:50:18.428Z",
+            "dueDate": "2026-08-17T09:50:18.428Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        },
+        {
+          "task": {
+            "id": "n-msyhezp8-x87un8",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.428Z",
+            "updatedAt": "2026-08-18T09:50:18.428Z",
+            "dueDate": "2026-08-18T09:50:18.428Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        },
+        {
+          "task": {
+            "id": "n-msyhezp8-lpes1j",
+            "text": "client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.428Z",
+            "updatedAt": "2026-08-18T09:50:18.428Z",
+            "dueDate": "2026-08-25T09:50:18.428Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        }
+      ],
+      "query": "rent team report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:18.436Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhezp8-x87un8",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.428Z",
+            "updatedAt": "2026-08-18T09:50:18.428Z",
+            "dueDate": "2026-08-18T09:50:18.428Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "standup",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:18.434Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhezp8-lpes1j",
+            "text": "client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.428Z",
+            "updatedAt": "2026-08-18T09:50:18.428Z",
+            "dueDate": "2026-08-25T09:50:18.428Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:18.432Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhezp8-x87un8",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.428Z",
+            "updatedAt": "2026-08-18T09:50:18.428Z",
+            "dueDate": "2026-08-18T09:50:18.428Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "standup",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:18.429Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhezp8-d06y31",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.428Z",
+            "updatedAt": "2026-08-18T09:50:18.428Z",
+            "dueDate": "2026-08-17T09:50:18.428Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        }
+      ],
+      "query": "pay rent",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:18.425Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [],
+      "query": "milk",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:18.422Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhezoq-1zeauj",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.410Z",
+            "updatedAt": "2026-08-18T09:50:18.410Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhezoq-hngjk1",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.410Z",
+            "updatedAt": "2026-08-18T09:50:18.410Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhezoq-t58nug",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.410Z",
+            "updatedAt": "2026-08-18T09:50:18.410Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:18.420Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhezoq-gx0b7p",
+            "text": "buy milk",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.410Z",
+            "updatedAt": "2026-08-18T09:50:18.410Z"
+          },
+          "score": 5,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "mil",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:18.418Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhezoq-0bbfck",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.410Z",
+            "updatedAt": "2026-08-18T09:50:18.410Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "billing",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:18.416Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhezoq-0bbfck",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.410Z",
+            "updatedAt": "2026-08-18T09:50:18.410Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "billing",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:18.413Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhezoq-1zeauj",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.410Z",
+            "updatedAt": "2026-08-18T09:50:18.410Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhezoq-hngjk1",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.410Z",
+            "updatedAt": "2026-08-18T09:50:18.410Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhezoq-t58nug",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.410Z",
+            "updatedAt": "2026-08-18T09:50:18.410Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:18.411Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhezoq-1zeauj",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.410Z",
+            "updatedAt": "2026-08-18T09:50:18.410Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyhezoq-t58nug",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.410Z",
+            "updatedAt": "2026-08-18T09:50:18.410Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyhezoq-hngjk1",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.410Z",
+            "updatedAt": "2026-08-18T09:50:18.410Z"
+          },
+          "score": 10,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyhezoq-0bbfck",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:18.410Z",
+            "updatedAt": "2026-08-18T09:50:18.410Z"
+          },
+          "score": 10,
+          "matchedTokens": 2
+        }
+      ],
+      "query": "client report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:18.406Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 3,
+    "detail": {
+      "matches": [],
+      "query": "the report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:07.847Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyherjb-ibl6dm",
+            "text": "task 7 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.847Z",
+            "updatedAt": "2026-08-18T09:50:07.847Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyherjb-9irxml",
+            "text": "task 8 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.847Z",
+            "updatedAt": "2026-08-18T09:50:07.847Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyherjb-zm3s4x",
+            "text": "task 9 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.847Z",
+            "updatedAt": "2026-08-18T09:50:07.847Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyherjb-kf7x4n",
+            "text": "task 10 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.847Z",
+            "updatedAt": "2026-08-18T09:50:07.847Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyherjb-tyfhpt",
+            "text": "task 11 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.847Z",
+            "updatedAt": "2026-08-18T09:50:07.847Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyherja-uvuiep",
+            "text": "task 0 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.846Z",
+            "updatedAt": "2026-08-18T09:50:07.846Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyherja-t8h1yc",
+            "text": "task 1 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.846Z",
+            "updatedAt": "2026-08-18T09:50:07.846Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyherja-de0ruc",
+            "text": "task 2 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.846Z",
+            "updatedAt": "2026-08-18T09:50:07.846Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyherja-4bqs5z",
+            "text": "task 3 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.846Z",
+            "updatedAt": "2026-08-18T09:50:07.846Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyherja-3wxi2m",
+            "text": "task 4 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.846Z",
+            "updatedAt": "2026-08-18T09:50:07.846Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "projectx",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:07.844Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [],
+      "query": "zzzqwerty",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:07.843Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyherix-su3jc7",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.833Z",
+            "updatedAt": "2026-08-18T09:50:07.833Z",
+            "dueDate": "2026-08-17T09:50:07.833Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "rent",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:07.841Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyherix-su3jc7",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.833Z",
+            "updatedAt": "2026-08-18T09:50:07.833Z",
+            "dueDate": "2026-08-17T09:50:07.833Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        },
+        {
+          "task": {
+            "id": "n-msyherix-29fpmf",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.833Z",
+            "updatedAt": "2026-08-18T09:50:07.833Z",
+            "dueDate": "2026-08-18T09:50:07.833Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        },
+        {
+          "task": {
+            "id": "n-msyherix-zzocjy",
+            "text": "client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.833Z",
+            "updatedAt": "2026-08-18T09:50:07.833Z",
+            "dueDate": "2026-08-25T09:50:07.833Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        }
+      ],
+      "query": "rent team report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:07.839Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyherix-29fpmf",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.833Z",
+            "updatedAt": "2026-08-18T09:50:07.833Z",
+            "dueDate": "2026-08-18T09:50:07.833Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "standup",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:07.838Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyherix-zzocjy",
+            "text": "client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.833Z",
+            "updatedAt": "2026-08-18T09:50:07.833Z",
+            "dueDate": "2026-08-25T09:50:07.833Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:07.836Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyherix-29fpmf",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.833Z",
+            "updatedAt": "2026-08-18T09:50:07.833Z",
+            "dueDate": "2026-08-18T09:50:07.833Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "standup",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:07.834Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyherix-su3jc7",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.833Z",
+            "updatedAt": "2026-08-18T09:50:07.833Z",
+            "dueDate": "2026-08-17T09:50:07.833Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        }
+      ],
+      "query": "pay rent",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:07.831Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 1,
+    "detail": {
+      "matches": [],
+      "query": "milk",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:07.829Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyherij-oisk8a",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.819Z",
+            "updatedAt": "2026-08-18T09:50:07.819Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyherij-f1w725",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.819Z",
+            "updatedAt": "2026-08-18T09:50:07.819Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyherij-6rkx0x",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.819Z",
+            "updatedAt": "2026-08-18T09:50:07.819Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:07.827Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyherij-pduuar",
+            "text": "buy milk",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.819Z",
+            "updatedAt": "2026-08-18T09:50:07.819Z"
+          },
+          "score": 5,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "mil",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:07.825Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyherij-egq2wh",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.819Z",
+            "updatedAt": "2026-08-18T09:50:07.819Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "billing",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:07.823Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyherij-egq2wh",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.819Z",
+            "updatedAt": "2026-08-18T09:50:07.819Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "billing",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:07.822Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 1,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyherij-oisk8a",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.819Z",
+            "updatedAt": "2026-08-18T09:50:07.819Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyherij-f1w725",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.819Z",
+            "updatedAt": "2026-08-18T09:50:07.819Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyherij-6rkx0x",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.819Z",
+            "updatedAt": "2026-08-18T09:50:07.819Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:07.820Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyherij-oisk8a",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.819Z",
+            "updatedAt": "2026-08-18T09:50:07.819Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyherij-6rkx0x",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.819Z",
+            "updatedAt": "2026-08-18T09:50:07.819Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyherij-f1w725",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.819Z",
+            "updatedAt": "2026-08-18T09:50:07.819Z"
+          },
+          "score": 10,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyherij-egq2wh",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:07.819Z",
+            "updatedAt": "2026-08-18T09:50:07.819Z"
+          },
+          "score": 10,
+          "matchedTokens": 2
+        }
+      ],
+      "query": "client report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:07.816Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 2,
+    "detail": {
+      "matches": [],
+      "query": "the report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:01.338Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhemii-tb9gm5",
+            "text": "task 4 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.338Z",
+            "updatedAt": "2026-08-18T09:50:01.338Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhemii-hzan3m",
+            "text": "task 5 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.338Z",
+            "updatedAt": "2026-08-18T09:50:01.338Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhemii-9g1nft",
+            "text": "task 6 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.338Z",
+            "updatedAt": "2026-08-18T09:50:01.338Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhemii-eyyh9z",
+            "text": "task 7 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.338Z",
+            "updatedAt": "2026-08-18T09:50:01.338Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhemii-lc8opi",
+            "text": "task 8 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.338Z",
+            "updatedAt": "2026-08-18T09:50:01.338Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhemii-fn5gae",
+            "text": "task 9 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.338Z",
+            "updatedAt": "2026-08-18T09:50:01.338Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhemii-5joend",
+            "text": "task 10 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.338Z",
+            "updatedAt": "2026-08-18T09:50:01.338Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhemii-u8q1qq",
+            "text": "task 11 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.338Z",
+            "updatedAt": "2026-08-18T09:50:01.338Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhemih-k87saz",
+            "text": "task 0 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.337Z",
+            "updatedAt": "2026-08-18T09:50:01.337Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhemih-mm0ldk",
+            "text": "task 1 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.337Z",
+            "updatedAt": "2026-08-18T09:50:01.337Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "projectx",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:01.336Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [],
+      "query": "zzzqwerty",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:01.334Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhemi6-1ryr6q",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.326Z",
+            "updatedAt": "2026-08-18T09:50:01.326Z",
+            "dueDate": "2026-08-17T09:50:01.325Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "rent",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:01.333Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhemi6-1ryr6q",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.326Z",
+            "updatedAt": "2026-08-18T09:50:01.326Z",
+            "dueDate": "2026-08-17T09:50:01.325Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        },
+        {
+          "task": {
+            "id": "n-msyhemi6-b33j10",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.326Z",
+            "updatedAt": "2026-08-18T09:50:01.326Z",
+            "dueDate": "2026-08-18T09:50:01.326Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        },
+        {
+          "task": {
+            "id": "n-msyhemi6-in70uy",
+            "text": "client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.326Z",
+            "updatedAt": "2026-08-18T09:50:01.326Z",
+            "dueDate": "2026-08-25T09:50:01.326Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        }
+      ],
+      "query": "rent team report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:01.332Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 1,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhemi6-b33j10",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.326Z",
+            "updatedAt": "2026-08-18T09:50:01.326Z",
+            "dueDate": "2026-08-18T09:50:01.326Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "standup",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:01.330Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhemi6-in70uy",
+            "text": "client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.326Z",
+            "updatedAt": "2026-08-18T09:50:01.326Z",
+            "dueDate": "2026-08-25T09:50:01.326Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:01.329Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhemi6-b33j10",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.326Z",
+            "updatedAt": "2026-08-18T09:50:01.326Z",
+            "dueDate": "2026-08-18T09:50:01.326Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "standup",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:01.326Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhemi6-1ryr6q",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.326Z",
+            "updatedAt": "2026-08-18T09:50:01.326Z",
+            "dueDate": "2026-08-17T09:50:01.325Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        }
+      ],
+      "query": "pay rent",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:01.324Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [],
+      "query": "milk",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:01.322Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhemhu-gnfh34",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.314Z",
+            "updatedAt": "2026-08-18T09:50:01.314Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhemhu-0lc40f",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.314Z",
+            "updatedAt": "2026-08-18T09:50:01.314Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhemht-xw0jd0",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.313Z",
+            "updatedAt": "2026-08-18T09:50:01.313Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:01.321Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 1,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhemhu-hpbk6q",
+            "text": "buy milk",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.314Z",
+            "updatedAt": "2026-08-18T09:50:01.314Z"
+          },
+          "score": 5,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "mil",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:01.319Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhemhu-eifkc7",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.314Z",
+            "updatedAt": "2026-08-18T09:50:01.314Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "billing",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:01.318Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhemhu-eifkc7",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.314Z",
+            "updatedAt": "2026-08-18T09:50:01.314Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "billing",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:01.316Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhemhu-gnfh34",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.314Z",
+            "updatedAt": "2026-08-18T09:50:01.314Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhemhu-0lc40f",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.314Z",
+            "updatedAt": "2026-08-18T09:50:01.314Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhemht-xw0jd0",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.313Z",
+            "updatedAt": "2026-08-18T09:50:01.313Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:01.314Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhemhu-0lc40f",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.314Z",
+            "updatedAt": "2026-08-18T09:50:01.314Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyhemht-xw0jd0",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.313Z",
+            "updatedAt": "2026-08-18T09:50:01.313Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyhemhu-gnfh34",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.314Z",
+            "updatedAt": "2026-08-18T09:50:01.314Z"
+          },
+          "score": 10,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyhemhu-eifkc7",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T09:50:01.314Z",
+            "updatedAt": "2026-08-18T09:50:01.314Z"
+          },
+          "score": 10,
+          "matchedTokens": 2
+        }
+      ],
+      "query": "client report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:50:01.310Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 2,
+    "detail": {
+      "matches": [],
+      "query": "the report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:49:36.930Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 1,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhe3ob-h4k79w",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:36.923Z",
+            "updatedAt": "2026-08-18T09:49:36.923Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyhe3oa-bjjq2b",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:36.922Z",
+            "updatedAt": "2026-08-18T09:49:36.922Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyhe3ob-owlnj6",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:36.923Z",
+            "updatedAt": "2026-08-18T09:49:36.923Z"
+          },
+          "score": 10,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyhe3oa-weoe3f",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:36.922Z",
+            "updatedAt": "2026-08-18T09:49:36.922Z"
+          },
+          "score": 10,
+          "matchedTokens": 2
+        }
+      ],
+      "query": "client report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:49:32.299Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhe03v-yjz8ri",
+            "text": "task 7 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.299Z",
+            "updatedAt": "2026-08-18T09:49:32.299Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhe03v-otlnyo",
+            "text": "task 8 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.299Z",
+            "updatedAt": "2026-08-18T09:49:32.299Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhe03v-7sn7pr",
+            "text": "task 9 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.299Z",
+            "updatedAt": "2026-08-18T09:49:32.299Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhe03v-3dsl5k",
+            "text": "task 10 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.299Z",
+            "updatedAt": "2026-08-18T09:49:32.299Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhe03v-fghfvp",
+            "text": "task 11 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.299Z",
+            "updatedAt": "2026-08-18T09:49:32.299Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhe03u-ev305e",
+            "text": "task 0 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.298Z",
+            "updatedAt": "2026-08-18T09:49:32.298Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhe03u-288fme",
+            "text": "task 1 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.298Z",
+            "updatedAt": "2026-08-18T09:49:32.298Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhe03u-fn5arx",
+            "text": "task 2 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.298Z",
+            "updatedAt": "2026-08-18T09:49:32.298Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhe03u-3u0dmp",
+            "text": "task 3 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.298Z",
+            "updatedAt": "2026-08-18T09:49:32.298Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhe03u-8j2dwk",
+            "text": "task 4 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.298Z",
+            "updatedAt": "2026-08-18T09:49:32.298Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "projectx",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:49:32.297Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 1,
+    "detail": {
+      "matches": [],
+      "query": "zzzqwerty",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:49:32.295Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhe03i-9pqypb",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.286Z",
+            "updatedAt": "2026-08-18T09:49:32.286Z",
+            "dueDate": "2026-08-17T09:49:32.286Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "rent",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:49:32.293Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhe03i-9pqypb",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.286Z",
+            "updatedAt": "2026-08-18T09:49:32.286Z",
+            "dueDate": "2026-08-17T09:49:32.286Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        },
+        {
+          "task": {
+            "id": "n-msyhe03i-qy0n8b",
+            "text": "client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.286Z",
+            "updatedAt": "2026-08-18T09:49:32.286Z",
+            "dueDate": "2026-08-25T09:49:32.286Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        }
+      ],
+      "query": "rent team report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:49:32.292Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [],
+      "query": "standup",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:49:32.290Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhe03i-qy0n8b",
+            "text": "client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.286Z",
+            "updatedAt": "2026-08-18T09:49:32.286Z",
+            "dueDate": "2026-08-25T09:49:32.286Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:49:32.288Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [],
+      "query": "standup",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:49:32.287Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 1,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhe03i-9pqypb",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.286Z",
+            "updatedAt": "2026-08-18T09:49:32.286Z",
+            "dueDate": "2026-08-17T09:49:32.286Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        }
+      ],
+      "query": "pay rent",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:49:32.284Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [],
+      "query": "milk",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:49:32.283Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhe037-1wycso",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.275Z",
+            "updatedAt": "2026-08-18T09:49:32.275Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhe036-69amwj",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.274Z",
+            "updatedAt": "2026-08-18T09:49:32.274Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhe036-nuj6zl",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.274Z",
+            "updatedAt": "2026-08-18T09:49:32.274Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:49:32.281Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhe036-2r1tpa",
+            "text": "buy milk",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.274Z",
+            "updatedAt": "2026-08-18T09:49:32.274Z"
+          },
+          "score": 5,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "mil",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:49:32.280Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhe037-3ww7h5",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.275Z",
+            "updatedAt": "2026-08-18T09:49:32.275Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "billing",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:49:32.278Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhe037-3ww7h5",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.275Z",
+            "updatedAt": "2026-08-18T09:49:32.275Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "billing",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:49:32.277Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhe037-1wycso",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.275Z",
+            "updatedAt": "2026-08-18T09:49:32.275Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhe036-69amwj",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.274Z",
+            "updatedAt": "2026-08-18T09:49:32.274Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyhe036-nuj6zl",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.274Z",
+            "updatedAt": "2026-08-18T09:49:32.274Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:49:32.275Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyhe037-1wycso",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.275Z",
+            "updatedAt": "2026-08-18T09:49:32.275Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyhe036-69amwj",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.274Z",
+            "updatedAt": "2026-08-18T09:49:32.274Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyhe037-3ww7h5",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.275Z",
+            "updatedAt": "2026-08-18T09:49:32.275Z"
+          },
+          "score": 10,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyhe036-nuj6zl",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T09:49:32.274Z",
+            "updatedAt": "2026-08-18T09:49:32.274Z"
+          },
+          "score": 10,
+          "matchedTokens": 2
+        }
+      ],
+      "query": "client report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:49:32.271Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 1,
+    "detail": {
+      "matches": [],
+      "query": "the report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:46:53.442Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 3,
+    "detail": {
+      "matches": [],
+      "query": "the client report",
+      "kind": "search"
+    }
+  },
+  {
     "ts": "2026-08-18T09:42:29.498Z",
     "actionId": "automation:add",
     "level": 1,

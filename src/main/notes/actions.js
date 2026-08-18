@@ -71,6 +71,17 @@ registerAction({
   execute: async () => ({ tasks: store.all().tasks, kind: "list" }),
 });
 
+// Round 30: fuzzy task search — "find tasks about the report" / "tasks with
+// billing". L1 SAFE read-only: matches query tokens against task text with
+// whole-word (10) and substring (5) scoring, excludes done tasks, caps at 10.
+registerAction({
+  id: "notes:task-search",
+  level: RISK_LEVEL.SAFE,
+  description: "Fuzzy search over stored task text",
+  simulate: async (p) => ({ summary: `would search your tasks for "${(p.query || "").slice(0, 60)}" locally` }),
+  execute: async (p) => ({ matches: store.searchTasks(p.query, { includeDone: !!(p && p.includeDone) }), query: p.query, kind: "search" }),
+});
+
 registerAction({
   id: "notes:list-reminders",
   level: RISK_LEVEL.SAFE,

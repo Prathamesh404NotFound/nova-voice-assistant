@@ -1,26 +1,26 @@
 [
   {
-    "ts": "2026-08-18T09:42:42.712Z",
+    "ts": "2026-08-18T09:52:22.896Z",
     "actionId": "notes:complete-task",
     "level": 2,
     "levelName": "reversible",
     "outcome": "success",
-    "durationMs": 1,
+    "durationMs": 0,
     "detail": {
       "task": {
-        "id": "n-msyh52nc-lnhcol",
+        "id": "n-msyhhibj-v95r26",
         "text": "finish report",
         "done": true,
-        "createdAt": "2026-08-18T09:42:35.688Z",
-        "updatedAt": "2026-08-18T09:42:42.711Z",
+        "createdAt": "2026-08-18T09:52:15.871Z",
+        "updatedAt": "2026-08-18T09:52:22.896Z",
         "dueDate": "2026-08-18T23:59:59.999Z",
-        "completedAt": "2026-08-18T09:42:42.711Z"
+        "completedAt": "2026-08-18T09:52:22.896Z"
       },
       "kind": "task-done"
     }
   },
   {
-    "ts": "2026-08-18T09:42:35.705Z",
+    "ts": "2026-08-18T09:52:15.889Z",
     "actionId": "notes:set-task-due",
     "level": 2,
     "levelName": "reversible",
@@ -28,30 +28,30 @@
     "durationMs": 0,
     "detail": {
       "task": {
-        "id": "n-msyh52nc-lnhcol",
+        "id": "n-msyhhibj-v95r26",
         "text": "finish report",
         "done": false,
-        "createdAt": "2026-08-18T09:42:35.688Z",
-        "updatedAt": "2026-08-18T09:42:35.705Z"
+        "createdAt": "2026-08-18T09:52:15.871Z",
+        "updatedAt": "2026-08-18T09:52:15.889Z"
       },
       "kind": "task-due-set",
       "oldDueDate": "2026-08-21T23:59:59.999Z"
     }
   },
   {
-    "ts": "2026-08-18T09:42:35.703Z",
+    "ts": "2026-08-18T09:52:15.888Z",
     "actionId": "notes:set-task-due",
     "level": 2,
     "levelName": "reversible",
     "outcome": "success",
-    "durationMs": 0,
+    "durationMs": 1,
     "detail": {
       "task": {
-        "id": "n-msyh52nc-lnhcol",
+        "id": "n-msyhhibj-v95r26",
         "text": "finish report",
         "done": false,
-        "createdAt": "2026-08-18T09:42:35.688Z",
-        "updatedAt": "2026-08-18T09:42:35.703Z",
+        "createdAt": "2026-08-18T09:52:15.871Z",
+        "updatedAt": "2026-08-18T09:52:15.887Z",
         "dueDate": "2026-08-21T23:59:59.999Z"
       },
       "kind": "task-due-set",

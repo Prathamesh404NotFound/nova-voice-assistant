@@ -30,3 +30,4 @@ actions.log.json
 .nova-mood-priority-test-data/
 .nova-focus-test-data/
 nova-notes.json
+.nova-task-search-test-data/

@@ -390,6 +390,39 @@ function cancelReminder(id) {
   return stripInternal(item);
 }
 
+/**
+ * Fuzzy task search (Round 30) — matches query tokens against task text.
+ * Score per token: 10 for a full word hit, 5 for a substring hit (whole query
+ * word must appear in the text). Done tasks excluded unless opts.includeDone.
+ * Result order: score desc, then most-recently-updated desc. Capped at 10.
+ */
+function searchTasks(query, opts = {}) {
+  load();
+  const q = String(query || "").trim().toLowerCase();
+  if (!q) return [];
+  // query tokens with noise words dropped (voice padding like "find tasks about")
+  const tokens = q.split(/[^a-z0-9]+/).filter((w) => w && !STOP_TOKENS.has(w));
+  if (tokens.length === 0) return [];
+  const includeDone = !!(opts && opts.includeDone);
+  const matches = [];
+  for (const t of __data.tasks) {
+    if (!includeDone && t.done) continue;
+    const text = String(t.text || "").toLowerCase();
+    let score = 0;
+    let hit = false;
+    for (const w of tokens) {
+      if (new RegExp(`(^|[^a-z0-9])${escapeRe(w)}($|[^a-z0-9])`).test(text)) {
+        score += 10; hit = true;
+      } else if (text.includes(w)) { score += 5; hit = true; }
+    }
+    if (hit) matches.push({ task: stripInternal(t), score, matchedTokens: tokens.length });
+  }
+  matches.sort((a, b) => b.score - a.score || new Date(b.task.updatedAt) - new Date(a.task.updatedAt));
+  return matches.slice(0, 10);
+}
+const STOP_TOKENS = new Set(["the","a","an","is","are","my","tasks","task","find","search","look","for","about","with","show","list","all","in"]); // voice padding
+function escapeRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+
 /** Keyword search over note text (case-insensitive substring OR over words). */
 function searchNotes(query) {
   load();
@@ -540,7 +573,7 @@ function resetForTesting() {
 module.exports = {
   all, addNote, addReminder, rearmReminder, addTask, setTaskDone, setTaskDue, taskStats,
   dailyBriefing, weeklyDigest,
-  deleteNote, deleteTask, cancelReminder, searchNotes, summarizeOf,
+  deleteNote, deleteTask, cancelReminder, searchNotes, searchTasks, summarizeOf,
   dueReminders, markFired,
   startFocus, stopFocus, focusHistory, latestFocus, focusMinutesThisWeek,
   setStorePathForTesting, resetForTesting, filePath,
