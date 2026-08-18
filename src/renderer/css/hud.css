@@ -301,7 +301,33 @@ html, body {
   transition: left 0.25s var(--ease-out), background 0.25s;
 }
 .toggle input:checked + .toggle-track { background: rgba(57, 210, 255, 0.18); border-color: var(--cyan-dim); }
-.toggle input:checked + .toggle-track .toggle-thumb { left: 18px; background: var(--cyan); box-shadow: 0 0 8px var(--cyan-glow); }
+
+/* ==========================================================================
+   Round 11: orb theme picker — circular accent swatches
+   ========================================================================== */
+.theme-swatches {
+  display: flex;
+  gap: 10px;
+  margin: 8px 0 4px;
+}
+.theme-swatch {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid rgba(223, 231, 240, 0.12);
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  padding: 0;
+}
+.theme-swatch:hover {
+  transform: scale(1.15);
+  border-color: var(--line-strong);
+}
+.theme-swatch.active {
+  border-color: #dfe7f0;
+  box-shadow: 0 0 14px var(--cyan-glow), 0 0 28px var(--cyan-glow);
+  transform: scale(1.1);
+}
 
 .live-hear {
   position: absolute;

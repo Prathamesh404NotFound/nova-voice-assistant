@@ -2153,6 +2153,29 @@ let historyItems = [];
     window.NovaPaletteSetup.bindPaletteHotkey(() => palette.open());
   }
 
+  // Round 11: orb theme picker — swatch row in Settings. Pure renderer logic,
+  // localStorage-only persistence (decorative, no outbound traffic).
+  if (window.NovaThemes && el.themeSwatches && el.themeLabel) {
+    const THEMES = window.NovaThemes.THEMES;
+    function renderSwatches() {
+      const cur = window.NovaThemes.currentTheme();
+      el.themeSwatches.innerHTML = Object.entries(THEMES)
+        .map(([id, t]) =>
+          `<button type="button" class="theme-swatch${id === cur ? " active" : ""}" data-theme="${id}" style="background:${t.base};" role="radio" aria-checked="${id === cur}" aria-label="${t.label}" title="${t.label}"></button>`,
+        )
+        .join("");
+      el.themeLabel.textContent = THEMES[cur]?.label ?? "—";
+      el.themeSwatches.querySelectorAll(".theme-swatch").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          window.NovaThemes.applyTheme(btn.dataset.theme);
+          renderSwatches();
+        });
+      });
+    }
+    renderSwatches();
+    document.addEventListener("nova:theme-changed", renderSwatches);
+  }
+
   el.onboardingAck?.addEventListener("click", async () => {
     try {
       if (wizard) {
