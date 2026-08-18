@@ -122,13 +122,24 @@
         ready.catch(() => {}).then(() => {
           if (!window.NovaCommandPalette) return;
           new window.NovaCommandPalette({
-            items: catalog,
-            onRun: (item) => { try { item.run(); } catch { /* keep palette closed */ } },
+            items: applyRanking(catalog, ""),
+            onRun: (item) => {
+              if (window.NovaPaletteRanking && item) {
+                try { window.NovaPaletteRanking.recordRun(String(item.id || item.label)); } catch { /* ranking never breaks the launcher */ }
+              }
+              try { item.run(); } catch { /* keep palette closed */ }
+            },
           }).open();
         });
       },
     };
   }
 
-  window.NovaPaletteSetup = { bindPaletteHotkey, createPalette };
+  // Round 15: smart ranking — record runs and re-sort the catalog by usage.
+  function applyRanking(catalog, query) {
+    if (!window.NovaPaletteRanking || !window.NovaPaletteRanking.recordRun) return catalog;
+    const ranked = window.NovaPaletteRanking.scoreItems(catalog, query || "");
+    return ranked;
+  }
+  window.NovaPaletteSetup = { bindPaletteHotkey, createPalette, applyRanking };
 })();
