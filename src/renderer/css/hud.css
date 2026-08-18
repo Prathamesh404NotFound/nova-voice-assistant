@@ -1415,3 +1415,8 @@ html, body {
   color: #4a5568; background: rgba(74, 85, 104, 0.10);
   border-color: rgba(74, 85, 104, 0.25); cursor: default;
 }
+
+/* Round 20: fired-reminder rows in the Reminders side-panel tab. */
+.notes-item.fired { border-left: 2px solid var(--cyan); }
+.notes-sub-fired { color: var(--cyan); font-weight: 600; }
+.notes-item.fired .nova-snooze-bar { flex-wrap: nowrap; }

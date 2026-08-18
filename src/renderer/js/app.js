@@ -168,15 +168,28 @@
         }).join("");
       return;
     }
+    // Round 19 fired-reminder banner (transient toast) and Round 20's
+    // Reminders-tab rows both route snoozes through the same helper —
+    // panel rows use per-row chips so several fired reminders coexist.
+    const snooze = (typeof window !== "undefined" && window.NovaSnoozeUI) ? window.NovaSnoozeUI : null;
     if (tab === "reminders") {
-      el.notesList.innerHTML = items
-        .map((r) => `
-        <div class="notes-item${r.fired ? " done" : ""}">
-          <span class="notes-check"></span>
-          <span class="notes-text">${escapeHtml(String(r.text || ""))}</span>
-          <span class="notes-sub">${r.fired ? "fired " : ""}${whenHuman(r.dueAt)}</span>
-          <button class="notes-del" data-notes-action="cancel" data-notes-id="${escapeAttr(r.id)}" title="Cancel">&times;</button>
-        </div>`).join("");
+      // fired reminders first (still snoozable), pending after, oldest-first
+      const sorted = items.slice().sort((a, b) => {
+        if (a.fired !== b.fired) return a.fired ? -1 : 1;
+        return new Date(a.dueAt) - new Date(b.dueAt);
+      });
+      el.notesList.innerHTML = "";
+      sorted.forEach((r) => {
+        const div = document.createElement("div");
+        div.className = "notes-item" + (r.fired ? " fired" : "");
+        div.innerHTML =
+          `<span class="notes-check"></span>` +
+          `<span class="notes-text">${escapeHtml(String(r.text || ""))}</span>` +
+          `<span class="notes-sub notes-sub-fired">${r.fired ? "fired " : ""}${whenHuman(r.dueAt)}</span>` +
+          `<button class="notes-del" data-notes-action="cancel" data-notes-id="${escapeAttr(r.id)}" title="Cancel">&times;</button>`;
+        if (r.fired && snooze) div.appendChild(snooze.buildReminderRowChips(r));
+        el.notesList.appendChild(div);
+      });
       return;
     }
     el.notesList.innerHTML = items
@@ -298,10 +311,19 @@
     // Round 19: snooze chips on the fired-reminder banner — every chip
     // routes through the same L1 notes:snooze-reminder action as the voice
     // path, so the Action Log and risk model stay identical.
+    // Round 20: panel snooze refreshes the Reminders tab afterwards — a
+    // snoozed reminder is re-armed back to pending, so the fired row
+    // should disappear on the next render.
     window.NovaSnoozeUI.init({
-      ipc: (id, seconds) => window.nova.snoozeReminder(id, seconds),
+      ipc: async (id, seconds) => {
+        const res = await window.nova.snoozeReminder(id, seconds);
+        if (res && res.ok) refreshNotesList();
+        return res;
+      },
       speak,
     });
+    // Round 20: when a reminder fires, the side-panel Reminders tab gains a
+    // snoozable row — refresh it so the fired row appears immediately.
     window.nova.onReminderFired((data) => {
       if (!data) return;
       const msg = `Reminder: ${data.text}`;
@@ -309,6 +331,7 @@
         const bar = window.NovaSnoozeUI.buildBanner({ id: data.id, text: data.text });
         if (bar && container) container.appendChild(bar);
       });
+      refreshNotesList();
       // Speak only when the window is focused (the main process already
       // emitted to both; the spoken version is renderer-side so barge-in
       // works and Private Mode stays irrelevant — TTS is fully local).

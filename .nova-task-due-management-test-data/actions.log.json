@@ -1,6 +1,6 @@
 [
   {
-    "ts": "2026-08-18T07:31:13.394Z",
+    "ts": "2026-08-18T07:45:45.625Z",
     "actionId": "notes:complete-task",
     "level": 2,
     "levelName": "reversible",
@@ -8,38 +8,19 @@
     "durationMs": 0,
     "detail": {
       "task": {
-        "id": "n-msycfz7r-ti4j61",
+        "id": "n-msycyo8e-2stgyy",
         "text": "finish report",
         "done": true,
-        "createdAt": "2026-08-18T07:31:06.375Z",
-        "updatedAt": "2026-08-18T07:31:13.394Z",
+        "createdAt": "2026-08-18T07:45:38.606Z",
+        "updatedAt": "2026-08-18T07:45:45.625Z",
         "dueDate": "2026-08-18T23:59:59.999Z",
-        "completedAt": "2026-08-18T07:31:13.394Z"
+        "completedAt": "2026-08-18T07:45:45.625Z"
       },
       "kind": "task-done"
     }
   },
   {
-    "ts": "2026-08-18T07:31:06.388Z",
-    "actionId": "notes:set-task-due",
-    "level": 2,
-    "levelName": "reversible",
-    "outcome": "success",
-    "durationMs": 0,
-    "detail": {
-      "task": {
-        "id": "n-msycfz7r-ti4j61",
-        "text": "finish report",
-        "done": false,
-        "createdAt": "2026-08-18T07:31:06.375Z",
-        "updatedAt": "2026-08-18T07:31:06.388Z"
-      },
-      "kind": "task-due-set",
-      "oldDueDate": "2026-08-21T23:59:59.999Z"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:31:06.387Z",
+    "ts": "2026-08-18T07:45:38.620Z",
     "actionId": "notes:set-task-due",
     "level": 2,
     "levelName": "reversible",
@@ -47,11 +28,30 @@
     "durationMs": 1,
     "detail": {
       "task": {
-        "id": "n-msycfz7r-ti4j61",
+        "id": "n-msycyo8e-2stgyy",
         "text": "finish report",
         "done": false,
-        "createdAt": "2026-08-18T07:31:06.375Z",
-        "updatedAt": "2026-08-18T07:31:06.386Z",
+        "createdAt": "2026-08-18T07:45:38.606Z",
+        "updatedAt": "2026-08-18T07:45:38.619Z"
+      },
+      "kind": "task-due-set",
+      "oldDueDate": "2026-08-21T23:59:59.999Z"
+    }
+  },
+  {
+    "ts": "2026-08-18T07:45:38.619Z",
+    "actionId": "notes:set-task-due",
+    "level": 2,
+    "levelName": "reversible",
+    "outcome": "success",
+    "durationMs": 1,
+    "detail": {
+      "task": {
+        "id": "n-msycyo8e-2stgyy",
+        "text": "finish report",
+        "done": false,
+        "createdAt": "2026-08-18T07:45:38.606Z",
+        "updatedAt": "2026-08-18T07:45:38.618Z",
         "dueDate": "2026-08-21T23:59:59.999Z"
       },
       "kind": "task-due-set",
