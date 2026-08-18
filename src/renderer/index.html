@@ -98,7 +98,13 @@
       </div>
 
       <div class="side-section">
-        <div class="side-label">History</div>
+        <div class="side-label">History
+          <span class="log-actions">
+            <!-- Round 16: export the session transcript (Markdown download / save as note) -->
+            <button id="historyExportBtn" class="flat-btn small" title="Export this session as a Markdown file">⬇ Export .md</button>
+            <button id="historySaveNoteBtn" class="flat-btn small" title="Save this session as a local note">Save as note</button>
+          </span>
+        </div>
         <div id="history" class="history">
           <p class="history-empty">Nothing yet — say something to Nova.</p>
         </div>
@@ -300,6 +306,7 @@
   <script src="js/command-palette.js"></script>
   <script src="js/palette-setup.js"></script>
   <script src="js/palette-ranking.js"></script>
+  <script src="js/history-export.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

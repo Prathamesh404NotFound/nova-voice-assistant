@@ -2176,6 +2176,34 @@ let historyItems = [];
     document.addEventListener("nova:theme-changed", renderSwatches);
   }
 
+  // Round 16: history export — Markdown download + save transcript as a note.
+  // Read-only by nature (L0); saving as a note routes through the existing
+  // notes:add-note gate (L1), so no new IPC surface is introduced.
+  if (window.NovaHistoryExport && el.historyExportBtn && el.historySaveNoteBtn) {
+    el.historyExportBtn.addEventListener("click", () => {
+      try {
+        const mdText = window.NovaHistoryExport.renderMarkdown(historyItems, { appName: "Nova" });
+        const name = window.NovaHistoryExport.downloadMarkdown(mdText);
+        el.liveLine.textContent = `Exported ${historyItems.length} message${historyItems.length === 1 ? "" : "s"} → ${name}`;
+      } catch (err) {
+        el.liveLine.textContent = "Export failed — the session transcript couldn't be saved.";
+      }
+    });
+    el.historySaveNoteBtn.addEventListener("click", async () => {
+      try {
+        const res = await window.NovaHistoryExport.saveAsNote(historyItems, { appName: "Nova" });
+        if (res.ok) {
+          el.liveLine.textContent = "Session transcript saved as a local note — you can search it by voice later.";
+          if (typeof refreshNotesPanel === "function") refreshNotesPanel();
+        } else {
+          el.liveLine.textContent = res.detail?.error || "Couldn't save the transcript as a note.";
+        }
+      } catch (err) {
+        el.liveLine.textContent = "Couldn't save the transcript as a note.";
+      }
+    });
+  }
+
   el.onboardingAck?.addEventListener("click", async () => {
     try {
       if (wizard) {
