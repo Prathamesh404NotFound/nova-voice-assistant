@@ -372,6 +372,23 @@ registerAction({
   }),
 });
 
+// Round 32: focus-time accounting — read-only summary of completed focus
+// sessions for today and the trailing 7 days. Level 1 (SAFE): nothing is
+// created, moved, or sent anywhere; the payload optionally carries the
+// pinned test clock forwarded from the planner.
+registerAction({
+  id: "notes:focus-stats",
+  level: RISK_LEVEL.SAFE,
+  description: "Report focus-time totals for today and the trailing week (read-only)",
+  simulate: async () => ({ summary: "would summarize your focus time for today and the trailing week" }),
+  execute: async (p) => ({
+    result: {
+      now: p && p.now ? new Date(p.now).getTime() : Date.now(),
+    },
+    kind: "focus-stats",
+  }),
+});
+
 registerAction({
   id: "notes:summarize-notes",
   level: RISK_LEVEL.REVERSIBLE,

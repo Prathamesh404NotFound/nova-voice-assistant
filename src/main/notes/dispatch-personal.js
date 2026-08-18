@@ -398,4 +398,53 @@ function planDay({ pending = [], reminders = [], now = Date.now() } = {}) {
   };
 }
 
-module.exports = { personalizeNarration, applyTimePreference, userFacts, greetSnapshot, latestMood, moodAge, moodNarration, moodGreet, LOW_ENERGY_RE, prioritize, planDay };
+// ---------------------------------------------------------------------------
+// Round 32: focus-time accounting — a one-question summary of how much
+// completed focus time the user banked today and in the trailing 7 days,
+// pulled straight from the R29 session log. Pure composition: the numbers
+// come from the store helpers and only get spoken wording here.
+// ---------------------------------------------------------------------------
+
+/**
+ * Summarize completed focus sessions for today and the trailing week.
+ * @param {object} opts
+ * @param {number} [opts.weekMin]   completed minutes in the trailing 7 days
+ * @param {number} [opts.todayMin]  completed minutes started today
+ * @param {string} [opts.personality] override personality (default: warm)
+ * @returns {string} a one-or-two line spoken summary; honest when both are 0.
+ */
+function focusStatsSummary({ weekMin = 0, todayMin = 0, personality } = {}) {
+  const p = personality || (identityGet().personality || "warm");
+  const fmt = (m) => {
+    m = Math.round(Number(m) || 0);
+    if (m <= 0) return "0 minutes";
+    const h = Math.floor(m / 60);
+    const mm = m % 60;
+    if (h <= 0) return `${m} minute${m === 1 ? "" : "s"}`;
+    return mm > 0 ? `${h} hour${h === 1 ? "" : "s"} ${mm} minute${mm === 1 ? "" : "s"}` : `${h} hour${h === 1 ? "" : "s"}`;
+  };
+  if (weekMin <= 0 && todayMin <= 0) {
+    if (p === "concise") return "No focus sessions recorded yet.";
+    if (p === "professional") return "Your focus log is empty — no sessions have been recorded yet.";
+    if (p === "playful") return "The cosmos hasn't seen a single focus session yet — start one and it'll remember!";
+    // warm (default)
+    return "No focus sessions recorded yet — say \"start focus mode\" whenever you're ready, and I'll start keeping score.";
+  }
+  // Both populated: week first, today as the fresh detail. Today-only or
+  // week-only keep a single clean line.
+  const weekLine = weekMin > 0 ? `This week you've focused for ${fmt(weekMin)} in the last 7 days${todayMin > 0 ? ` — ${fmt(todayMin)} of that today` : ""}.`
+    : `Today's total so far: ${fmt(todayMin)} — nothing else in the trailing 7 days.`;
+  if (weekMin > 0 && todayMin <= 0) {
+    if (p === "concise") return `${fmt(weekMin)} of focus this week.`;
+    if (p === "professional") return `You logged ${fmt(weekMin)} of focused work in the last 7 days.`;
+    if (p === "playful") return `The cosmos counted ${fmt(weekMin)} of focus this week — stardust well spent!`;
+    return `You've focused for ${fmt(weekMin)} this week. Nicely done.`;
+  }
+  if (p === "concise") return `${fmt(weekMin)} this week, ${fmt(todayMin)} today.`;
+  if (p === "professional") return `In the last 7 days you logged ${fmt(weekMin)}, with ${fmt(todayMin)} today.`;
+  if (p === "playful") return `The cosmos clocks ${fmt(weekMin)} of focus this week — and ${fmt(todayMin)} already today!`;
+  // warm (default)
+  return weekLine;
+}
+
+module.exports = { personalizeNarration, applyTimePreference, userFacts, greetSnapshot, latestMood, moodAge, moodNarration, moodGreet, LOW_ENERGY_RE, prioritize, planDay, focusStatsSummary };

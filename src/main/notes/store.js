@@ -545,7 +545,7 @@ function latestFocus() {
   return list[0] ? stripInternal(list[0]) : null;
 }
 
-/** Sum of completed-focus minutes within the trailing 7 days (for stats). */
+/** Sum of completed-focus minutes started within the trailing 7 days (for stats). */
 function focusMinutesThisWeek(now) {
   load();
   const cutoff = (now != null ? new Date(now) : liveNow()).getTime() - 7 * 86_400_000;
@@ -554,7 +554,33 @@ function focusMinutesThisWeek(now) {
     if (f.status !== "completed") continue;
     const started = new Date(f.startedAt).getTime();
     if (isNaN(started) || started < cutoff) continue;
-    const actual = Math.min(Number(f.durationMin) || 0, (Number(f.stoppedAt) ? new Date(f.stoppedAt).getTime() - started : f.durationMin * 60_000) / 60_000);
+    // Real elapsed in MINUTES when stoppedAt exists (ternary branch must be
+    // parenthesized — without the parens the / 60_000 binds only to the
+    // false branch and real-elapsed milliseconds beat durationMin in the
+    // min()).
+    const actual = Math.min(Number(f.durationMin) || 0, !!f.stoppedAt ? (new Date(f.stoppedAt).getTime() - started) / 60_000 : Number(f.durationMin) || 0);
+    mins += actual > 0 ? actual : Number(f.durationMin) || 0;
+  }
+  return mins;
+}
+
+/**
+ * Round 32: completed-focus minutes started on the same local day as `now`
+ * (for "my focus today"). A session counts only when completed and its
+ * startedAt shares the local Y-M-D of the reference time.
+ */
+function focusMinutesToday(now) {
+  load();
+  const ref = now != null ? new Date(now) : liveNow();
+  const target = `${ref.getFullYear()}-${String(ref.getMonth() + 1).padStart(2, "0")}-${String(ref.getDate()).padStart(2, "0")}`;
+  let mins = 0;
+  for (const f of __data.focus || []) {
+    if (f.status !== "completed") continue;
+    const day = (f.startedAt || "").slice(0, 10);
+    if (day !== target) continue;
+    const started = new Date(f.startedAt).getTime();
+    // Same parenthesization as the week helper — real elapsed in minutes.
+    const actual = Math.min(Number(f.durationMin) || 0, !!f.stoppedAt ? (new Date(f.stoppedAt).getTime() - started) / 60_000 : Number(f.durationMin) || 0);
     mins += actual > 0 ? actual : Number(f.durationMin) || 0;
   }
   return mins;
@@ -575,7 +601,7 @@ module.exports = {
   dailyBriefing, weeklyDigest,
   deleteNote, deleteTask, cancelReminder, searchNotes, searchTasks, summarizeOf,
   dueReminders, markFired,
-  startFocus, stopFocus, focusHistory, latestFocus, focusMinutesThisWeek,
+  startFocus, stopFocus, focusHistory, latestFocus, focusMinutesThisWeek, focusMinutesToday,
   setStorePathForTesting, resetForTesting, filePath,
   setNowForTesting, // test-only: pins the clock for end-time math
 };

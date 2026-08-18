@@ -628,6 +628,26 @@ function formatLocalResult(actionId, payload, detail) {
         actionId, detail: { kind: "focus-stop", ended },
       };
     }
+    // Round 32: focus-time accounting — how much focus time did the user
+    // bank today / in the trailing 7 days? Read-only from the R29 session
+    // log. The `now` travels from the planner's pinned clock (same seam as
+    // plan-day), so the trailing-7-day cutoff and today bucket are
+    // deterministic in tests and honest on the live clock.
+    case "notes:focus-stats": {
+      const pc = detail && detail.result ? detail.result : {};
+      const now = pc.now || Date.now();
+      const weekMin = store.focusMinutesThisWeek(now);
+      const todayMin = store.focusMinutesToday(now);
+      const id = identityGet();
+      const text = focusStatsSummary({ weekMin, todayMin, personality: id.personality || "warm" });
+      return {
+        ok: true, intent: "notes",
+        text,
+        narration: weekMin || todayMin ? `Adding up your focus time — ${text}` : "Checking the focus log…",
+        actionId,
+        detail: { kind: "focus-stats", weekMin, todayMin },
+      };
+    }
     // Round 24: remember a fact about the user. L1 SAFE — acknowledgement
     // line follows the personality for warmth but the fact itself is echoed
     // verbatim so nothing gets paraphrased away.
@@ -692,7 +712,7 @@ function formatLocalResult(actionId, payload, detail) {
 // Round 24: greeting helper — time-of-day greeting personalized by the user's
 // name and Nova's identity personality (tone only, never fact wording).
 const { get: identityGet } = require("../identity/identity");
-const { personalizeNarration, applyTimePreference, greetSnapshot, userFacts, latestMood, moodAge, moodNarration, moodGreet, prioritize, planDay } = require("./dispatch-personal");
+const { personalizeNarration, applyTimePreference, greetSnapshot, userFacts, latestMood, moodAge, moodNarration, moodGreet, prioritize, planDay, focusStatsSummary } = require("./dispatch-personal");
 
 function greetLine(personality, userName) {
   const hour = new Date().getHours();

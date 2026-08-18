@@ -430,6 +430,12 @@ function planNoteAction(text, ctx = {}) {
 // 'start a pomodoro' alternation.
 const RE_FOCUS_START = /^(?:(?:nova\s*,?\s*)?(?:start\s+focus\s+(?:mode|session)|start\s+(?:a\s+)?focus(?:\s+(?:mode|session))?(?:\s+for\s+(\d+(?:\.\d+)?)\s*(?:minutes?|min))?|focus\s+mode(?:\s+for\s+(\d+(?:\.\d+)?)\s*(?:minutes?|min))?)|(?:nova\s*,?\s*)?(?:start\s+(?:a\s+)?pomodoro(?:\s+for\s+(\d+(?:\.\d+)?)\s*(?:minutes?|min))?)|(?:nova\s*,?\s*)?(?:pomodoro(?:\s+for\s+(\d+(?:\.\d+)?)\s*(?:minutes?|min))?)|(?:nova\s*,?\s*)?(?:focus\s+for\s+(\d+(?:\.\d+)?)\s*(?:minutes?|min|hour|h|hours?))|(?:nova\s*,?\s*)?(?:start\s+(\d+(?:\.\d+)?)\s*(?:-\s?)?(?:minutes?|min|hour|h|hours?)\s+focus)|(?:nova\s*,?\s*)?(?:focus\s+mode(?:\s+for\s+(\d+(?:\.\d+)?)\s*(?:hours?|h|hour))?|(\d+(?:\.\d+)?)\s*(?:minutes?|min|hour|h|hours?)\s+(?:of\s+)?focus))\s*$/i;
 const RE_FOCUS_STOP = /^(?:nova\s*,?\s*)?(?:stop\s+focus(?:\s+mode)?|end\s+focus(?:\s+mode)?|quit\s+focus(?:\s+mode)?|end\s+my\s+(?:focus )?session|stop\s+(?:my\s+)?(?:focus )?session|pomodoro\s+(?:done|over))\s*$/i;
+// Round 32: focus-time accounting — questions about time already spent
+// (read-only stats). Must sit before note/task rules; after START/STOP so
+// 'start focus mode' keeps creating sessions instead of being summarized.
+// Word anchors keep it out of the stats path: 'my focus stats' has no verb
+// of creation, while a stats phrase never contains start/stop/quit.
+const RE_FOCUS_STATS = /^(?:(?:nova\s*,?\s*)?(?:how\s+much\s+(?:time|focus(?:\s+time)?)\s+(?:did|do|have)\s+i\s+(?:focus|spend(?:ing)?(?:\s+time)?(?:\s+focusing)?|spent focusing|have))(?:\s+(?:this\s+)?(?:week|today))?|(?:nova\s*,?\s*)?(?:my\s+focus\s+(?:stats|time|minutes|total))(?:\s+(?:this\s+)?(?:week|today))?|(?:nova\s*,?\s*)?(?:how\s+many\s+pomodoros?\s+(?:did\s+i\s+do|have|in total))(?:\s+(?:this\s+)?(?:week|today))?|(?:nova\s*,?\s*)?(?:total\s+focus\s+(?:time|minutes))|(?:nova\s*,?\s*)?(?:focus\s+stats|(?:focus|pomodoro)\s+(?:time|minutes)\s+today|focus\s+time\s+this\s+week|focus\s+minutes\s+this\s+week))\s*$/i;
 
 // Round 28: mood-aware prioritization. Exact-match read-only phrases run
   // right after mood check-in — before RE_NOTE and before every task-
@@ -463,6 +469,12 @@ const RE_FOCUS_STOP = /^(?:nova\s*,?\s*)?(?:stop\s+focus(?:\s+mode)?|end\s+focus
       if (Number.isFinite(n) && n > 0) durationMin = Math.round(hourUnit ? n * 60 : n);
     }
     return { actionId: "notes:focus-start", payload: { durationMin } };
+  }
+  // Round 32: focus stats — read-only accounting; the payload carries the
+  // pinned test clock (same discipline as plan-day) so trailing-7-day and
+  // today math stay deterministic in tests.
+  if (RE_FOCUS_STATS.test(t)) {
+    return { actionId: "notes:focus-stats", payload: { now: nowForTesting.now().getTime() } };
   }
   // Round 27: mood/energy check-in. Questions run first (they're exact-match
   // phrases, so they can't accidentally swallow real notes).
