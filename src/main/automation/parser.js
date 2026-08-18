@@ -37,6 +37,15 @@ function parseTime(text) {
     if (hour < 0 || hour > 23 || min < 0 || min > 59) return null;
     return { hour, min };
   }
+  // Bare 24h-style or unqualified times: "7:30" → 7:30, "9" → 9:00 (12-hour
+  // style defaults to morning — a 24h-only user says "19" or "19:00").
+  const b = text.match(/(?:^|at\s+|,?\s+at\s+)(\d{1,2})(?::(\d{2}))?$/i);
+  if (b) {
+    let hour = parseInt(b[1], 10);
+    const min = b[2] ? parseInt(b[2], 10) : 0;
+    if (hour > 23 || hour < 1 || min < 0 || min > 59) return null;
+    return { hour, min };
+  }
   // Fuzzy times: "every morning" → 8:00, "every evening" → 18:00, "every night" → 21:00
   const t = text.toLowerCase();
   if (/(?:every\s+|each\s+|\bat\s+)?morning/.test(t)) return { hour: 8, min: 0 };
@@ -115,6 +124,13 @@ const RE_KB_ADD =
   /add (?:this|the|my) folder/i;
 const RE_CONTROL =
   /(?:open (?:the )?(calculator|notepad|notes app)|type|click|double[- ]?click|press|compute|calculate|submit)/i;
+// Round 22: daily-plate briefing step — "every morning at 7, tell me what's on
+// my plate" routes this clause to the notes stage, which executes it through
+// the existing notes:daily-briefing action (L1 SAFE, local-only, works in
+// Private Mode). The optional conversational prefix keeps "and give me my
+// briefing"-style clause forms routable.
+const RE_BRIEFING_STEP =
+  /(?:tell me|give me|read me)?\s*(?:what('s| is)\s+on my plate today|brief me on today|(?:today|morning|daily)\s+briefing|my (daily|morning) briefing|what do i have due today|give me my briefing)/i;
 
 function classifyClause(clause) {
   const c = clause.trim();
@@ -131,7 +147,7 @@ function classifyClause(clause) {
   if (RE_FILES_STATS.test(c) || RE_FILES_SEARCH.test(c)) {
     return { kind: STEP_KINDS.FILES, text: c };
   }
-  if (RE_NOTES_REMIND.test(c) || RE_NOTES_TASKS.test(c) || RE_NOTES_SUMMARIZE.test(c)) {
+  if (RE_NOTES_REMIND.test(c) || RE_NOTES_TASKS.test(c) || RE_NOTES_SUMMARIZE.test(c) || RE_BRIEFING_STEP.test(c)) {
     return { kind: STEP_KINDS.NOTES, text: c };
   }
   // Default: files search ("check for new files in Downloads") — the most
@@ -181,9 +197,32 @@ function makeName(cron) {
  * @param {{ name?: string } = {}}
  * @returns {{ ok, automation?: {name, cron, steps}, error?: string }}
  */
+// Round 22: dedicated "set up a morning briefing" preset — a schedule-first
+// command with no step clauses, so the user never has to phrase the step:
+// "create a daily briefing at 7:30", "set up a morning briefing" (default 8 AM),
+// "start a briefing for 6 AM". Produces a single notes-kind briefing step named
+// "Morning briefing".
+const RE_BRIEFING_PRESET =
+  /^(?:set up|create|start|schedule|make me|add)\s+(?:a\s+)?(?:(?:daily|morning)\s+)?briefing(?:\s+(?:at|for)\s+(.+))?\s*$/i;
+
 function parseAutomation(text, opts = {}) {
   const trimmed = String(text || "").trim();
   if (!trimmed) return { ok: false, error: "Say something like \u201cevery day at 9 AM, check my Downloads folder\u201d." };
+
+  const preset = RE_BRIEFING_PRESET.exec(trimmed);
+  if (preset) {
+    const timeExpr = (preset[1] || "").trim();
+    const t = timeExpr ? (parseTime(`at ${timeExpr}`) || parseTime(timeExpr)) : { hour: 8, min: 0 };
+    if (!t) return { ok: false, error: `I could not parse \u201c${timeExpr}\u201d as a time — try \u201c8 AM\u201d or \u201c7:30\u201d.` };
+    return {
+      ok: true,
+      automation: {
+        name: opts.name || "Morning briefing",
+        cron: `${t.min} ${t.hour} * * *`,
+        steps: [{ kind: STEP_KINDS.NOTES, text: "what's on my plate today" }],
+      },
+    };
+  }
 
   const sched = parseSchedule(trimmed);
   if (!sched) {

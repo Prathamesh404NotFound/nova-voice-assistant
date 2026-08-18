@@ -122,7 +122,10 @@ async function runFilesStep(text) {
 async function runNotesStep(text) {
   try {
     const res = await require("../notes/dispatch").runNoteAction(text, {});
-    return { ok: !!res && res.ok !== false, text: res?.text || "" };
+    // Round 22: keep the dispatcher's narration (e.g. the daily briefing's
+    // "Here's what's on your plate today\u2026") so the renderer speaks it
+    // when the automation fires — no narration, no harm done.
+    return { ok: !!res && res.ok !== false, text: res?.text || "", narration: res?.narration || null };
   } catch (err) {
     return { ok: false, text: `Notes step failed: ${err?.message || err}` };
   }
@@ -237,6 +240,14 @@ async function executeStep(step, deps) {
 }
 
 function buildSummary(name, results) {
+  // Round 22: a run with exactly one notes step that carries a narration
+  // (the daily briefing) speaks as the dispatcher wrote it — the joined
+  // " · " summary is dropped so "Here's what's on your plate today\u2026"
+  // reaches the user cleanly. Everything else keeps the multi-step format.
+  const narrated = results.filter((r) => r.result?.narration);
+  if (narrated.length === 1 && results.length === 1) {
+    return narrated[0].result.text;
+  }
   const texts = results.map((r) => r.result?.text || "").filter(Boolean);
   const fails = results.filter((r) => !r.result?.ok).length;
   const base = texts.length ? texts.join(" · ") : `"${name}" finished with no readable output.`;
