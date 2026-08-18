@@ -31,3 +31,4 @@ actions.log.json
 .nova-focus-test-data/
 nova-notes.json
 .nova-task-search-test-data/
+.nova-plan-day-test-data/

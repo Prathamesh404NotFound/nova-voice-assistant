@@ -172,6 +172,16 @@ const RE_TASK_STATS = /(?:how(?: am i|('s| is)) (?:doing (?:with|on) my|is my ta
 // → task-list.
 const RE_TASK_SEARCH = /^(?:nova\s*,?\s*)?(?:(?:find|search|look for|show)\s+(?:my\s+)?tasks?(?:\s+(?:about|for|with|matching)\s+(.+))|(?:my\s+)?tasks?(?:\s+(?:about|for|with|matching)\s+(.+)))\s*$/i;
 
+// Round 31: "plan my day" / "schedule my tasks" — one time-blocked spoken
+// schedule built from the pending task list (overdue first, due-today next,
+// time-of-day preference from the user model, mood-framed opener).
+// L1 SAFE read-only: builds a plan, never acts on anything. Runs after the
+// task search so "plan my day about X" still searches; the fixed phrases
+// never collide with the daily briefing ("what's on my plate today") because
+// the briefing phrases are questions about NOW while these are imperatives
+// asking Nova to BUILD a schedule.
+const RE_PLAN_DAY = /^(?:nova\s*,?\s*)?(?:plan (?:my|the|this|today's|todays) day|plan today|make a plan for today|schedule my (?:tasks|day)|build me a schedule(?: for today)?|what should my day look like|give me a plan for today|organize my day|lay out my day)\s*$/i;
+
 // "delete my note about milk" / "delete the task buy milk"
 const RE_DELETE = /^delete\s+(?:my |the )?(note|task)\s+["“]?(.+?)["”]?\s*$/i;
 
@@ -566,6 +576,14 @@ const RE_FOCUS_STOP = /^(?:nova\s*,?\s*)?(?:stop\s+focus(?:\s+mode)?|end\s+focus
     raw = raw.replace(/^(?:about|for|with|matching)\s*/i, "").trim();
     if (!raw) return { error: "Find tasks about what? Try \"find tasks about the report\"." };
     return { actionId: "notes:task-search", payload: { query: raw } };
+  }
+
+  // Round 31: "plan my day" — one time-blocked schedule built from the
+  // pending task list (overdue first, due-today next, rest by size),
+  // reordered by the user's time-of-day preference and opened with a
+  // mood-framed line when the latest check-in is recent. L1 SAFE read.
+  if (RE_PLAN_DAY.test(t)) {
+    return { actionId: "notes:plan-day", payload: { now: nowForTesting.now().getTime() } };
   }
 
   if (RE_TASKS_LIST.test(t)) {

@@ -300,4 +300,102 @@ function prioritize(tasks, now = Date.now()) {
   return { order: [...overdue, ...dueToday, ...rest], lowEnergy };
 }
 
-module.exports = { personalizeNarration, applyTimePreference, userFacts, greetSnapshot, latestMood, moodAge, moodNarration, moodGreet, LOW_ENERGY_RE, prioritize };
+/**
+ * Build a time-blocked spoken plan for today from the pending task list.
+ *
+ * Slots the ordered tasks into one-hour blocks and anchors them by the
+ * user's time-of-day preference (from the user model — last-wins):
+ *   morning  → blocks run forward from 9:00 AM  (the classic workday)
+ *   afternoon → blocks run forward from 1:00 PM
+ *   evening  → blocks run forward from 5:00 PM
+ *   night    → blocks run forward from 9:00 PM
+ *   no pref  → morning
+ * Reminders firing today get their own fixed-time slots at their due hour
+ * (anchored to the plan's `now`, not the clock) so the plan reads as one
+ * honest timeline. Overdue tasks and due-today tasks sit in the earliest
+ * blocks regardless of preference — a deadline is a deadline. The plan caps
+ * at six blocks (6 hours of focus) with a tail for anything beyond.
+ *
+ * Pure function — no store require; the caller passes in tasks, reminders,
+ * and an injectable `now` for deterministic tests. Additive: with no tasks
+ * the caller gets an empty plan (the dispatcher voices the wide-open day),
+ * and with no preference/mood the output is stable wording.
+ *
+ * @param {{pending: Array, reminders?: Array, now?: number}} opts
+ * @returns {{blocks: Array, remindersFixed: Array, pref: string, moodFramed: boolean, overCap: number}}
+ */
+function planDay({ pending = [], reminders = [], now = Date.now() } = {}) {
+  const safeDay = (iso) => {
+    if (!iso) return null;
+    try {
+      const d = new Date(iso);
+      d.setHours(0, 0, 0, 0);
+      return d;
+    } catch { return null; };
+  };
+  const today = new Date(now);
+  today.setHours(0, 0, 0, 0);
+  const tms = today.getTime();
+
+  // Time-of-day preference: most recent fact containing a time word wins.
+  let pref = "morning";
+  const facts = userModel.relevantFacts(20);
+  const timeFact = facts.slice().reverse().find((f) => TIME_FACT_REGEX.test(f.fact));
+  if (timeFact) {
+    const m = TIME_FACT_REGEX.exec(timeFact.fact);
+    pref = { morning: "morning", afternoon: "afternoon", evening: "evening", night: "night" }[(m[1].toLowerCase())] || "morning";
+  }
+
+  // Same urgency ladder as prioritize() — overdue (oldest) → due today
+  // (soonest) → rest (largest first, so the heaviest work gets the prime
+  // blocks). Mood never moves the ladder; it only tinted narration.
+  // Defense in depth: "pending" means NOT done — a done task never earns a
+  // time block even if the caller passes it in by mistake.
+  const live = pending.filter((t) => !t.done);
+  const overdue = live
+    .filter((t) => safeDay(t.dueDate) && safeDay(t.dueDate).getTime() < tms)
+    .sort((a, b) => safeDay(a.dueDate) - safeDay(b.dueDate));
+  const dueToday = live
+    .filter((t) => safeDay(t.dueDate) && safeDay(t.dueDate).getTime() === tms)
+    .sort((a, b) => safeDay(a.dueDate) - safeDay(b.dueDate));
+  const rest = live
+    .filter((t) => !safeDay(t.dueDate) || safeDay(t.dueDate).getTime() > tms)
+    .sort((a, b) => (b.text || "").trim().split(/\s+/).length - (a.text || "").trim().split(/\s+/).length);
+
+  const ordered = [...overdue, ...dueToday, ...rest];
+  const startHour = { morning: 9, afternoon: 13, evening: 17, night: 21 }[pref] || 9;
+
+  // Today's reminders get fixed-time slots (their own due hour); tasks
+  // never share a reminder's hour — they slot around it.
+  const dH = (iso) => {
+    try { return new Date(iso).getHours(); } catch { return null; };
+  };
+  const remindersFixed = (reminders || [])
+    .filter((r) => !r.fired && !r.cancelled && r.dueAt && dH(r.dueAt) !== null && new Date(r.dueAt).getTime() >= tms && new Date(r.dueAt).getTime() < tms + 24 * 3600_000)
+    .map((r) => ({ text: r.text, hour: dH(r.dueAt), dueAt: r.dueAt }))
+    .sort((a, b) => a.hour - b.hour);
+  const blockedHours = new Set(remindersFixed.map((r) => r.hour));
+
+  const MAX_BLOCKS = 6;
+  const blocks = [];
+  for (let i = 0, hour = startHour; i < ordered.length && blocks.length < MAX_BLOCKS; i++, hour += 1) {
+    // Skip past midnight and any hour claimed by a reminder.
+    while (hour >= 24 || blockedHours.has(hour)) hour += 1;
+    blocks.push({ task: ordered[i], hour });
+  }
+
+  // Mood framing: only when the latest check-in is recent (< 12h).
+  const mood = latestMood();
+  const moodFramed = !!mood && (now - new Date(mood.updatedAt).getTime()) < 12 * 3600_000;
+
+  return {
+    blocks,
+    remindersFixed,
+    pref,
+    moodFramed,
+    lowEnergy: !!mood && LOW_ENERGY_RE.test(mood.fact),
+    overCap: Math.max(0, ordered.length - MAX_BLOCKS),
+  };
+}
+
+module.exports = { personalizeNarration, applyTimePreference, userFacts, greetSnapshot, latestMood, moodAge, moodNarration, moodGreet, LOW_ENERGY_RE, prioritize, planDay };

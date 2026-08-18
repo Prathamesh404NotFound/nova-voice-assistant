@@ -6,7 +6,7 @@
 // that ever sends note content off-machine, and only after the user
 // explicitly asks, and only that one request.
 
-const { planNoteAction } = require("./plan");
+const { planNoteAction, setNowForTesting } = require("./plan");
 const store = require("./store");
 const gate = require("../permissions/gate");
 const actionLog = require("../permissions/action-log");
@@ -536,6 +536,50 @@ function formatLocalResult(actionId, payload, detail) {
         actionId, detail: { kind: "priority-check", order: pc2.order, lowEnergy: pc2.lowEnergy, moodRecent: !!moodRecent },
       };
     }
+    // Round 31: "plan my day" — one time-blocked spoken schedule from the
+    // pending task list, anchored by the user's time-of-day preference,
+    // fixed reminder hours respected, mood-framed opener when the latest
+    // check-in is recent. Purely read-only; L1 SAFE, zero network.
+    case "notes:plan-day": {
+      const pc3 = detail.result || {};
+      const plan = planDay({ pending: (pc3.pending || []).filter((t) => !t.done), reminders: pc3.reminders, now: pc3.now });
+      if (!plan.blocks.length && !plan.remindersFixed.length) {
+        return {
+          ok: true, intent: "notes",
+          text: "Your day is wide open — nothing on the task list yet. Say " + String.raw`"add X to my tasks"` + " and I'll fill it in.",
+          narration: "Your day is wide open — nothing on the task list yet.",
+          actionId, detail: { kind: "plan-day", blocks: [], remindersFixed: [], pref: plan.pref, moodFramed: false, overCap: 0 },
+        };
+      }
+      const hr = (h) => (h < 12 ? `${h}:00 AM` : h === 12 ? "12:00 PM" : `${h - 12}:00 PM`);
+      // One chronologically-ordered numbered list from the union of task
+      // blocks and fixed reminder slots, keeping task order stable.
+      const events = [
+        ...plan.blocks.map((b) => ({ hour: b.hour, label: b.task.text, type: "task" })),
+        ...plan.remindersFixed.map((r) => ({ hour: r.hour, label: r.text, type: "reminder" })),
+      ].sort((a, b) => a.hour - b.hour);
+      let text = events.map((e, i) => `${i + 1}. ${hr(e.hour)} — ${e.type === "reminder" ? "reminder: " : ""}${e.label}`).join("\n");
+      // Opener: mood-framed only when the check-in is recent (< 12h of the
+      // pinned clock). A low-energy mood keeps the plan short anyway (cap),
+      // and says so — one honest schedule, no double messaging.
+      let opener;
+      const moodPc = latestMood();
+      if (plan.moodFramed && moodPc) {
+        const age = moodAge(moodPc.updatedAt, pc3.now);
+        opener = `You said ${age} "${moodPc.fact}" — ${plan.lowEnergy ? "so this is a light day: " : "here's a plan that fits: "}`;
+      } else {
+        opener = "Here's a plan for your day: ";
+      }
+      if (plan.overCap > 0) {
+        text += `\n…and ${plan.overCap} more after those — one schedule shouldn't bite off more than six hours.`;
+      }
+      return {
+        ok: true, intent: "notes",
+        text: opener + text,
+        narration: "Here's a plan for your day\u2026",
+        actionId, detail: { kind: "plan-day", blocks: plan.blocks, remindersFixed: plan.remindersFixed, pref: plan.pref, moodFramed: plan.moodFramed, overCap: plan.overCap },
+      };
+    }
     // Round 29: focus mode / Pomodoro — start. Opens a local session, tells
     // the user when it ends (local time) and how long it lasts. Zero network;
     // the renderer's countdown HUD ticks down on the nova:focus-started event.
@@ -648,7 +692,7 @@ function formatLocalResult(actionId, payload, detail) {
 // Round 24: greeting helper — time-of-day greeting personalized by the user's
 // name and Nova's identity personality (tone only, never fact wording).
 const { get: identityGet } = require("../identity/identity");
-const { personalizeNarration, applyTimePreference, greetSnapshot, userFacts, latestMood, moodAge, moodNarration, moodGreet, prioritize } = require("./dispatch-personal");
+const { personalizeNarration, applyTimePreference, greetSnapshot, userFacts, latestMood, moodAge, moodNarration, moodGreet, prioritize, planDay } = require("./dispatch-personal");
 
 function greetLine(personality, userName) {
   const hour = new Date().getHours();
@@ -660,4 +704,4 @@ function greetLine(personality, userName) {
   // warm (default)
   return `${tod}${who} — glad you're here. What shall we do today?`;
 }
-module.exports = { runNoteAction, planNoteAction, storeContext, formatLocalResult, greetLine, greetSnapshot, latestMood, moodAge, moodNarration, moodGreet, prioritize };
+module.exports = { runNoteAction, planNoteAction, storeContext, formatLocalResult, greetLine, greetSnapshot, latestMood, moodAge, moodNarration, moodGreet, prioritize, setNowForTesting };

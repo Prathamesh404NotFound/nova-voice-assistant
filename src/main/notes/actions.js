@@ -352,6 +352,26 @@ registerAction({
   execute: async (p) => ({ result: { pending: store.all().tasks, now: p && p.now ? new Date(p.now).getTime() : Date.now() }, kind: "priority-check" }),
 });
 
+// Round 31: "plan my day" — builds one time-blocked spoken schedule from
+// the pending task list (overdue first, due-today next, rest by size),
+// reordered by the user's time-of-day preference and opened with a
+// mood-framed line when the latest check-in is recent. Purely read-only:
+// L1 SAFE, zero network.
+registerAction({
+  id: "notes:plan-day",
+  level: RISK_LEVEL.SAFE,
+  description: "Build a time-blocked spoken plan for today from pending tasks (read-only)",
+  simulate: async () => ({ summary: "would build a time-blocked plan for today from your pending tasks" }),
+  execute: async (p) => ({
+    result: {
+      pending: store.all().tasks,
+      reminders: store.all().reminders,
+      now: p && p.now ? new Date(p.now).getTime() : Date.now(),
+    },
+    kind: "plan-day",
+  }),
+});
+
 registerAction({
   id: "notes:summarize-notes",
   level: RISK_LEVEL.REVERSIBLE,

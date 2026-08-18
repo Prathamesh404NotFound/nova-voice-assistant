@@ -22,7 +22,7 @@
     "test:control": "node src/main/test-control.js",
     "test:agent": "node src/main/test-agent.js",
     "test:files": "node src/main/test-files.js",
-    "test": "npm run test:permissions && npm run test:vision && npm run test:control && npm run test:agent && npm run test:files && npm run test:notes && npm run test:kb && npm run test:automation && npm run test:event-triggers && npm run test:memory && npm run test:screenshot-note && npm run test:snooze-reminder && npm run test:command-palette && npm run test:themes && npm run test:task-stats && npm run test:palette-ranking && npm run test:history-export && npm run test:task-due-dates && npm run test:task-due-management && npm run test:snooze-ui && npm run test:snooze-ui-renderer && npm run test:reminders-panel && npm run test:daily-briefing && npm run test:morning-briefing && npm run test:weekly-digest && npm run test:identity && npm run test:identity-briefing && npm run test:greeting-briefing && npm run test:mood-check && npm run test:mood-priority && npm run test:focus && npm run test:task-search",
+    "test": "npm run test:permissions && npm run test:vision && npm run test:control && npm run test:agent && npm run test:files && npm run test:notes && npm run test:kb && npm run test:automation && npm run test:event-triggers && npm run test:memory && npm run test:screenshot-note && npm run test:snooze-reminder && npm run test:command-palette && npm run test:themes && npm run test:task-stats && npm run test:palette-ranking && npm run test:history-export && npm run test:task-due-dates && npm run test:task-due-management && npm run test:snooze-ui && npm run test:snooze-ui-renderer && npm run test:reminders-panel && npm run test:daily-briefing && npm run test:morning-briefing && npm run test:weekly-digest && npm run test:identity && npm run test:identity-briefing && npm run test:greeting-briefing && npm run test:mood-check && npm run test:mood-priority && npm run test:focus && npm run test:task-search && npm run test:plan-day",
     "test:event-triggers": "node src/main/test-event-triggers.js",
     "test:memory": "node src/main/test-memory.js",
     "test:command-palette": "node src/main/test-command-palette.js",
@@ -50,7 +50,8 @@
     "test:mood-check": "node src/main/test-mood-check.js",
     "test:mood-priority": "node src/main/test-mood-priority.js",
     "test:focus": "node src/main/test-focus.js",
-    "test:task-search": "node src/main/test-search-tasks.js"
+    "test:task-search": "node src/main/test-search-tasks.js",
+    "test:plan-day": "node src/main/test-plan-day.js"
   },
   "build": {
     "appId": "com.nova.assistant",
