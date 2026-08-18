@@ -72,6 +72,11 @@ contextBridge.exposeInMainWorld("nova", {
     return () => ipcRenderer.removeListener("nova:auto-pending", listener);
   },
 
+  // --- Conversation memory (Round 6 — cross-session recall, fully local) ---
+  memoryStats: () => ipcRenderer.invoke("nova:memory-stats"),
+  memoryList: (limit) => ipcRenderer.invoke("nova:memory-list", limit),
+  memoryClear: () => ipcRenderer.invoke("nova:memory-clear"),
+
   // --- Knowledge base (Stage 8 — fully local; RAG sends only snippets) ---
   kbRun: (text) => ipcRenderer.invoke("nova:kb-run", text),
   kbList: () => ipcRenderer.invoke("nova:kb-list"),

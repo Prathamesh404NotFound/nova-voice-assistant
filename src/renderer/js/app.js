@@ -1258,8 +1258,8 @@
 let historyItems = [];
   const MAX_HISTORY = 40;
 
-  function addHistoryEntry({ role, text, src, small, kbSources }) {
-    historyItems.push({ role, text, src, small: !!small, kbSources: kbSources || null });
+  function addHistoryEntry({ role, text, src, small, kbSources, memory }) {
+    historyItems.push({ role, text, src, small: !!small, kbSources: kbSources || null, memory: !!memory });
     if (historyItems.length > MAX_HISTORY) historyItems = historyItems.slice(-MAX_HISTORY);
     renderHistory();
   }
@@ -1275,7 +1275,8 @@ let historyItems = [];
         const sourcesHtml = (m.role === "nova" && Array.isArray(m.kbSources) && m.kbSources.length)
           ? `<div class="kb-msg-sources">${m.kbSources.map((s) => `<a class="kb-source-link" data-kb-file="${escapeAttr(s.file)}" title="Open the source file">${escapeHtml(s.title || s.file.split(/[\\/]/).pop())}</a>`).join(" · ")}</div>`
           : "";
-        return `<div class="msg ${m.role}${m.small ? " small" : ""}"><span class="src">${m.src}</span>${textHtml}${sourcesHtml}</div>`;
+        const memBadge = m.memory ? `<span class="mem-badge" title="Answered with context from earlier conversations (stored locally)">&#128172; recalled</span>` : "";
+        return `<div class="msg ${m.role}${m.small ? " small" : ""}"><span class="src">${m.src}</span>${textHtml}${memBadge}${sourcesHtml}</div>`;
       })
       .join("");
     el.history.querySelectorAll(".kb-source-link").forEach((a) => {
@@ -1339,7 +1340,7 @@ let historyItems = [];
       }
       if (res.intent === "conversation") {
         if (!chatBuf.trim() && res.text) {
-          addHistoryEntry({ role: "nova", text: res.text, src: source });
+          addHistoryEntry({ role: "nova", text: res.text, src: source, memory: !!res.memoryUsed });
           speak(res.text);
         }
         el.liveLine.textContent = "";

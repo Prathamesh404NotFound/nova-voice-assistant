@@ -21,6 +21,7 @@ const undo = require("../permissions/undo");
 const { classify, INTENTS } = require("./classifier");
 const { plainError, retryOnce } = require("./retry");
 const control = require("../control");
+const memory = require("../memory/conversation-memory");
 const { runFileAction, executePreview, getContext } = require("../files/dispatch");
 const notesDispatch = require("../notes/dispatch");
 const kbDispatch = require("../kb/dispatch");
@@ -158,6 +159,12 @@ async function dispatchConversation(text, opts) {
     return { text: "I need your OpenRouter API key before I can chat. Open the side panel settings to set it.", model };
   }
   narrate(lastTask.id, "chat", "Working on your message…");
+  // Round 6: rolling conversation memory — previous sessions' user/assistant
+  // exchanges are appended as context so follow-ups across restarts still
+  // make sense. Private Mode sends ONLY the current message (memory context
+  // is never included when privacy is on).
+  const memoryContext = settings.isPrivateMode() ? [] : memory.recentContext();
+  const memoryUsed = memoryContext.length > 0;
   const attempt = async () => {
     // Same stream contract the renderer used in Stage 1: POST to OpenRouter,
     // collect the full assistant message, stream chunks to the renderer.
@@ -172,7 +179,7 @@ async function dispatchConversation(text, opts) {
       body: JSON.stringify({
         model,
         stream: true,
-        messages: [{ role: "user", content: text }],
+        messages: [...memoryContext, { role: "user", content: text }],
       }),
     });
     if (!res.ok) throw new Error(`model HTTP ${res.status}`);
@@ -208,7 +215,9 @@ async function dispatchConversation(text, opts) {
     recordError(lastTask.id, "chat stream", res.error);
     return { text: plainError(res.error, "the assistant"), error: res.error, model };
   }
-  return { text: res.value, model };
+  // Round 6: persist this exchange so future sessions remember it.
+  memory.append({ intent: "conversation", input: text, output: res.value, taskId: lastTask.id });
+  return { text: res.value, model, memoryUsed };
 }
 
 /** Vision query: capture + OCR (+ vision model when available). */
@@ -322,7 +331,7 @@ async function run(text, opts = {}) {
     if (intent === INTENTS.CONVERSATION) {
       const out = await dispatchConversation(text, opts);
       lastTask.output = { type: "conversation", text: out.text, model: out.model, error: !!out.error };
-      return { ok: true, intent, ...lastTask.output };
+      return { ok: true, intent, ...lastTask.output, memoryUsed: !!out.memoryUsed };
     }
     if (intent === INTENTS.VISION) {
       const out = await dispatchVision(text, opts);
@@ -348,6 +357,8 @@ async function run(text, opts = {}) {
       const out = await dispatchNotes(text, opts);
       lastTask.output = { type: "notes", ...out, error: !out.ok };
       if (out.narration) narrateNotes(taskId, "notes", out.narration);
+      // Round 6: remember notes requests too — "did I note something about X?"
+      if (out.ok) memory.append({ intent: "notes", input: text, output: out.text || "", taskId });
       return { ok: true, intent, ...out };
     }
     // Automations (Stage 9): creation/management through the automation
@@ -362,7 +373,6 @@ async function run(text, opts = {}) {
     lastTask.output = { type: "combined", ...out, error: !!out.error };
     return { ok: true, intent, ...out };
   } catch (err) {
-    recordError(taskId, "dispatch", err);
     return { ok: false, intent, text: plainError(err, "that request"), error: err };
   }
 }

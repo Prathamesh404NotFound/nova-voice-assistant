@@ -66,6 +66,12 @@ const automationRunner = require("./automation/runner");
 const automationScheduler = require("./automation/scheduler");
 const remindersNotifier = require("./notes/reminders");
 
+// Conversation memory (Round 6) — cross-session recall: previous exchanges are
+// appended to the model context so follow-ups across restarts still make sense.
+// memory:clear / memory:stats actions go through the permission gate (L1 safe).
+require("./memory/actions");
+const memory = require("./memory/conversation-memory");
+
 // Event-triggered automations (Round 5) — file-change, time-of-day, app and
 // idle triggers sit alongside the cron scheduler. The global app-event bus
 // lets any subsystem (vision, control, reminders, ...) emit named events
@@ -74,6 +80,33 @@ const automationEvents = new (require("events").EventEmitter)();
 const eventTriggers = require("./automation/event-triggers");
 if (typeof global.__novaAppEvents === "undefined") global.__novaAppEvents = automationEvents;
 eventTriggers.setAppEmitter(automationEvents);
+
+// --- Conversation memory (Round 6) ---
+ipcMain.handle("nova:memory-stats", async () => {
+  try {
+    return { ok: true, ...memory.stats() };
+  } catch (err) {
+    return { ok: false, error: String(err?.message || err) };
+  }
+});
+ipcMain.handle("nova:memory-list", async (_evt, limit = 50) => {
+  try {
+    return { ok: true, entries: memory.list().slice(-Number(limit) || 50) };
+  } catch (err) {
+    return { ok: false, error: String(err?.message || err) };
+  }
+});
+ipcMain.handle("nova:memory-clear", async () => {
+  const before = memory.list().length;
+  memory.clear();
+  actionLog.append({
+    actionId: "memory:clear",
+    level: 1,
+    outcome: "success",
+    detail: { cleared: before },
+  });
+  return { ok: true, detail: { cleared: before } };
+});
 
 // --- Automation side panel + scheduler boot ---
 ipcMain.handle("nova:auto-list", async () => {
