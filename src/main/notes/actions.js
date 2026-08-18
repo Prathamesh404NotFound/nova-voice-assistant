@@ -64,6 +64,20 @@ registerAction({
   execute: async (p) => ({ matches: store.searchNotes(p.query), query: p.query, kind: "search" }),
 });
 
+// Round 33: ranked TOPICAL note search — "find notes about the dog" / "any
+// notes on rent". L1 SAFE read-only: scores stored note text with the same
+// whole-word (10) / substring (5) token ladder as the R30 task search,
+// strips stop tokens, ties on recency (most recently updated first), and
+// caps the readout at 10. Deliberately NOT a model call — fully offline,
+// works in Private Mode, and note content never leaves the machine.
+registerAction({
+  id: "notes:topic-search-notes",
+  level: RISK_LEVEL.SAFE,
+  description: "Ranked topical search over stored notes (local, offline)",
+  simulate: async (p) => ({ summary: `would search your notes for "${(p.subject || "").slice(0, 60)}" locally` }),
+  execute: async (p) => ({ matches: store.topicSearchNotes(p.subject), subject: p.subject, kind: "topic" }),
+});
+
 registerAction({
   id: "notes:list-tasks",
   level: RISK_LEVEL.SAFE,

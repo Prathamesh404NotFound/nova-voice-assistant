@@ -172,6 +172,18 @@ function formatLocalResult(actionId, payload, detail) {
         actionId, detail: { kind: "search", matches },
       };
     }
+    // Round 33: ranked TOPICAL note search — scored results (whole-word >
+    // substring) with a recency tag per match. Empty plate gets the plain
+    // "no match" line; the spoken readout caps at 5 with an honest tail.
+    case "notes:topic-search-notes": {
+      const matches = detail.matches || [];
+      const subj = String(payload.subject || "").trim();
+      return {
+        ok: true, intent: "notes",
+        text: topicSearchText({ matches, subject: subj, now: Date.now() }),
+        actionId, detail: { kind: "topic", matches, subject: subj },
+      };
+    }
     case "notes:list-tasks": {
       const tasks = detail.tasks || [];
       if (!tasks.length) return { ok: true, intent: "notes", text: "Your task list is empty.", actionId, detail: { kind: "list", tasks } };
@@ -712,7 +724,7 @@ function formatLocalResult(actionId, payload, detail) {
 // Round 24: greeting helper — time-of-day greeting personalized by the user's
 // name and Nova's identity personality (tone only, never fact wording).
 const { get: identityGet } = require("../identity/identity");
-const { personalizeNarration, applyTimePreference, greetSnapshot, userFacts, latestMood, moodAge, moodNarration, moodGreet, prioritize, planDay, focusStatsSummary } = require("./dispatch-personal");
+const { personalizeNarration, applyTimePreference, greetSnapshot, userFacts, latestMood, moodAge, moodNarration, moodGreet, prioritize, planDay, focusStatsSummary, topicSearchText } = require("./dispatch-personal");
 
 function greetLine(personality, userName) {
   const hour = new Date().getHours();

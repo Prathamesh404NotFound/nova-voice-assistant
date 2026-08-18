@@ -92,6 +92,15 @@ const RE_SEARCH_NOTES =
   /what did i (?:note|write|say) about\s+(.+)|search my notes for\s+(.+)|notes about\s+(.+)|what('s| is) in my notes about\s+(.+)|find in my notes:\s*(.+)|find my notes on\s+(.+)/i;
 
 // "show my notes" / "list my notes"
+// Round 33: ranked TOPICAL note search — "find notes about the dog" / "any notes
+// on rent increases" — scores stored note text with whole-word-over-substring
+// token scoring (see notes:topic-search-notes in actions.js). Runs BEFORE the
+// keyword search (RE_SEARCH_NOTES). Additive guard: the bare "notes about X"
+// / "my notes on X" forms stay in the Stage 7 keyword action (byte-identical
+// contract for existing users), so the topic route only triggers on explicit
+// lead-ins: find/any/what-did-I-write/what-have-I-noted/tell-me-about.
+const RE_TOPIC_NOTES = /^(?:nova\s*,?\s*)?(?:(?:find|any|show me)\s+(?:my\s+)?notes?\s+(?:about|on|related to)\s+(.+)|what did i write about\s+(.+)|what have i noted on\s+(.+)|tell me about my notes on\s+(.+))\s*$/i;
+
 const RE_NOTES_LIST = /^(?:show|list|what('s| is))\s+(?:my\s+)?notes$/i;
 
 // Round 21: "what's on my plate today" / "brief me on today" / "daily briefing"
@@ -714,6 +723,17 @@ const RE_FOCUS_STATS = /^(?:(?:nova\s*,?\s*)?(?:how\s+much\s+(?:time|focus(?:\s+
       actionId: kind === "task" ? "notes:delete-task" : "notes:delete-note",
       payload: { id: item.id, text: item.text },
     };
+  }
+
+  // Round 33: topical ranked search. Runs before the keyword search so
+  // "find notes about X" never falls back to the unranked contains-match.
+  m = RE_TOPIC_NOTES.exec(t);
+  if (m) {
+    // Any non-empty topic group wins; groups in alternation order (find/any —
+    // write-about — noted-on — tell-me-about).
+    const subject = (m[1] || m[2] || m[3] || m[4] || "").trim();
+    if (!subject) return { error: "Search your notes for what? Try \"find notes about the report\"." };
+    return { actionId: "notes:topic-search-notes", payload: { subject } };
   }
 
   m = RE_SEARCH_NOTES.exec(t);

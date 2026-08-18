@@ -447,4 +447,50 @@ function focusStatsSummary({ weekMin = 0, todayMin = 0, personality } = {}) {
   return weekLine;
 }
 
-module.exports = { personalizeNarration, applyTimePreference, userFacts, greetSnapshot, latestMood, moodAge, moodNarration, moodGreet, LOW_ENERGY_RE, prioritize, planDay, focusStatsSummary };
+// ---------------------------------------------------------------------------
+// Round 33: ranked topical note-search wording.
+//
+// Pure (no store, no network): the dispatcher hands in the scored matches
+// and the subject; this module decides how the readout sounds. Matches
+// carry a recency tag ("… (3 days ago)") so the answer sounds like memory
+// rather than a grep dump. Empty → an honest "no match" line; the spoken
+// readout caps at TOPIC_MAX_SPOKEN (5) with a tail for the rest — the full
+// 10-item result still arrives in the side-panel detail object. Additive:
+// the search never writes anything, and nothing here touches the identity
+// or facts (those belong to chat; topic search is memory retrieval only).
+// ---------------------------------------------------------------------------
+const TOPIC_MAX_SPOKEN = 5;
+// Age ladder for the per-match recency tag — mirrors the R27 check-in age
+// wording but coarser (a readout mixes notes from different hours, so the
+// tag answers "recent or old" rather than quoting a precise clock).
+const AGE_STEPS = [
+  { s: 120_000, w: "just now" },
+  { s: 5 * 60_000, w: "5 minutes ago" },
+  { s: 30 * 60_000, w: "30 minutes ago" },
+  { s: 3600_000, w: "1 hour ago" },
+  { s: 3 * 3600_000, w: "a few hours ago" },
+  { s: 24 * 3600_000, w: "earlier today" },
+  { s: 2 * 24 * 3600_000, w: "yesterday" },
+  { s: 7 * 24 * 3600_000, w: "this week" },
+  { s: 30 * 24 * 3600_000, w: "a while ago" },
+];
+function ageOf(iso, now) {
+  const ms = Math.max(0, (now || Date.now()) - new Date(iso).getTime());
+  for (const st of AGE_STEPS) if (ms < st.s) return st.w;
+  return "a while ago";
+}
+function topicSearchText({ matches = [], subject = "", now } = {}) {
+  const subj = String(subject || "").trim();
+  if (!matches || !matches.length) return `No notes match "${subj}".`;
+  const show = matches.slice(0, TOPIC_MAX_SPOKEN);
+  const lines = show.map((m) => `• ${m.note.text} (${ageOf(m.note.updatedAt, now)})`);
+  const head = matches.length === 1
+    ? `Found 1 note about "${subj}":`
+    : `Found ${matches.length} notes about "${subj}":`;
+  const tail = matches.length > TOPIC_MAX_SPOKEN
+    ? `\n…and ${matches.length - TOPIC_MAX_SPOKEN} more in the full results.`
+    : "";
+  return head + "\n" + lines.join("\n") + tail;
+}
+
+module.exports = { personalizeNarration, applyTimePreference, userFacts, greetSnapshot, latestMood, moodAge, moodNarration, moodGreet, LOW_ENERGY_RE, prioritize, planDay, focusStatsSummary, ageOf, topicSearchText };

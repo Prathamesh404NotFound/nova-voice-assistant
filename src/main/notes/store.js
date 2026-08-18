@@ -436,6 +436,33 @@ function searchNotes(query) {
   return matches.map(stripInternal);
 }
 
+// Round 33: ranked TOPICAL note search — mirrors the R30 task-search ladder
+// (whole-word 10 / substring 5, stop-token strip, recency tiebreak, cap 10)
+// over note text. Note-specific stop tokens drop voice padding like "my notes
+// about" so "find notes about the dog" scores on "dog", not "notes"/"about".
+const NOTES_STOP_TOKENS = new Set(["the", "a", "an", "is", "are", "my", "me", "i", "note", "notes", "find", "search", "look", "for", "about", "with", "on", "show", "any", "tell", "in"]);
+function topicSearchNotes(subject) {
+  load();
+  const q = String(subject || "").trim().toLowerCase();
+  if (!q) return [];
+  const tokens = q.split(/[^a-z0-9]+/).filter((w) => w && !NOTES_STOP_TOKENS.has(w));
+  if (tokens.length === 0) return [];
+  const matches = [];
+  for (const n of __data.notes) {
+    const text = String(n.text || "").toLowerCase();
+    let score = 0;
+    let hit = false;
+    for (const w of tokens) {
+      if (new RegExp(`(^|[^a-z0-9])${escapeRe(w)}($|[^a-z0-9])`).test(text)) {
+        score += 10; hit = true;
+      } else if (text.includes(w)) { score += 5; hit = true; }
+    }
+    if (hit) matches.push({ note: stripInternal(n), score });
+  }
+  matches.sort((a, b) => b.score - a.score || new Date(b.note.updatedAt) - new Date(a.note.updatedAt));
+  return matches.slice(0, 10);
+}
+
 /** Notes content for an explicit "summarize my notes" request. */
 function summarizeOf(ids) {
   load();
@@ -599,7 +626,7 @@ function resetForTesting() {
 module.exports = {
   all, addNote, addReminder, rearmReminder, addTask, setTaskDone, setTaskDue, taskStats,
   dailyBriefing, weeklyDigest,
-  deleteNote, deleteTask, cancelReminder, searchNotes, searchTasks, summarizeOf,
+  deleteNote, deleteTask, cancelReminder, searchNotes, searchTasks, topicSearchNotes, summarizeOf,
   dueReminders, markFired,
   startFocus, stopFocus, focusHistory, latestFocus, focusMinutesThisWeek, focusMinutesToday,
   setStorePathForTesting, resetForTesting, filePath,
