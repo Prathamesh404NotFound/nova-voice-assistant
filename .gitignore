@@ -14,3 +14,7 @@ output/partial/
 .nova-screen-note-test-data/
 .nova-snooze-test-data/
 .nova-task-stats-test-data/
+.nova-task-due-dates-test-data/
+.nova-task-due-management-test-data/
+.nova-r18-plan-check/
+.nova-dbug/
