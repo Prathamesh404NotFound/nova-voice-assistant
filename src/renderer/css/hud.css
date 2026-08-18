@@ -1028,3 +1028,221 @@ html, body {
   color: var(--text-dim);
   margin-top: 3px;
 }
+
+
+/* ==========================================================================
+   ROUND 3: Award-quality HUD enhancements (top-design skill)
+   Dramatic typography scale contrast, custom easing, magnetic hover,
+   ambient aurora background, branded selection, staggered reveal,
+   glassmorphism depth, enhanced orb rings, subtle noise texture.
+   ========================================================================== */
+
+/* --- Branded selection --- */
+::selection {
+  background: rgba(57, 210, 255, 0.28);
+  color: #fff;
+}
+
+/* --- Refined custom scrollbar --- */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(57, 210, 255, 0.12);
+  border-radius: 3px;
+  transition: background 0.3s var(--ease-out);
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(57, 210, 255, 0.3); }
+
+/* --- Ambient aurora background (animated gradient blobs) --- */
+#app::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(600px 400px at 20% 80%, rgba(57, 210, 255, 0.04), transparent 60%),
+    radial-gradient(500px 350px at 80% 20%, rgba(99, 102, 241, 0.035), transparent 60%),
+    radial-gradient(700px 400px at 50% 50%, rgba(57, 210, 255, 0.02), transparent 70%);
+  animation: auroraShift 20s ease-in-out infinite alternate;
+}
+
+@keyframes auroraShift {
+  0%   { transform: scale(1) rotate(0deg); opacity: 1; }
+  50%  { transform: scale(1.06) rotate(1deg); opacity: 0.85; }
+  100% { transform: scale(1) rotate(-0.5deg); opacity: 1; }
+}
+
+/* --- Subtle noise/grain overlay for depth --- */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.015;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* --- Staggered reveal on load --- */
+#app > * {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: revealUp 0.6s var(--ease-out) forwards;
+}
+#app > #topbar    { animation-delay: 0.05s; }
+#app > #stage     { animation-delay: 0.12s; }
+#app > #bottombar { animation-delay: 0.20s; }
+#app > #sidePanel { animation-delay: 0.28s; opacity: 1; transform: translateX(100%); }
+
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Dramatic typography on live transcript --- */
+.live-line {
+  font-size: 22px;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  text-shadow: 0 0 30px rgba(57, 210, 255, 0.15);
+  transition: transform 0.3s var(--ease-out);
+}
+.live-line:empty {
+  font-size: 14px;
+  color: var(--text-faint);
+}
+.live-line:empty::after {
+  content: "Say anything… or type below.";
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+
+/* --- Enhanced orb with outer ring layers --- */
+#orbWrap::before {
+  content: "";
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  border: 1px solid rgba(57, 210, 255, 0.08);
+  animation: orbRingRotate 30s linear infinite;
+  pointer-events: none;
+}
+#orbWrap::after {
+  content: "";
+  position: absolute;
+  inset: -36px;
+  border-radius: 50%;
+  border: 1px dashed rgba(57, 210, 255, 0.06);
+  animation: orbRingRotate 45s linear infinite reverse;
+  pointer-events: none;
+}
+
+@keyframes orbRingRotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* --- Magnetic talk button --- */
+.talk-btn {
+  position: relative;
+  display: flex; align-items: center; gap: 10px;
+  height: 50px;
+  padding: 0 30px 0 24px;
+  border-radius: 28px;
+  border: 1px solid var(--line-strong);
+  background: linear-gradient(180deg, rgba(57, 210, 255, 0.09), rgba(57, 210, 255, 0.03));
+  color: var(--cyan);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: transform 0.25s var(--ease-out), box-shadow 0.35s, border-color 0.35s, background 0.35s;
+  box-shadow: 0 0 28px rgba(57, 210, 255, 0.12), inset 0 0 20px rgba(57, 210, 255, 0.06);
+}
+.talk-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 0 48px rgba(57, 210, 255, 0.28), inset 0 0 26px rgba(57, 210, 255, 0.10);
+  border-color: var(--cyan-dim);
+}
+.talk-btn:active { transform: scale(0.96); }
+
+/* --- Glassmorphism side panel sections --- */
+.side-section {
+  background: rgba(10, 12, 20, 0.35);
+  border: 1px solid rgba(57, 210, 255, 0.06);
+  border-radius: 10px;
+  padding: 10px 12px;
+  backdrop-filter: blur(4px);
+}
+
+/* --- Message animation in history --- */
+.msg {
+  animation: msgIn 0.35s var(--ease-out);
+}
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Model chip enhanced --- */
+.model-chip {
+  backdrop-filter: blur(4px);
+  background: rgba(57, 210, 255, 0.07);
+  border: 1px solid rgba(57, 210, 255, 0.2);
+}
+.model-chip:hover {
+  background: rgba(57, 210, 255, 0.12);
+  border-color: rgba(57, 210, 255, 0.4);
+}
+
+/* --- Status label enhanced --- */
+.status-label {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  transition: color 0.3s var(--ease-out);
+}
+.status-dot.listening + .status-label,
+.status-dot.speaking + .status-label {
+  color: var(--cyan);
+}
+
+/* --- Type input enhanced --- */
+#typeInput {
+  backdrop-filter: blur(4px);
+  border-radius: 12px;
+  transition: border-color 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out), transform 0.2s var(--ease-out);
+}
+#typeInput:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 0 20px rgba(57, 210, 255, 0.15);
+}
+
+/* --- Private badge enhanced --- */
+.private-badge {
+  background: rgba(255, 90, 110, 0.12);
+  border: 1px solid rgba(255, 90, 110, 0.3);
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--red);
+  backdrop-filter: blur(4px);
+  animation: badgeGlow 3s ease-in-out infinite;
+}
+@keyframes badgeGlow {
+  0%, 100% { box-shadow: 0 0 8px rgba(255, 90, 110, 0.1); }
+  50%      { box-shadow: 0 0 16px rgba(255, 90, 110, 0.2); }
+}
+
+/* --- Reduce motion respect --- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

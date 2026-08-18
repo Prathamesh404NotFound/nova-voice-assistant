@@ -114,3 +114,37 @@
 
 ### Action Plan from Gap Analysis
 The gap analysis confirms and prioritizes the improvement rounds already planned in the approved plan. Proceed with Round 2 (wake word) as the highest-impact, highest-feasibility item, followed by Round 3 (UI redesign).
+
+=== ROUND 3: HUD REDESIGN (top-design skill) ===
+
+Key principles from top-design skill:
+- Typography as architecture: dramatic scale contrast (10:1+ display:body ratio)
+- Custom easing mandatory: cubic-bezier(0.16, 1, 0.3, 1) (expo out) — never linear/default
+- Custom cursor, magnetic buttons, branded selection colors for details
+- Monochromatic tension: 95% dominant color, 5% accent that pops
+- Never pure black/white — warm variants (#0a0a0a, #fafaf9)
+- Motion choreography: background (0-200ms), hero words staggered (200-600ms, 80ms stagger), subtitle (400-800ms)
+- 60fps non-negotiable
+- Color hierarchy: text-primary, text-secondary (60% opacity), text-tertiary (40% opacity), surface, border (10% opacity)
+- Elements overlap, bleed, extend with intention — asymmetric balance
+
+Current Nova HUD elements to enhance:
+- Orb (300x300 canvas + radial gradient core) — already has pulse animation
+- Live transcript line (17px, 620px max-width)
+- Talk button (pill shape with ring pulse)
+- Status dot + model chip (top bar)
+- History panel (side, 360px)
+- Type input (bottom)
+
+Redesign approach:
+1. Add glassmorphism layers with backdrop-filter blur on overlays
+2. Dramatic typography scale contrast on status text
+3. Custom easing on all transitions (already has --ease-out defined)
+4. Magnetic hover on talk button
+5. Ambient particle/aurora background animation
+6. Smooth staggered reveal on app load
+7. Branded ::selection color
+8. Custom scrollbar styling
+9. Subtle noise/grain texture overlay for depth
+10. Enhanced orb: add ring layers, more dynamic breathing
+

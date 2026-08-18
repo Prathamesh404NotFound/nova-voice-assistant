@@ -10,6 +10,7 @@
 </head>
 <body>
   <div id="app">
+    <div class="noise-overlay"></div>
     <!-- ============================ TOP BAR ============================ -->
     <header id="topbar" class="drag">
       <!-- Permission toast for reversible (level 2) actions: cancellable within 5 s -->
@@ -234,19 +235,19 @@
         </div>
       </div>
     </div>
+      <!-- Stage 5: first-run permission onboarding overlay -->
+      <div id="onboarding" class="onboarding hidden">
+        <div class="onboarding-card">
+          <h2 id="onboardingTitle"></h2>
+          <p id="onboardingWhy"></p>
+          <button id="onboardingAck" class="cta">Allow</button>
+        </div>
+      </div>
   </div>
 
   <!-- Wake word (Stage 10, Round 2): Porcupine WebAssembly + detector -->
   <script src="../node_modules/@picovoice/porcupine-web/dist/iife/index.js"></script>
   <script src="js/wakeword.js"></script>
   <script src="js/app.js"></script>
-<!-- Stage 5: first-run permission onboarding overlay -->
-<div id="onboarding" class="onboarding hidden">
-  <div class="onboarding-card">
-    <h2 id="onboardingTitle"></h2>
-    <p id="onboardingWhy"></p>
-    <button id="onboardingAck" class="cta">Allow</button>
-  </div>
-</div>
 </body>
 </html>
