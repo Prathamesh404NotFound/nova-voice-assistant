@@ -21,3 +21,4 @@ output/partial/
 .nova-daily-briefing-test-data/
 .nova-morning-briefing-test-data/
 .nova-weekly-digest-test-data/
+.nova-identity-test-data/

@@ -351,9 +351,89 @@ function formatLocalResult(actionId, payload, detail) {
         actionId, detail: { kind: "screen-note", note },
       };
     }
+    // Round 24: greeting — personalized by user name and Nova's personality.
+    case "notes:greet": {
+      const id = identityGet();
+      return {
+        ok: true, intent: "notes",
+        text: greetLine(id.personality, id.userName),
+        narration: greetLine(id.personality, id.userName),
+        actionId, detail: { kind: "greet", identity: id },
+      };
+    }
+    // Round 24: remember a fact about the user. L1 SAFE — acknowledgement
+    // line follows the personality for warmth but the fact itself is echoed
+    // verbatim so nothing gets paraphrased away.
+    case "notes:remember-fact": {
+      if (detail.ok === false) {
+        return { ok: false, intent: "notes", text: detail.error === "too-long" ? "That's a bit long for one fact — try splitting it up." : "I could not remember that.", actionId, detail: { kind: "remember-fact", error: detail.error } };
+      }
+      const id = identityGet();
+      const ack = id.personality === "concise" ? "Remembered."
+        : id.personality === "professional" ? "Noted — stored in my local model of you."
+        : id.personality === "playful" ? `Got it, memorized it forever! \u{1F9E0}`
+        : "Got it — I'll remember that.";
+      const line = id.personality === "playful"
+        ? `Memorized: "${detail.fact || ""}" \u{1F9E0}`
+        : `I'll remember that you said "${detail.fact || ""}".`;
+      return {
+        ok: true, intent: "notes",
+        text: `${ack} ${line}`,
+        narration: ack,
+        actionId, detail: { kind: "remember-fact", fact: detail.fact },
+      };
+    }
+    // Round 24: forget a fact — the planner already made the user read the
+    // exact fact, so keep the confirmation plain (forget is a deliberate act).
+    case "notes:forget-fact": {
+      if (detail.ok === false) {
+        return { ok: false, intent: "notes", text: detail.error === "not-found" ? "I couldn't find that fact in what I know about you." : "I could not forget that.", actionId, detail: { kind: "forget-fact", error: detail.error } };
+      }
+      const id2 = identityGet();
+      const line2 = id2.personality === "concise" ? "Forgotten."
+        : id2.personality === "professional" ? `Removed "${detail.removed || ""}" from my model of you.`
+        : `Noted — "${detail.removed || ""}" is forgotten.`;
+      return { ok: true, intent: "notes", text: line2, narration: "Forgotten.", actionId, detail: { kind: "forget-fact", removed: detail.removed } };
+    }
+    // Round 24: user-model readout — "what do you know about me".
+    case "notes:user-model-ask": {
+      const facts = detail.facts || [];
+      if (!facts.length) {
+        return {
+          ok: true, intent: "notes",
+          text: "I don't know you yet — tell me things to remember. Say \"remember that I work from home on Fridays\", and I'll build my model of you locally. Nothing leaves this machine.",
+          narration: "I don't know you yet — tell me things to remember.",
+          actionId, detail: { kind: "user-model-ask", facts: [] },
+        };
+      }
+      const named = (list) => list.map((f) => `"${String(f.fact || "").slice(0, 50)}"`).join("; ");
+      const visible = facts.slice(-3);
+      const tail = facts.length - visible.length;
+      const head = tail > 0 ? `…and ${tail} more. ` : "";
+      return {
+        ok: true, intent: "notes",
+        text: `You've told me: ${head}${named(visible)}.`,
+        narration: `I know ${facts.length} thing${facts.length === 1 ? "" : "s"} about you.`,
+        actionId, detail: { kind: "user-model-ask", facts },
+      };
+    }
     default:
       return { ok: false, intent: "notes", text: "I don't know how to handle that notes action.", actionId, detail };
   }
 }
 
-module.exports = { runNoteAction, planNoteAction, storeContext, formatLocalResult };
+// Round 24: greeting helper — time-of-day greeting personalized by the user's
+// name and Nova's identity personality (tone only, never fact wording).
+const { get: identityGet } = require("../identity/identity");
+
+function greetLine(personality, userName) {
+  const hour = new Date().getHours();
+  const tod = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+  const who = userName ? `, ${userName}` : "";
+  if (personality === "concise") return `${tod}${who}.`;
+  if (personality === "professional") return `${tod}${who} — I'm ready when you are.`;
+  if (personality === "playful") return `${tod}${who}! The cosmos says it's your lucky hour 🌟`;
+  // warm (default)
+  return `${tod}${who} — glad you're here. What shall we do today?`;
+}
+module.exports = { runNoteAction, planNoteAction, storeContext, formatLocalResult, greetLine };

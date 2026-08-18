@@ -149,7 +149,12 @@ async function classify(text = "", opts = {}) {
   }
   const noteAction = planNoteActionSafe(trimmed, {});
   if (!isVision && noteAction && !noteAction.error) {
-    return { intent: INTENTS.NOTES, method: "rules", confidence: "high" };
+    // Round 24: greetings ("hey nova", "good morning") plan to notes:greet,
+    // but a greeting is conversation — the agent's chat reply carries the
+    // personality tone. Only count real notes work as NOTES intent.
+    if (noteAction.actionId !== "notes:greet") {
+      return { intent: INTENTS.NOTES, method: "rules", confidence: "high" };
+    }
   }
   // Even a notes PLANNING ERROR is still clearly a notes request (e.g.
   // "mark pay rent done" on an empty task list, "delete the note about X"

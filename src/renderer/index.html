@@ -110,6 +110,28 @@
         </div>
       </div>
 
+      <!-- Round 24: Identity — who Nova is + what she knows about you. Fully
+           local (userData/identity.json + userData/user-model.json). -->
+      <div class="side-section" id="identitySection">
+        <div class="side-label">Identity</div>
+        <div id="identityNameRow" class="identity-row">
+          <label for="identityNameInput">Her name</label>
+          <input id="identityNameInput" type="text" maxlength="24" placeholder="Nova" />
+          <button id="identityNameSave" class="flat-btn small send-btn" type="button">Save</button>
+        </div>
+        <div id="identityPersonalityRow" class="identity-row">
+          <label>Voice</label>
+          <div id="identityPersonalityRadios" class="identity-radios"></div>
+        </div>
+        <div id="identityUserNameRow" class="identity-row">
+          <label for="identityUserNameInput">Your name</label>
+          <input id="identityUserNameInput" type="text" maxlength="40" placeholder="How should Nova address you?" />
+          <button id="identityUserNameSave" class="flat-btn small send-btn" type="button">Save</button>
+        </div>
+        <div id="identityFacts" class="identity-facts"></div>
+        <div class="settings-note" style="margin-top:6px;">Say "remember that I …" to teach Nova about you, and "what do you know about me" to hear it back. Nothing here ever leaves this machine — it works in Private Mode too.</div>
+      </div>
+
       <!-- Stage 7: Notes / Reminders / Tasks — fully local (userData) -->
       <div class="side-section">
         <div class="side-label">Notes / Tasks

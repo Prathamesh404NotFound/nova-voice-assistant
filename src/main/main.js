@@ -534,6 +534,26 @@ ipcMain.handle("nova:notes-run", async (_evt, text) => {
 });
 
 // ---------------------------------------------------------------------------
+// IPC: identity layer (Round 24) — who Nova is + what she knows about you.
+// Fully local; nothing here touches the network, works in Private Mode.
+// ---------------------------------------------------------------------------
+const identity = require("./identity/identity");
+const userModel = require("./identity/user-model");
+ipcMain.handle("nova:get-identity", async () => identity.get());
+ipcMain.handle("nova:set-identity", async (_evt, patch = {}) => {
+  try {
+    return { ok: true, identity: identity.set(patch) };
+  } catch (err) {
+    return { ok: false, error: String(err?.message || err) };
+  }
+});
+ipcMain.handle("nova:get-user-facts", async () => ({ ok: true, facts: userModel.list() }));
+ipcMain.handle("nova:forget-user-fact", async (_evt, fact) => {
+  const res = userModel.removeFact(fact);
+  return res.ok ? { ok: true } : { ok: false, error: res.error };
+});
+
+// ---------------------------------------------------------------------------
 // IPC: knowledge base (Stage 8) — side panel management + click-to-open
 // ---------------------------------------------------------------------------
 

@@ -174,6 +174,18 @@ contextBridge.exposeInMainWorld("nova", {
     return () => ipcRenderer.removeListener("nova:control-progress", listener);
   },
 
+  // --- Round 24: identity layer — who Nova is + what she knows about you.
+  // Fully local; nothing here touches the network, works in Private Mode.
+  getIdentity: () => ipcRenderer.invoke("nova:get-identity"),
+  setIdentity: (patch) => ipcRenderer.invoke("nova:set-identity", patch),
+  getUserFacts: () => ipcRenderer.invoke("nova:get-user-facts"),
+  forgetUserFact: (fact) => ipcRenderer.invoke("nova:forget-user-fact", fact),
+  onIdentityChanged: (cb) => {
+    const listener = (_evt, data) => cb(data);
+    ipcRenderer.on("nova:identity-changed", listener);
+    return () => ipcRenderer.removeListener("nova:identity-changed", listener);
+  },
+
   // --- Chat (streaming, renderer-side fetch) ---
   // The renderer performs the fetch directly (avoids IPC streaming complexity).
   platform: process.platform,

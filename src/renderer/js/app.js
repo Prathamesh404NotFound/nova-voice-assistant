@@ -50,6 +50,11 @@
     ctrlStopBtn: $("ctrlStopBtn"),
     notesTabs: $("notesTabs"), notesList: $("notesList"), notesAdd: $("notesAdd"),
     notesRefreshBtn: $("notesRefreshBtn"),
+    // Round 24: identity layer elements (may be null in stripped builds).
+    identityNameInput: $("identityNameInput"), identityNameSave: $("identityNameSave"),
+    identityUserNameInput: $("identityUserNameInput"), identityUserNameSave: $("identityUserNameSave"),
+    identityPersonalityRadios: $("identityPersonalityRadios"),
+    identityFacts: $("identityFacts"),
     kbFolders: $("kbFolders"), kbAdd: $("kbAdd"), kbRefreshBtn: $("kbRefreshBtn"),
     kbProgressLine: $("kbProgressLine"), kbQueryForm: $("kbQueryForm"),
     kbQueryInput: $("kbQueryInput"), kbAnswer: $("kbAnswer"),
@@ -291,6 +296,33 @@
         });
         return;
       }
+      // Round 24: a personalized greeting gets a small identity card — the
+      // greeting line plus who Nova is right now (name/personality/user name),
+      // with a quick link into the Identity section of the panel.
+      if (res.detail?.kind === "greet") {
+        showNotesToast(res.narration || res.text || "Hi!", (div) => {
+          const id = res.detail.identity || {};
+          div.classList.add("nova-briefing-toast");
+          div.dataset.greeting = "1";
+          const wrap = document.createElement("div");
+          wrap.className = "nova-briefing-groups";
+          const block = document.createElement("div");
+          block.className = "nova-briefing-group brief-reminders";
+          block.innerHTML = `<div class="nova-briefing-label">${id.name || "Nova"}</div>`;
+          const who = (id.userName ? `for "${id.userName}"` : "no one yet — tell me your name") + ` · ${id.personality || "warm"} voice`;
+          const row = document.createElement("div");
+          row.className = "nova-briefing-item";
+          row.textContent = who;
+          block.appendChild(row);
+          const note = document.createElement("div");
+          note.className = "nova-briefing-item";
+          note.textContent = "Adjust any of this in the Identity section below.";
+          block.appendChild(note);
+          wrap.appendChild(block);
+          div.appendChild(wrap);
+        });
+        return;
+      }
       // Round 23: the weekly digest gets the same structured-card treatment
       // as the daily briefing — completed (cyan-dim), overdue (amber), and
       // next week's dues / upcoming reminders as labeled groups.
@@ -357,6 +389,77 @@
     renderNotesAddForm();
   }
 
+  // Round 24: identity panel — name / voice / user name / facts. Every field
+  // writes through the local identity module; a forget button on each fact
+  // routes through the same L2 notes:forget-fact action as voice.
+  function renderIdentityPanel(identity, facts) {
+    if (!el.identityNameInput || !el.identityPersonalityRadios) return;
+    el.identityNameInput.value = identity.name || "";
+    el.identityUserNameInput.value = identity.userName || "";
+    if (!el.identityPersonalityRadios.hasChildNodes()) {
+      for (const p of ["warm", "professional", "concise", "playful"]) {
+        const label = document.createElement("label");
+        label.className = "identity-radio";
+        label.innerHTML = `<input type="radio" name="identityPersonality" value="${p}" /> ${p}`;
+        el.identityPersonalityRadios.appendChild(label);
+      }
+    }
+    el.identityPersonalityRadios.querySelectorAll("input").forEach((r) => {
+      r.checked = r.value === (identity.personality || "warm");
+      r.onchange = async () => {
+        await window.nova.setIdentity({ personality: r.value });
+        showNotesToast(`Voice set to "${r.value}" — say "good morning" to hear the difference.`);
+      };
+    });
+    el.identityNameSave.onclick = async () => {
+      const name = el.identityNameInput.value.trim().slice(0, 24);
+      if (!name) { showNotesToast("Names can't be empty — I'll stay Nova for now."); return; }
+      const res = await window.nova.setIdentity({ name });
+      showNotesToast(res?.ok ? `Her name is now "${name}".` : "Could not save the name.");
+    };
+    el.identityUserNameSave.onclick = async () => {
+      const userName = el.identityUserNameInput.value.trim().slice(0, 40);
+      const res = await window.nova.setIdentity({ userName });
+      showNotesToast(res?.ok ? (userName ? `She'll call you "${userName}" now.` : "No user name set — she'll greet you without one.") : "Could not save your name.");
+    };
+    // Facts list (newest on top, like the Action Log).
+    if (el.identityFacts) {
+      el.identityFacts.innerHTML = "";
+      if (!facts.length) {
+        const empty = document.createElement("div");
+        empty.className = "identity-facts-empty";
+        empty.textContent = "Nothing yet — say \"remember that I …\".";
+        el.identityFacts.appendChild(empty);
+        return;
+      }
+      for (const f of [...facts].reverse()) {
+        const row = document.createElement("div");
+        row.className = "identity-fact-row";
+        row.innerHTML = `<span class="identity-fact-text">${escapeHtml(String(f.fact || ""))}</span>`;
+        const btn = document.createElement("button");
+        btn.className = "flat-btn small identity-fact-forget";
+        btn.title = "Forget this fact";
+        btn.textContent = "×";
+        btn.addEventListener("click", async () => {
+          const res = await window.nova.forgetUserFact(f.fact);
+          if (res?.ok) {
+            showNotesToast("Forgotten.");
+            renderIdentityPanel(await window.nova.getIdentity(), await window.nova.getUserFacts().then((x) => x.facts || []));
+          } else showNotesToast("Could not forget that fact.");
+        });
+        row.appendChild(btn);
+        el.identityFacts.appendChild(row);
+      }
+    }
+  }
+
+  async function refreshIdentityPanel() {
+    try {
+      const [identity, factsRes] = await Promise.all([window.nova.getIdentity(), window.nova.getUserFacts()]);
+      renderIdentityPanel(identity || {}, factsRes?.facts || []);
+    } catch { /* renderer-side error only — identity is non-critical */ }
+  }
+
   function initNotesPanel() {
     document.querySelectorAll("[data-notes-tab]").forEach((b) => {
       b.addEventListener("click", () => setNotesTab(b.dataset.notesTab));
@@ -372,6 +475,10 @@
       else if (action === "task-toggle") await runNotesCommand(`mark task ${id} done`);
     });
     refreshNotesPanel();
+    refreshIdentityPanel();
+    // Round 24: keep the identity panel in sync when it changes anywhere
+    // (voice path, this panel, or a second window).
+    window.nova.onIdentityChanged(() => refreshIdentityPanel());
     // OS notifications fire in the main process; the renderer speaks them
     // aloud when Nova is focused and shows a small banner either way.
     // Round 19: snooze chips on the fired-reminder banner — every chip

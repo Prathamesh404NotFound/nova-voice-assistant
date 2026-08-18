@@ -106,6 +106,27 @@ const RE_BRIEFING = /^(?:nova\s*,?\s*)?(?:what('s| is) on my plate today|brief m
 // phrasings never leak into list/search.
 const RE_WEEKLY = /^(?:nova\s*,?\s*)?(?:my week in review|weekly digest|how did my week go|what happened this week)\s*$/i;
 
+// Round 24: identity layer — facts the user asks Nova to remember. "remember
+// I work from home on Fridays" / "remember that I like quiet mornings".
+// "remember" alone is NOT a match (no fact clause follows — that reads as
+// plain conversation), and the rule runs before the notes list so "remember
+// my notes about X" never reads as a search. The trailing .+\S clause
+// guarantees at least one non-space character after the personal-pronoun
+// phrase, so "remember me" does not match.
+const RE_REMEMBER_FACT = /^(?:nova\s*,?\s*)?remember(?:\s+that)?\s+(?:i|we)(?:'m|\s+am|\s+will|\s+would|\s+like|\s+love|\s+hate|\s+prefer|\s+work|\s+live)?\s+.+\S\s*$/i;
+// "forget that I work from home on Fridays" / "forget I like quiet mornings"
+const RE_FORGET_FACT = /^(?:nova\s*,?\s*)?forget(?:\s+that)?\s+(?:i|we)(?:'m|\s+am|\s+will|\s+would|\s+like|\s+love|\s+hate|\s+prefer|\s+work|\s+live)?\s+.+\S\s*$/i;
+// "what do you know about me" / "what have i told you" / "do you know me"
+const RE_USER_MODEL_ASK = /^(?:nova\s*,?\s*)?(?:what do you know about me|what have i told you|do you know me|what do you remember about me)\s*$/i;
+// Round 24: greeting — "good morning nova" / "hi" / "hello" (wake-word
+// phrasings). Runs after the user-model ask so "do you know me" never
+// becomes a greeting; bare greetings without a wake word still match.
+// NOTE: "good (morning|afternoon|evening)" takes the wake word as an optional
+// TAIL ("good morning nova") — putting the tail inside the same optional
+// group would make bare "good morning" require "nova" or vice versa; the
+// alternation below covers both shapes explicitly.
+const RE_GREETING = /^(?:nova\s*,?\s*)?(?:good\s+(?:morning|afternoon|evening)(?:\s+nova)?|hey(?:\s+nova)?|hi(?:\s+nova)?|hello(?:\s+nova)?)\s*$/i;
+
 // Round 14: "how am I doing on my tasks" / "task stats" / "my completion rate"
 // NOTE: the optional-group + \b combo ((?:istics)?\b) breaks under JS regex
 // backtracking — use explicit alternation instead. The 'task stats(s)' branch
@@ -323,6 +344,27 @@ function planNoteAction(text, ctx = {}) {
   // "add task 'stats'" / "delete task …".
   if (RE_TASK_STATS.test(t)) {
     return { actionId: "notes:task-stats", payload: {} };
+  }
+
+  // Round 24: identity layer — personal facts belong to the USER MODEL
+  // (user-model.js), not to plain notes. These MUST run before RE_NOTE:
+  // RE_NOTE's third alternation "(note down|write down|remember) that? (.+)"
+  // would otherwise swallow "remember I work from home on Fridays" as a
+  // plain note. Same for forget/ask/greeting.
+  if (RE_FORGET_FACT.test(t)) {
+    const fact = t.replace(/^(?:nova\s*,?\s*)?forget(?:\s+that)?\s+/i, "").trim();
+    return fact ? { actionId: "notes:forget-fact", payload: { fact } } : { error: "Forget what about yourself? Say \"forget that I work from home on Fridays\"." };
+  }
+  if (RE_REMEMBER_FACT.test(t)) {
+    const fact = t.replace(/^(?:nova\s*,?\s*)?remember(?:\s+that)?\s+/i, "").trim();
+    if (!fact) return { error: "Remember what? Say \"remember that I work from home on Fridays\"." };
+    return { actionId: "notes:remember-fact", payload: { fact } };
+  }
+  if (RE_USER_MODEL_ASK.test(t)) {
+    return { actionId: "notes:user-model-ask", payload: {} };
+  }
+  if (RE_GREETING.test(t)) {
+    return { actionId: "notes:greet", payload: {} };
   }
 
   m = RE_NOTE.exec(t);

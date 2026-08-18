@@ -10,6 +10,7 @@
 const { registerAction } = require("../permissions/action-registry");
 const { RISK_LEVEL } = require("../permissions/risk-levels");
 const store = require("./store");
+const userModels = require("../identity/user-model");
 
 // ---------------------------------------------------------------------------
 // L1 — safe, run immediately (still logged)
@@ -244,6 +245,59 @@ registerAction({
     if (!rearmed) return { ok: false, error: "reminder vanished while snoozing" };
     return { ok: true, reminder: rearmed, dueAt: rearmed.dueAt, seconds: p.seconds || 600, kind: "reminder-snoozed" };
   },
+});
+
+// Round 24: identity layer — remember a fact about the user ("remember I
+// work from home on Fridays") into the local user model. L1 SAFE: purely
+// local JSON, fully works in Private Mode, never leaves the machine.
+registerAction({
+  id: "notes:remember-fact",
+  level: RISK_LEVEL.SAFE,
+  description: "Remember a fact about the user (stored locally in the user model)",
+  simulate: async () => ({ summary: "would save a fact about you to the local user model" }),
+  execute: async (p) => {
+    const res = userModels.addFact(p.fact);
+    if (!res.ok) return { ok: false, error: res.error };
+    return { ok: true, fact: res.fact.fact, kind: "remember-fact" };
+  },
+});
+
+// Round 24: forget a fact from the user model. L2 REVERSIBLE: the fact comes
+// back via the 5 s toast-cancel pattern and can be re-remembered by voice
+// (reverse() re-inserts it, and undo works for the forget action too).
+registerAction({
+  id: "notes:forget-fact",
+  level: RISK_LEVEL.REVERSIBLE,
+  description: "Forget a fact about the user (removes it from the local user model)",
+  simulate: async (p) => ({ title: "Nova wants to forget a fact about you", body: `Would remove "${String(p.fact || "").slice(0, 200)}" from what Nova knows about you.` }),
+  execute: async (p) => {
+    const res = userModels.removeFact(p.fact);
+    if (!res.ok) return { ok: false, error: res.error };
+    return { ok: true, removed: res.removed.fact, kind: "forget-fact" };
+  },
+  reverse: async (p) => {
+    const res = userModels.addFact(p.fact);
+    return { ok: res.ok, undone: res.ok, note: res.ok ? "fact re-remembered" : "could not restore the forgotten fact" };
+  },
+});
+
+// Round 24: "what do you know about me" — read-only readout of the user model.
+registerAction({
+  id: "notes:user-model-ask",
+  level: RISK_LEVEL.SAFE,
+  description: "Read-only readout of everything Nova knows about the user",
+  simulate: async () => ({ summary: "would read what Nova knows about you from the local user model" }),
+  execute: async () => ({ facts: userModels.list(), kind: "user-model-ask" }),
+});
+
+// Round 24: greeting — "good morning", "hi nova". Purely local; uses the
+// identity module (name/personality/user name) for tone.
+registerAction({
+  id: "notes:greet",
+  level: RISK_LEVEL.SAFE,
+  description: "Personalized greeting (uses your name and the time of day)",
+  simulate: async () => ({ summary: "would greet you by name based on the time of day" }),
+  execute: async () => ({ kind: "greet" }),
 });
 
 registerAction({
