@@ -130,6 +130,22 @@ const RE_USER_MODEL_ASK = /^(?:nova\s*,?\s*)?(?:what do you know about me|what h
 // alternation below covers both shapes explicitly.
 const RE_GREETING = /^(?:nova\s*,?\s*)?(?:good\s+(?:morning|afternoon|evening)(?:\s+nova)?|hey(?:\s+nova)?|hi(?:\s+nova)?|hello(?:\s+nova)?)\s*$/i;
 
+// Round 27: mood/energy check-in. "how am i feeling today" / "check in with
+// me" → notes:mood-check (reads the latest mood fact). The question must run
+// BEFORE the user-model ask branch: without it, "how am i feeling today" would
+// fall through to the generic notes classifier. Explicit mood statements
+// ("i feel X", "i'm feeling X") → notes:mood-statement — also before
+// RE_NOTE, whose "remember that (.+)" alternations must not swallow them.
+const RE_MOOD_CHECK = /^(?:nova\s*,?\s*)?(?:how am i feeling(?:\s+today)?|how am i doing(?:\s+today)?|how do i feel(?:\s+today)?|check in with me|what'?s my mood(?:\s+today)?|what is my mood(?:\s+today)?)\s*$/i;
+// The statement regex demands at least one mood/energy word anywhere in the
+// sentence — otherwise a plain note like "I am a developer" would get stored
+// as a fact about the user instead of a note. The lexicon covers the usual
+// check-in answers (energized/tired/great/down/flat/stressed/buzzing/…); a
+// "today/i feel like" anchor already exists in the leading alternation, so
+// the lexicon gate only adds precision without shrinking coverage.
+const MOOD_LEXICON = /\b(?:feeling|feel|felt|mood|energi|tired|exhausted|drained|burnt|burned|stressed|great|awesome|amazing|wonderful|fantastic|good|bad|terrible|awful|horrible|down|low|flat|off|great|upbeat|buzzing|pumped|sluggish|foggy|rested|sleepy|anxious|calm|zen|fired|motivated|unmotivated|blah|meh|sick|under the weather|so-so|not bad)\b/i;
+const RE_MOOD_STATEMENT = /^(?:nova\s*,?\s*)?(?:i feel|i'?m feeling|i am feeling|i'?ve been feeling|i'?ve been|i am|i'm|i feel like i'?m)\s+.+\S\s*$/i;
+
 // Round 14: "how am I doing on my tasks" / "task stats" / "my completion rate"
 // NOTE: the optional-group + \b combo ((?:istics)?\b) breaks under JS regex
 // backtracking — use explicit alternation instead. The 'task stats(s)' branch
@@ -368,6 +384,16 @@ function planNoteAction(text, ctx = {}) {
   }
   if (RE_GREETING.test(t)) {
     return { actionId: "notes:greet", payload: {} };
+  }
+  // Round 27: mood/energy check-in. Questions run first (they're exact-match
+  // phrases, so they can't accidentally swallow real notes).
+  if (RE_MOOD_CHECK.test(t)) {
+    return { actionId: "notes:mood-check", payload: {} };
+  }
+  if (RE_MOOD_STATEMENT.test(t) && MOOD_LEXICON.test(t)) {
+    const fact = t.replace(/^(?:nova\s*,?\s*)?/i, "").trim();
+    if (!fact) return { error: "Mood what, exactly? Try \"I feel energized today\"." };
+    return { actionId: "notes:mood-statement", payload: { fact } };
   }
 
   m = RE_NOTE.exec(t);

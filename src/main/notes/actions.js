@@ -300,6 +300,34 @@ registerAction({
   execute: async () => ({ kind: "greet" }),
 });
 
+// Round 27: mood/energy check-in — "how am I feeling today", "check in with
+// me", or "I feel energized". The mood lands as a regular fact in the user
+// model (so it persists), but the check-in itself is a dedicated read action
+// that names the most recent mood and its age. L1 SAFE — fully local JSON,
+// zero network, works in Private Mode.
+registerAction({
+  id: "notes:mood-check",
+  level: RISK_LEVEL.SAFE,
+  description: "Read the most recent mood/energy check-in from the user model",
+  simulate: async () => ({ summary: "would read your latest mood check-in from the local user model" }),
+  execute: async () => ({ kind: "mood-check" }),
+});
+
+// Round 27: explicit mood statement — "I feel tired", "I'm feeling great
+// today". Stored as a user-model fact like any other preference; check-in
+// reads it back as a mood specifically. L1 SAFE, local only.
+registerAction({
+  id: "notes:mood-statement",
+  level: RISK_LEVEL.SAFE,
+  description: "Store a mood/energy statement about the user (local user model)",
+  simulate: async () => ({ summary: "would remember how you're feeling right now in the local user model" }),
+  execute: async (p) => {
+    const res = userModels.addFact(p.fact);
+    if (!res.ok) return { ok: false, error: res.error };
+    return { ok: true, fact: res.fact.fact, kind: "mood-statement" };
+  },
+});
+
 registerAction({
   id: "notes:summarize-notes",
   level: RISK_LEVEL.REVERSIBLE,

@@ -293,10 +293,12 @@ function formatLocalResult(actionId, payload, detail) {
       const baseNarr = duet.length || ov.length || rem.length
         ? "Here's what's on your plate today\u2026"
         : "Nothing on the plate today \u2014 clear skies.";
+      // Round 27: mood check-ins weave into the narration when the latest
+      // mood fact exists — additive (no mood → byte-identical narration).
       return {
         ok: true, intent: "notes",
         text,
-        narration: personalizeNarration("daily-briefing", baseNarr),
+        narration: personalizeNarration("daily-briefing", baseNarr).replace(/^(\s*)/, (m0) => m0 + moodNarration()),
         actionId, detail: { kind: "daily-briefing", briefing: b },
       };
     }
@@ -331,10 +333,12 @@ function formatLocalResult(actionId, payload, detail) {
       const baseNarrD = done.length || pend.length || ov.length || nxt.length || rem.length
         ? "Here's your week in review\u2026"
         : "Quiet week \u2014 nothing to report.";
+      // Round 27: mood check-ins weave into the digest narration too —
+      // the week review also carries today's mood when one exists.
       return {
         ok: true, intent: "notes",
         text,
-        narration: personalizeNarration("weekly-digest", baseNarrD),
+        narration: personalizeNarration("weekly-digest", baseNarrD).replace(/^(\s*)/, (m0) => m0 + moodNarration()),
         actionId, detail: { kind: "weekly-digest", digest: d },
       };
     }
@@ -379,11 +383,61 @@ function formatLocalResult(actionId, payload, detail) {
       const greeting = greetLine(id.personality, id.userName);
       // Round 26: day preview — additive (empty name/day → untouched line).
       const preview = greetSnapshot(store.dailyBriefing());
+      // Round 27: mood prefix — additive (no mood → byte-identical greeting).
+      const mood = moodGreet();
       return {
         ok: true, intent: "notes",
         text: greeting + preview,
-        narration: greeting + preview,
-        actionId, detail: { kind: "greet", identity: id, snapshot: !!preview },
+        narration: greeting + mood + preview,
+        actionId, detail: { kind: "greet", identity: id, snapshot: !!preview, mood: !!mood },
+      };
+    }
+    // Round 27: mood/energy check-in — "how am I feeling today". Reads the
+    // most recent mood fact from the user model with a human age. Purely
+    // local; L1 SAFE. Additive wording: no stored mood → an invitation to
+    // check in rather than an error.
+    case "notes:mood-check": {
+      const mc = latestMood();
+      if (!mc) {
+        return {
+          ok: true, intent: "notes",
+          text: "You haven't told me how you're feeling yet — try \"I feel energized today\" and I'll keep it in mind for your briefings.",
+          narration: "You haven't told me how you're feeling yet — try \"I feel energized today\" and I'll keep it in mind for your briefings.",
+          actionId, detail: { kind: "mood-check" },
+        };
+      }
+      const age = moodAge(mc.updatedAt);
+      const id3 = identityGet();
+      const p = id3.personality || "warm";
+      const ack = p === "concise" ? "Latest check-in:"
+        : p === "professional" ? "Here's your latest check-in:"
+        : p === "playful" ? "The cosmos remembers:"
+        : "You told me, " + age + ":";
+      return {
+        ok: true, intent: "notes",
+        text: `${ack} "${mc.fact}"${p === "concise" || p === "professional" || p === "playful" ? ` (recorded ${age})` : ""}`,
+        narration: `${ack} "${mc.fact}"`,
+        actionId, detail: { kind: "mood-check", fact: mc.fact, updatedAt: mc.updatedAt },
+      };
+    }
+    // Round 27: explicit mood statement — "I feel tired". Stored as a user-
+    // model fact with a dedicated acknowledgement so check-ins feel like a
+    // conversation, not a settings change. L1 SAFE, local only.
+    case "notes:mood-statement": {
+      if (detail.ok === false) {
+        return { ok: false, intent: "notes", text: detail.error === "too-long" ? "That's a bit long for one fact — try splitting it up." : "I could not remember that.", actionId, detail: { kind: "mood-statement", error: detail.error } };
+      }
+      const id4 = identityGet();
+      const p2 = id4.personality || "warm";
+      const ack2 = p2 === "concise" ? "Noted."
+        : p2 === "professional" ? "Logged — I'll keep it in mind for your briefings."
+        : p2 === "playful" ? "The cosmos heard you! ✨"
+        : "Got it — I'll keep that in mind today.";
+      return {
+        ok: true, intent: "notes",
+        text: `${ack2} "${detail.fact || ""}"`,
+        narration: ack2,
+        actionId, detail: { kind: "mood-statement", fact: detail.fact },
       };
     }
     // Round 24: remember a fact about the user. L1 SAFE — acknowledgement
@@ -450,7 +504,7 @@ function formatLocalResult(actionId, payload, detail) {
 // Round 24: greeting helper — time-of-day greeting personalized by the user's
 // name and Nova's identity personality (tone only, never fact wording).
 const { get: identityGet } = require("../identity/identity");
-const { personalizeNarration, applyTimePreference, greetSnapshot, userFacts } = require("./dispatch-personal");
+const { personalizeNarration, applyTimePreference, greetSnapshot, userFacts, latestMood, moodAge, moodNarration, moodGreet } = require("./dispatch-personal");
 
 function greetLine(personality, userName) {
   const hour = new Date().getHours();
@@ -462,4 +516,4 @@ function greetLine(personality, userName) {
   // warm (default)
   return `${tod}${who} — glad you're here. What shall we do today?`;
 }
-module.exports = { runNoteAction, planNoteAction, storeContext, formatLocalResult, greetLine, greetSnapshot };
+module.exports = { runNoteAction, planNoteAction, storeContext, formatLocalResult, greetLine, greetSnapshot, latestMood, moodAge, moodNarration, moodGreet };

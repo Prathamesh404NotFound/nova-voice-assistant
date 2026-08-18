@@ -26,3 +26,4 @@ output/partial/
 identity.json
 actions.log.json
 .nova-greeting-test-data/
+.nova-mood-test-data/

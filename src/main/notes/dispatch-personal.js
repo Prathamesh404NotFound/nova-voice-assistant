@@ -146,4 +146,96 @@ function greetSnapshot(briefing) {
   return ` — ${dayWord}today has ${summary}.`;
 }
 
-module.exports = { personalizeNarration, applyTimePreference, userFacts, greetSnapshot };
+// ---------------------------------------------------------------------------
+// Round 27: mood/energy check-in hooks.
+//
+// Mood check-ins ("I feel energized", "I'm feeling down today") land in the
+// user model as ordinary facts, but they're flagged by MOOD_FACT_REGEX so
+// Nova can *act* on them instead of merely reciting them:
+//   1. The briefing/digest lead-in picks up today's mood
+//      ("You sounded energized this morning — here's your day: …").
+//   2. The check-in voice route reads the most recent mood fact back, with
+//      an age ("just now" / "2 hours ago") — the mood is ephemeral context,
+//      not a permanent preference.
+// Additive as always: no mood fact, no change to the output.
+// ---------------------------------------------------------------------------
+const MOOD_FACT_REGEX = /\b(?:feeling|feel|felt|mood|energi|tired|exhausted|drained|burnt|burned|stressed|great|awesome|amazing|wonderful|fantastic|good|bad|terrible|awful|horrible|down|low|flat|off|upbeat|buzzing|pumped|sluggish|foggy|rested|sleepy|anxious|calm|zen|fired|motivated|unmotivated|blah|meh|sick|so-so)\b/i;
+
+/**
+ * The most recent fact that reads as a mood/energy check-in. The user model
+ * stores facts newest-last, so this is the last match in list order (O(n),
+ * n ≤ 100).
+ * @returns {{fact: string, updatedAt: string}|null}
+ */
+function latestMood() {
+  const facts = userModel.list(); // [{key, fact, updatedAt}]
+  let latest = null;
+  for (const f of facts) {
+    if (MOOD_FACT_REGEX.test(f.fact) && (!latest || (f.updatedAt || "") >= (latest.updatedAt || ""))) {
+      latest = f;
+    }
+  }
+  return latest;
+}
+
+/**
+ * Human-readable age of the most recent mood check-in — moods are ephemeral
+ * context, so the wording matters more than the timestamp: "just now",
+ * "20 minutes ago", "2 hours ago", "this morning".
+ * @param {string} updatedAt ISO timestamp of the mood fact
+ * @param {number} [now] epoch ms (testing seam)
+ * @returns {string} like "just now", "20 minutes ago", "this morning"
+ */
+function moodAge(updatedAt, now = Date.now()) {
+  if (!updatedAt) return "just now";
+  const ms = now - new Date(updatedAt).getTime();
+  const minutes = Math.floor(ms / 60000);
+  if (minutes < 2) return "just now";
+  if (minutes < 60) return `${minutes} minute${minutes === 1 ? "" : "s"} ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 12) return `${hours} hour${hours === 1 ? "" : "s"} ago`;
+  // Past the half-day mark: name the part of the day it happened in.
+  const then = new Date(updatedAt);
+  const hour = then.getHours();
+  const part = hour < 12 ? "this morning" : hour < 17 ? "this afternoon" : "this evening";
+  return part;
+}
+
+/**
+ * Briefing/digest mood prefix — weaves today's check-in mood into the
+ * narration lead-in when a mood fact exists from earlier today.
+ * @param {number} [now] epoch ms (testing seam)
+ * @returns {string} empty string when no mood, else a lead-in like
+ *   "You sounded energized this morning — " (additive guarantee).
+ */
+function moodNarration(now = Date.now()) {
+  const mood = latestMood();
+  if (!mood) return "";
+  const age = moodAge(mood.updatedAt, now);
+  // The mood fact itself is the evidence — quote its key phrase, not the
+  // whole sentence, for a natural spoken line.
+  return `You mentioned ${age} that "${mood.fact}" — `;
+}
+
+/**
+ * Greeting mood prefix — the hello line picks up today's latest check-in
+ * so "good morning" after "I feel tired" gets the soft landing it deserves:
+ * "Good morning, Alex — you told me earlier you're feeling tired — "
+ * Additive: no mood → untouched byte-identical greeting.
+ * @param {number} [now] epoch ms (testing seam)
+ * @returns {string} empty or a prefix ending in " — "
+ */
+function moodGreet(now = Date.now()) {
+  const mood = latestMood();
+  if (!mood) return "";
+  const age = moodAge(mood.updatedAt, now);
+  const id = identityGet();
+  const personality = id.personality || "warm";
+  if (personality === "concise") return `(${age}: "${mood.fact}") — `;
+  if (personality === "professional") return `I have your ${age} check-in on file ("${mood.fact}") — `;
+  if (personality === "playful") return `the cosmos heard you ${age} ("${mood.fact}") — `;
+  // warm (default)
+  return `you told me ${age} ("${mood.fact}") — `;
+}
+
+module.exports = { personalizeNarration, applyTimePreference, userFacts, greetSnapshot, latestMood, moodAge, moodNarration, moodGreet };
