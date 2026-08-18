@@ -272,7 +272,11 @@ function formatLocalResult(actionId, payload, detail) {
       const named = (list) => list.map((x) => `"${x.text.slice(0, 40)}"`).join(", ");
       const duet = b.dueToday || [];
       const ov = b.overdue || [];
-      const rem = b.remindersToday || [];
+      let rem = (b.remindersToday || []).map((r) => ({ ...r }));
+      // Round 25: respect the user's time-of-day preference ("I like
+      // mornings") by reordering reminders; a morning preference keeps
+      // the default earliest-first order.
+      rem = applyTimePreference(rem);
       let text;
       if (!duet.length && !ov.length && !rem.length) {
         text = "Nothing on the plate today — clear skies.";
@@ -283,10 +287,16 @@ function formatLocalResult(actionId, payload, detail) {
         if (rem.length) parts.push(`${rem.length} reminder${rem.length === 1 ? "" : "s"} today: ${named(rem)}`);
         text = `Here's today's plate: ${parts.join(". ")}.`;
       }
+      // Round 25: identity-aware narration — userName lead-in, fact recap.
+      // The base line follows the branch so the spoken narration matches
+      // what the text said (empty day vs. full plate).
+      const baseNarr = duet.length || ov.length || rem.length
+        ? "Here's what's on your plate today\u2026"
+        : "Nothing on the plate today \u2014 clear skies.";
       return {
         ok: true, intent: "notes",
         text,
-        narration: "Here's what's on your plate today…",
+        narration: personalizeNarration("daily-briefing", baseNarr),
         actionId, detail: { kind: "daily-briefing", briefing: b },
       };
     }
@@ -299,7 +309,10 @@ function formatLocalResult(actionId, payload, detail) {
       const pend = d.pending || [];
       const ov = d.overdue || [];
       const nxt = d.dueNextWeek || [];
-      const rem = d.remindersUpcoming || [];
+      let rem = (d.remindersUpcoming || []).map((r) => ({ ...r }));
+      // Round 25: apply the user's time-of-day preference to upcoming
+      // reminders in the digest as well.
+      rem = applyTimePreference(rem);
       let text;
       if (!done.length && !pend.length && !ov.length && !nxt.length && !rem.length) {
         text = "Quiet week — nothing to report.";
@@ -312,10 +325,16 @@ function formatLocalResult(actionId, payload, detail) {
         if (rem.length) parts.push(`${rem.length} reminder${rem.length === 1 ? "" : "s"} coming up: ${named(rem)}`);
         text = `Here's your week in review: ${parts.join(". ")}.`;
       }
+      // Round 25: identity-aware narration — userName lead-in, fact recap.
+      // The base line follows the branch so the spoken narration matches
+      // what the text said (quiet week vs. busy week).
+      const baseNarrD = done.length || pend.length || ov.length || nxt.length || rem.length
+        ? "Here's your week in review\u2026"
+        : "Quiet week \u2014 nothing to report.";
       return {
         ok: true, intent: "notes",
         text,
-        narration: "Here's your week in review\u2026",
+        narration: personalizeNarration("weekly-digest", baseNarrD),
         actionId, detail: { kind: "weekly-digest", digest: d },
       };
     }
@@ -425,6 +444,7 @@ function formatLocalResult(actionId, payload, detail) {
 // Round 24: greeting helper — time-of-day greeting personalized by the user's
 // name and Nova's identity personality (tone only, never fact wording).
 const { get: identityGet } = require("../identity/identity");
+const { personalizeNarration, applyTimePreference } = require("./dispatch-personal");
 
 function greetLine(personality, userName) {
   const hour = new Date().getHours();

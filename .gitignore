@@ -22,3 +22,6 @@ output/partial/
 .nova-morning-briefing-test-data/
 .nova-weekly-digest-test-data/
 .nova-identity-test-data/
+.nova-identity-briefing-test-data/
+identity.json
+actions.log.json

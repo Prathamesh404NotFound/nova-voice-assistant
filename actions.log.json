@@ -1,12 +1,12 @@
 [
   {
-    "ts": "2026-08-18T08:11:05.579Z",
+    "ts": "2026-08-18T08:46:11.338Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msydvegb-wz98qj",
+      "automationId": "auto-msyf4j9m-40rx0l",
       "name": "tea-time",
       "steps": 1,
       "status": "safe",
@@ -14,55 +14,55 @@
     }
   },
   {
-    "ts": "2026-08-18T08:11:05.485Z",
+    "ts": "2026-08-18T08:46:11.241Z",
     "actionId": "automation:event-run",
     "level": 0,
     "levelName": "read",
     "outcome": "failed",
     "detail": {
-      "automationId": "auto-msydvcl1-h7gawo",
+      "automationId": "auto-msyf4hec-031zle",
       "name": "tmp-watch",
       "status": "partial"
     }
   },
   {
-    "ts": "2026-08-18T08:11:05.484Z",
+    "ts": "2026-08-18T08:46:11.240Z",
     "actionId": "automation:run",
     "level": 0,
     "levelName": "read",
     "outcome": "failed",
-    "taskId": "auto-run-auto-msydvcl1-h7gawo-1787040665481",
+    "taskId": "auto-run-auto-msyf4hec-031zle-1787042771239",
     "durationMs": 0,
     "detail": {
-      "automationId": "auto-msydvcl1-h7gawo",
+      "automationId": "auto-msyf4hec-031zle",
       "name": "tmp-watch",
       "status": "partial",
       "stepsRun": 1
     }
   },
   {
-    "ts": "2026-08-18T08:11:05.481Z",
+    "ts": "2026-08-18T08:46:11.239Z",
     "actionId": "automation:run",
     "level": 0,
     "levelName": "read",
     "outcome": "success",
-    "taskId": "auto-run-auto-msydvcl1-h7gawo-1787040665481",
+    "taskId": "auto-run-auto-msyf4hec-031zle-1787042771239",
     "durationMs": 0,
     "detail": {
-      "automationId": "auto-msydvcl1-h7gawo",
+      "automationId": "auto-msyf4hec-031zle",
       "name": "tmp-watch",
       "steps": 1,
       "gated": false
     }
   },
   {
-    "ts": "2026-08-18T08:11:03.157Z",
+    "ts": "2026-08-18T08:46:08.916Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msydvcl1-h7gawo",
+      "automationId": "auto-msyf4hec-031zle",
       "name": "tmp-watch",
       "steps": 1,
       "status": "safe",
@@ -70,24 +70,24 @@
     }
   },
   {
-    "ts": "2026-08-18T08:11:02.853Z",
+    "ts": "2026-08-18T08:46:08.614Z",
     "actionId": "automation:toggle",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msydvcci-w6mhnq",
+      "automationId": "auto-msyf4h5x-w70mjj",
       "enabled": false
     }
   },
   {
-    "ts": "2026-08-18T08:11:02.850Z",
+    "ts": "2026-08-18T08:46:08.613Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msydvcci-w6mhnq",
+      "automationId": "auto-msyf4h5x-w70mjj",
       "name": "wake-note",
       "steps": 1,
       "status": "safe",
@@ -95,13 +95,13 @@
     }
   },
   {
-    "ts": "2026-08-18T08:10:46.845Z",
+    "ts": "2026-08-18T08:45:52.610Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msyduzzx-ouchg1",
+      "automationId": "auto-msyf44te-93uf2j",
       "name": "idle-report",
       "steps": 1,
       "status": "safe",
@@ -109,55 +109,55 @@
     }
   },
   {
-    "ts": "2026-08-18T08:10:45.862Z",
+    "ts": "2026-08-18T08:45:51.611Z",
     "actionId": "automation:event-run",
     "level": 0,
     "levelName": "read",
     "outcome": "failed",
     "detail": {
-      "automationId": "auto-msydunnc-0y8h1p",
+      "automationId": "auto-msyf3sgu-hab64z",
       "name": "idle-report",
       "status": "partial"
     }
   },
   {
-    "ts": "2026-08-18T08:10:45.860Z",
+    "ts": "2026-08-18T08:45:51.610Z",
     "actionId": "automation:run",
     "level": 0,
     "levelName": "read",
     "outcome": "failed",
-    "taskId": "auto-run-auto-msydunnc-0y8h1p-1787040645856",
+    "taskId": "auto-run-auto-msyf3sgu-hab64z-1787042751609",
     "durationMs": 0,
     "detail": {
-      "automationId": "auto-msydunnc-0y8h1p",
+      "automationId": "auto-msyf3sgu-hab64z",
       "name": "idle-report",
       "status": "partial",
       "stepsRun": 1
     }
   },
   {
-    "ts": "2026-08-18T08:10:45.856Z",
+    "ts": "2026-08-18T08:45:51.609Z",
     "actionId": "automation:run",
     "level": 0,
     "levelName": "read",
     "outcome": "success",
-    "taskId": "auto-run-auto-msydunnc-0y8h1p-1787040645856",
+    "taskId": "auto-run-auto-msyf3sgu-hab64z-1787042751609",
     "durationMs": 0,
     "detail": {
-      "automationId": "auto-msydunnc-0y8h1p",
+      "automationId": "auto-msyf3sgu-hab64z",
       "name": "idle-report",
       "steps": 1,
       "gated": false
     }
   },
   {
-    "ts": "2026-08-18T08:10:30.840Z",
+    "ts": "2026-08-18T08:45:36.606Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msydunnc-0y8h1p",
+      "automationId": "auto-msyf3sgu-hab64z",
       "name": "idle-report",
       "steps": 1,
       "status": "safe",
@@ -165,13 +165,13 @@
     }
   },
   {
-    "ts": "2026-08-18T08:10:28.637Z",
+    "ts": "2026-08-18T08:45:34.404Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msyduly5-g2jq39",
+      "automationId": "auto-msyf3qro-h6cttz",
       "name": "tea-time",
       "steps": 1,
       "status": "safe",
@@ -179,55 +179,55 @@
     }
   },
   {
-    "ts": "2026-08-18T08:10:27.142Z",
+    "ts": "2026-08-18T08:45:32.906Z",
     "actionId": "automation:event-run",
     "level": 1,
     "levelName": "safe",
     "outcome": "failed",
     "detail": {
-      "automationId": "auto-msyduk0k-fxwrn6",
+      "automationId": "auto-msyf3ou6-ga4ka9",
       "name": "tea-time",
       "status": "partial"
     }
   },
   {
-    "ts": "2026-08-18T08:10:27.140Z",
+    "ts": "2026-08-18T08:45:32.906Z",
     "actionId": "automation:run",
     "level": 1,
     "levelName": "safe",
     "outcome": "failed",
-    "taskId": "auto-run-auto-msyduk0k-fxwrn6-1787040627137",
+    "taskId": "auto-run-auto-msyf3ou6-ga4ka9-1787042732905",
     "durationMs": 0,
     "detail": {
-      "automationId": "auto-msyduk0k-fxwrn6",
+      "automationId": "auto-msyf3ou6-ga4ka9",
       "name": "tea-time",
       "status": "partial",
       "stepsRun": 1
     }
   },
   {
-    "ts": "2026-08-18T08:10:27.137Z",
+    "ts": "2026-08-18T08:45:32.905Z",
     "actionId": "automation:run",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
-    "taskId": "auto-run-auto-msyduk0k-fxwrn6-1787040627137",
+    "taskId": "auto-run-auto-msyf3ou6-ga4ka9-1787042732905",
     "durationMs": 0,
     "detail": {
-      "automationId": "auto-msyduk0k-fxwrn6",
+      "automationId": "auto-msyf3ou6-ga4ka9",
       "name": "tea-time",
       "steps": 1,
       "gated": false
     }
   },
   {
-    "ts": "2026-08-18T08:10:26.133Z",
+    "ts": "2026-08-18T08:45:31.902Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msyduk0k-fxwrn6",
+      "automationId": "auto-msyf3ou6-ga4ka9",
       "name": "tea-time",
       "steps": 1,
       "status": "safe",
@@ -235,55 +235,55 @@
     }
   },
   {
-    "ts": "2026-08-18T08:10:25.632Z",
+    "ts": "2026-08-18T08:45:31.399Z",
     "actionId": "automation:event-run",
     "level": 1,
     "levelName": "safe",
     "outcome": "failed",
     "detail": {
-      "automationId": "auto-msydujmi-1u3qzp",
+      "automationId": "auto-msyf3og4-uee9wz",
       "name": "wake-note",
       "status": "partial"
     }
   },
   {
-    "ts": "2026-08-18T08:10:25.630Z",
+    "ts": "2026-08-18T08:45:31.399Z",
     "actionId": "automation:run",
     "level": 1,
     "levelName": "safe",
     "outcome": "failed",
-    "taskId": "auto-run-auto-msydujmi-1u3qzp-1787040625628",
+    "taskId": "auto-run-auto-msyf3og4-uee9wz-1787042731397",
     "durationMs": 0,
     "detail": {
-      "automationId": "auto-msydujmi-1u3qzp",
+      "automationId": "auto-msyf3og4-uee9wz",
       "name": "wake-note",
       "status": "partial",
       "stepsRun": 1
     }
   },
   {
-    "ts": "2026-08-18T08:10:25.628Z",
+    "ts": "2026-08-18T08:45:31.398Z",
     "actionId": "automation:run",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
-    "taskId": "auto-run-auto-msydujmi-1u3qzp-1787040625628",
+    "taskId": "auto-run-auto-msyf3og4-uee9wz-1787042731397",
     "durationMs": 0,
     "detail": {
-      "automationId": "auto-msydujmi-1u3qzp",
+      "automationId": "auto-msyf3og4-uee9wz",
       "name": "wake-note",
       "steps": 1,
       "gated": false
     }
   },
   {
-    "ts": "2026-08-18T08:10:25.626Z",
+    "ts": "2026-08-18T08:45:31.396Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msydujmi-1u3qzp",
+      "automationId": "auto-msyf3og4-uee9wz",
       "name": "wake-note",
       "steps": 1,
       "status": "safe",
@@ -291,13 +291,13 @@
     }
   },
   {
-    "ts": "2026-08-18T08:10:25.322Z",
+    "ts": "2026-08-18T08:45:31.093Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msyduje2-sltgve",
+      "automationId": "auto-msyf3o7p-1dujl5",
       "name": "wake-note",
       "steps": 1,
       "status": "safe",
@@ -305,55 +305,55 @@
     }
   },
   {
-    "ts": "2026-08-18T08:10:25.023Z",
+    "ts": "2026-08-18T08:45:30.792Z",
     "actionId": "automation:event-run",
     "level": 1,
     "levelName": "safe",
     "outcome": "failed",
     "detail": {
-      "automationId": "auto-msyduj50-32edoj",
+      "automationId": "auto-msyf3nys-u44c1q",
       "name": "wake-note",
       "status": "partial"
     }
   },
   {
-    "ts": "2026-08-18T08:10:25.020Z",
+    "ts": "2026-08-18T08:45:30.791Z",
     "actionId": "automation:run",
     "level": 1,
     "levelName": "safe",
     "outcome": "failed",
-    "taskId": "auto-run-auto-msyduj50-32edoj-1787040625000",
+    "taskId": "auto-run-auto-msyf3nys-u44c1q-1787042730774",
     "durationMs": 0,
     "detail": {
-      "automationId": "auto-msyduj50-32edoj",
+      "automationId": "auto-msyf3nys-u44c1q",
       "name": "wake-note",
       "status": "partial",
       "stepsRun": 1
     }
   },
   {
-    "ts": "2026-08-18T08:10:25.009Z",
+    "ts": "2026-08-18T08:45:30.782Z",
     "actionId": "automation:run",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
-    "taskId": "auto-run-auto-msyduj50-32edoj-1787040625000",
+    "taskId": "auto-run-auto-msyf3nys-u44c1q-1787042730774",
     "durationMs": 0,
     "detail": {
-      "automationId": "auto-msyduj50-32edoj",
+      "automationId": "auto-msyf3nys-u44c1q",
       "name": "wake-note",
       "steps": 1,
       "gated": false
     }
   },
   {
-    "ts": "2026-08-18T08:10:24.996Z",
+    "ts": "2026-08-18T08:45:30.772Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msyduj50-32edoj",
+      "automationId": "auto-msyf3nys-u44c1q",
       "name": "wake-note",
       "steps": 1,
       "status": "safe",
@@ -361,7 +361,7 @@
     }
   },
   {
-    "ts": "2026-08-18T08:10:24.993Z",
+    "ts": "2026-08-18T08:45:30.772Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
@@ -369,13 +369,13 @@
     "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
   },
   {
-    "ts": "2026-08-18T08:10:24.988Z",
+    "ts": "2026-08-18T08:45:30.768Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msyduj4s-jn5hcp",
+      "automationId": "auto-msyf3nyo-d91jp4",
       "name": "ev",
       "steps": 1,
       "status": "safe",
@@ -383,13 +383,13 @@
     }
   },
   {
-    "ts": "2026-08-18T08:10:24.985Z",
+    "ts": "2026-08-18T08:45:30.767Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msyduj4l-8e5fmv",
+      "automationId": "auto-msyf3nym-urywit",
       "name": "downloads-watcher",
       "steps": 1,
       "status": "safe",
@@ -397,13 +397,13 @@
     }
   },
   {
-    "ts": "2026-08-18T08:02:56.337Z",
+    "ts": "2026-08-18T08:43:00.733Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msydkwy9-fzjott",
+      "automationId": "auto-msyf0g71-rhsrme",
       "name": "tea-time",
       "steps": 1,
       "status": "safe",
@@ -411,55 +411,55 @@
     }
   },
   {
-    "ts": "2026-08-18T08:02:56.241Z",
+    "ts": "2026-08-18T08:43:00.633Z",
     "actionId": "automation:event-run",
     "level": 0,
     "levelName": "read",
     "outcome": "failed",
     "detail": {
-      "automationId": "auto-msydkv2v-mfvk5z",
+      "automationId": "auto-msyf0ebp-mkv8lu",
       "name": "tmp-watch",
       "status": "partial"
     }
   },
   {
-    "ts": "2026-08-18T08:02:56.239Z",
+    "ts": "2026-08-18T08:43:00.633Z",
     "actionId": "automation:run",
     "level": 0,
     "levelName": "read",
     "outcome": "failed",
-    "taskId": "auto-run-auto-msydkv2v-mfvk5z-1787040176236",
+    "taskId": "auto-run-auto-msyf0ebp-mkv8lu-1787042580631",
     "durationMs": 0,
     "detail": {
-      "automationId": "auto-msydkv2v-mfvk5z",
+      "automationId": "auto-msyf0ebp-mkv8lu",
       "name": "tmp-watch",
       "status": "partial",
       "stepsRun": 1
     }
   },
   {
-    "ts": "2026-08-18T08:02:56.236Z",
+    "ts": "2026-08-18T08:43:00.632Z",
     "actionId": "automation:run",
     "level": 0,
     "levelName": "read",
     "outcome": "success",
-    "taskId": "auto-run-auto-msydkv2v-mfvk5z-1787040176236",
+    "taskId": "auto-run-auto-msyf0ebp-mkv8lu-1787042580631",
     "durationMs": 0,
     "detail": {
-      "automationId": "auto-msydkv2v-mfvk5z",
+      "automationId": "auto-msyf0ebp-mkv8lu",
       "name": "tmp-watch",
       "steps": 1,
       "gated": false
     }
   },
   {
-    "ts": "2026-08-18T08:02:53.911Z",
+    "ts": "2026-08-18T08:42:58.309Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msydkv2v-mfvk5z",
+      "automationId": "auto-msyf0ebp-mkv8lu",
       "name": "tmp-watch",
       "steps": 1,
       "status": "safe",
@@ -467,24 +467,24 @@
     }
   },
   {
-    "ts": "2026-08-18T08:02:53.608Z",
+    "ts": "2026-08-18T08:42:58.006Z",
     "actionId": "automation:toggle",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msydkuud-9gfgk3",
+      "automationId": "auto-msyf0e3a-e8i7lj",
       "enabled": false
     }
   },
   {
-    "ts": "2026-08-18T08:02:53.605Z",
+    "ts": "2026-08-18T08:42:58.006Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msydkuud-9gfgk3",
+      "automationId": "auto-msyf0e3a-e8i7lj",
       "name": "wake-note",
       "steps": 1,
       "status": "safe",
@@ -492,13 +492,13 @@
     }
   },
   {
-    "ts": "2026-08-18T08:02:37.600Z",
+    "ts": "2026-08-18T08:42:42.002Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msydkihs-ir3936",
+      "automationId": "auto-msyf01qq-u79qo2",
       "name": "idle-report",
       "steps": 1,
       "status": "safe",
@@ -506,55 +506,55 @@
     }
   },
   {
-    "ts": "2026-08-18T08:02:36.615Z",
+    "ts": "2026-08-18T08:42:41.015Z",
     "actionId": "automation:event-run",
     "level": 0,
     "levelName": "read",
     "outcome": "failed",
     "detail": {
-      "automationId": "auto-msydk655-fvrq10",
+      "automationId": "auto-msyezpe6-ypx4ly",
       "name": "idle-report",
       "status": "partial"
     }
   },
   {
-    "ts": "2026-08-18T08:02:36.613Z",
+    "ts": "2026-08-18T08:42:41.014Z",
     "actionId": "automation:run",
     "level": 0,
     "levelName": "read",
     "outcome": "failed",
-    "taskId": "auto-run-auto-msydk655-fvrq10-1787040156610",
+    "taskId": "auto-run-auto-msyezpe6-ypx4ly-1787042561013",
     "durationMs": 0,
     "detail": {
-      "automationId": "auto-msydk655-fvrq10",
+      "automationId": "auto-msyezpe6-ypx4ly",
       "name": "idle-report",
       "status": "partial",
       "stepsRun": 1
     }
   },
   {
-    "ts": "2026-08-18T08:02:36.610Z",
+    "ts": "2026-08-18T08:42:41.013Z",
     "actionId": "automation:run",
     "level": 0,
     "levelName": "read",
     "outcome": "success",
-    "taskId": "auto-run-auto-msydk655-fvrq10-1787040156610",
+    "taskId": "auto-run-auto-msyezpe6-ypx4ly-1787042561013",
     "durationMs": 0,
     "detail": {
-      "automationId": "auto-msydk655-fvrq10",
+      "automationId": "auto-msyezpe6-ypx4ly",
       "name": "idle-report",
       "steps": 1,
       "gated": false
     }
   },
   {
-    "ts": "2026-08-18T08:02:21.593Z",
+    "ts": "2026-08-18T08:42:25.998Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msydk655-fvrq10",
+      "automationId": "auto-msyezpe6-ypx4ly",
       "name": "idle-report",
       "steps": 1,
       "status": "safe",
@@ -562,13 +562,13 @@
     }
   },
   {
-    "ts": "2026-08-18T08:02:19.388Z",
+    "ts": "2026-08-18T08:42:23.796Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msydk4fw-izrdrz",
+      "automationId": "auto-msyeznp0-zv1p55",
       "name": "tea-time",
       "steps": 1,
       "status": "safe",
@@ -576,55 +576,55 @@
     }
   },
   {
-    "ts": "2026-08-18T08:02:17.894Z",
+    "ts": "2026-08-18T08:42:22.298Z",
     "actionId": "automation:event-run",
     "level": 1,
     "levelName": "safe",
     "outcome": "failed",
     "detail": {
-      "automationId": "auto-msydk2ib-ovm7sd",
+      "automationId": "auto-msyezlrh-v60anu",
       "name": "tea-time",
       "status": "partial"
     }
   },
   {
-    "ts": "2026-08-18T08:02:17.891Z",
+    "ts": "2026-08-18T08:42:22.297Z",
     "actionId": "automation:run",
     "level": 1,
     "levelName": "safe",
     "outcome": "failed",
-    "taskId": "auto-run-auto-msydk2ib-ovm7sd-1787040137888",
+    "taskId": "auto-run-auto-msyezlrh-v60anu-1787042542296",
     "durationMs": 0,
     "detail": {
-      "automationId": "auto-msydk2ib-ovm7sd",
+      "automationId": "auto-msyezlrh-v60anu",
       "name": "tea-time",
       "status": "partial",
       "stepsRun": 1
     }
   },
   {
-    "ts": "2026-08-18T08:02:17.889Z",
+    "ts": "2026-08-18T08:42:22.297Z",
     "actionId": "automation:run",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
-    "taskId": "auto-run-auto-msydk2ib-ovm7sd-1787040137888",
+    "taskId": "auto-run-auto-msyezlrh-v60anu-1787042542296",
     "durationMs": 0,
     "detail": {
-      "automationId": "auto-msydk2ib-ovm7sd",
+      "automationId": "auto-msyezlrh-v60anu",
       "name": "tea-time",
       "steps": 1,
       "gated": false
     }
   },
   {
-    "ts": "2026-08-18T08:02:16.883Z",
+    "ts": "2026-08-18T08:42:21.293Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msydk2ib-ovm7sd",
+      "automationId": "auto-msyezlrh-v60anu",
       "name": "tea-time",
       "steps": 1,
       "status": "safe",
@@ -632,55 +632,55 @@
     }
   },
   {
-    "ts": "2026-08-18T08:02:16.382Z",
+    "ts": "2026-08-18T08:42:20.791Z",
     "actionId": "automation:event-run",
     "level": 1,
     "levelName": "safe",
     "outcome": "failed",
     "detail": {
-      "automationId": "auto-msydk247-p0apzq",
+      "automationId": "auto-msyezldg-s8msf7",
       "name": "wake-note",
       "status": "partial"
     }
   },
   {
-    "ts": "2026-08-18T08:02:16.380Z",
+    "ts": "2026-08-18T08:42:20.790Z",
     "actionId": "automation:run",
     "level": 1,
     "levelName": "safe",
     "outcome": "failed",
-    "taskId": "auto-run-auto-msydk247-p0apzq-1787040136378",
+    "taskId": "auto-run-auto-msyezldg-s8msf7-1787042540790",
     "durationMs": 0,
     "detail": {
-      "automationId": "auto-msydk247-p0apzq",
+      "automationId": "auto-msyezldg-s8msf7",
       "name": "wake-note",
       "status": "partial",
       "stepsRun": 1
     }
   },
   {
-    "ts": "2026-08-18T08:02:16.378Z",
+    "ts": "2026-08-18T08:42:20.790Z",
     "actionId": "automation:run",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
-    "taskId": "auto-run-auto-msydk247-p0apzq-1787040136378",
+    "taskId": "auto-run-auto-msyezldg-s8msf7-1787042540790",
     "durationMs": 0,
     "detail": {
-      "automationId": "auto-msydk247-p0apzq",
+      "automationId": "auto-msyezldg-s8msf7",
       "name": "wake-note",
       "steps": 1,
       "gated": false
     }
   },
   {
-    "ts": "2026-08-18T08:02:16.375Z",
+    "ts": "2026-08-18T08:42:20.788Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msydk247-p0apzq",
+      "automationId": "auto-msyezldg-s8msf7",
       "name": "wake-note",
       "steps": 1,
       "status": "safe",
@@ -688,13 +688,13 @@
     }
   },
   {
-    "ts": "2026-08-18T08:02:16.070Z",
+    "ts": "2026-08-18T08:42:20.485Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msydk1vq-6vamfb",
+      "automationId": "auto-msyezl51-vqhig5",
       "name": "wake-note",
       "steps": 1,
       "status": "safe",
@@ -702,55 +702,55 @@
     }
   },
   {
-    "ts": "2026-08-18T08:02:15.772Z",
+    "ts": "2026-08-18T08:42:20.184Z",
     "actionId": "automation:event-run",
     "level": 1,
     "levelName": "safe",
     "outcome": "failed",
     "detail": {
-      "automationId": "auto-msydk1mv-iij7yj",
+      "automationId": "auto-msyezkw6-t1l4uu",
       "name": "wake-note",
       "status": "partial"
     }
   },
   {
-    "ts": "2026-08-18T08:02:15.769Z",
+    "ts": "2026-08-18T08:42:20.184Z",
     "actionId": "automation:run",
     "level": 1,
     "levelName": "safe",
     "outcome": "failed",
-    "taskId": "auto-run-auto-msydk1mv-iij7yj-1787040135754",
+    "taskId": "auto-run-auto-msyezkw6-t1l4uu-1787042540168",
     "durationMs": 0,
     "detail": {
-      "automationId": "auto-msydk1mv-iij7yj",
+      "automationId": "auto-msyezkw6-t1l4uu",
       "name": "wake-note",
       "status": "partial",
       "stepsRun": 1
     }
   },
   {
-    "ts": "2026-08-18T08:02:15.761Z",
+    "ts": "2026-08-18T08:42:20.175Z",
     "actionId": "automation:run",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
-    "taskId": "auto-run-auto-msydk1mv-iij7yj-1787040135754",
+    "taskId": "auto-run-auto-msyezkw6-t1l4uu-1787042540168",
     "durationMs": 0,
     "detail": {
-      "automationId": "auto-msydk1mv-iij7yj",
+      "automationId": "auto-msyezkw6-t1l4uu",
       "name": "wake-note",
       "steps": 1,
       "gated": false
     }
   },
   {
-    "ts": "2026-08-18T08:02:15.751Z",
+    "ts": "2026-08-18T08:42:20.166Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msydk1mv-iij7yj",
+      "automationId": "auto-msyezkw6-t1l4uu",
       "name": "wake-note",
       "steps": 1,
       "status": "safe",
@@ -758,7 +758,7 @@
     }
   },
   {
-    "ts": "2026-08-18T08:02:15.748Z",
+    "ts": "2026-08-18T08:42:20.165Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
@@ -766,13 +766,13 @@
     "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
   },
   {
-    "ts": "2026-08-18T08:02:15.744Z",
+    "ts": "2026-08-18T08:42:20.163Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msydk1mo-uv1wtr",
+      "automationId": "auto-msyezkw3-oo0qkg",
       "name": "ev",
       "steps": 1,
       "status": "safe",
@@ -780,6067 +780,17 @@
     }
   },
   {
-    "ts": "2026-08-18T08:02:15.741Z",
+    "ts": "2026-08-18T08:42:20.162Z",
     "actionId": "automation:add",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
     "detail": {
-      "automationId": "auto-msydk1mi-vv8t2o",
+      "automationId": "auto-msyezkw2-23bm6e",
       "name": "downloads-watcher",
       "steps": 1,
       "status": "safe",
       "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:42.834Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msydbmgh-ra9eii",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:42.736Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msydbkl6-fmvehc",
-      "name": "tmp-watch",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:42.734Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msydbkl6-fmvehc-1787039742732",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msydbkl6-fmvehc",
-      "name": "tmp-watch",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:42.732Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msydbkl6-fmvehc-1787039742732",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msydbkl6-fmvehc",
-      "name": "tmp-watch",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:40.410Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msydbkl6-fmvehc",
-      "name": "tmp-watch",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:40.106Z",
-    "actionId": "automation:toggle",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msydbkco-8qovsx",
-      "enabled": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:40.104Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msydbkco-8qovsx",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:24.100Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msydb803-rei43o",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:23.115Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msydavni-xy7for",
-      "name": "idle-report",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:23.113Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msydavni-xy7for-1787039723110",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msydavni-xy7for",
-      "name": "idle-report",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:23.110Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msydavni-xy7for-1787039723110",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msydavni-xy7for",
-      "name": "idle-report",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:08.095Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msydavni-xy7for",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:05.891Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msydatyb-oro34q",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:04.396Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msydas0q-ikvetl",
-      "name": "tea-time",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:04.394Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msydas0q-ikvetl-1787039704391",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msydas0q-ikvetl",
-      "name": "tea-time",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:04.391Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msydas0q-ikvetl-1787039704391",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msydas0q-ikvetl",
-      "name": "tea-time",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:03.386Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msydas0q-ikvetl",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:02.886Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msydarmn-xvvdv2",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:02.884Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msydarmn-xvvdv2-1787039702882",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msydarmn-xvvdv2",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:02.882Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msydarmn-xvvdv2-1787039702882",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msydarmn-xvvdv2",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:02.879Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msydarmn-xvvdv2",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:02.575Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msydare7-zec7eu",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:02.276Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msydar5e-qst0cx",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:02.274Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msydar5e-qst0cx-1787039702261",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msydar5e-qst0cx",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:02.267Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msydar5e-qst0cx-1787039702261",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msydar5e-qst0cx",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:02.258Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msydar5e-qst0cx",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:02.255Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
-  },
-  {
-    "ts": "2026-08-18T07:55:02.252Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msydar58-zef66o",
-      "name": "ev",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:55:02.249Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msydar52-z5bx95",
-      "name": "downloads-watcher",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:53:23.849Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyd8n7t-ub3682",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:53:23.751Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyd8lcg-0v6wv0",
-      "name": "tmp-watch",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:53:23.749Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyd8lcg-0v6wv0-1787039603746",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyd8lcg-0v6wv0",
-      "name": "tmp-watch",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:53:23.746Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyd8lcg-0v6wv0-1787039603746",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyd8lcg-0v6wv0",
-      "name": "tmp-watch",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:53:21.424Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyd8lcg-0v6wv0",
-      "name": "tmp-watch",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:53:21.121Z",
-    "actionId": "automation:toggle",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyd8l3y-fhkhid",
-      "enabled": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:53:21.118Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyd8l3y-fhkhid",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:53:05.112Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyd88rc-8orn2p",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:53:04.129Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyd7weq-5uc2x2",
-      "name": "idle-report",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:53:04.127Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyd7weq-5uc2x2-1787039584123",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyd7weq-5uc2x2",
-      "name": "idle-report",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:53:04.123Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyd7weq-5uc2x2-1787039584123",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyd7weq-5uc2x2",
-      "name": "idle-report",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:52:49.106Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyd7weq-5uc2x2",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:52:46.903Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyd7upj-f8glzl",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:52:45.408Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyd7sry-36xkxg",
-      "name": "tea-time",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:52:45.406Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyd7sry-36xkxg-1787039565403",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyd7sry-36xkxg",
-      "name": "tea-time",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:52:45.403Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyd7sry-36xkxg-1787039565403",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyd7sry-36xkxg",
-      "name": "tea-time",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:52:44.398Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyd7sry-36xkxg",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:52:43.898Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyd7sdv-2ytk0a",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:52:43.896Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyd7sdv-2ytk0a-1787039563894",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyd7sdv-2ytk0a",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:52:43.894Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyd7sdv-2ytk0a-1787039563894",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyd7sdv-2ytk0a",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:52:43.891Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyd7sdv-2ytk0a",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:52:43.587Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyd7s5f-nl9e9i",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:52:43.288Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyd7rwm-vkc5jv",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:52:43.286Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyd7rwm-vkc5jv-1787039563273",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyd7rwm-vkc5jv",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:52:43.279Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyd7rwm-vkc5jv-1787039563273",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyd7rwm-vkc5jv",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:52:43.270Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyd7rwm-vkc5jv",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:52:43.267Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
-  },
-  {
-    "ts": "2026-08-18T07:52:43.264Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyd7rwg-f0a9e3",
-      "name": "ev",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:52:43.261Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyd7rwa-sipbxm",
-      "name": "downloads-watcher",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:45:32.494Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycyjim-bjjg3e",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:45:32.395Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msycyhna-wbupog",
-      "name": "tmp-watch",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:45:32.393Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msycyhna-wbupog-1787039132390",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msycyhna-wbupog",
-      "name": "tmp-watch",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:45:32.390Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msycyhna-wbupog-1787039132390",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msycyhna-wbupog",
-      "name": "tmp-watch",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:45:30.070Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycyhna-wbupog",
-      "name": "tmp-watch",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:45:29.766Z",
-    "actionId": "automation:toggle",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycyhes-s4gou1",
-      "enabled": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:45:29.764Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycyhes-s4gou1",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:45:13.759Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycy527-2tczsm",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:45:12.774Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msycxspn-n0tbkg",
-      "name": "idle-report",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:45:12.773Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msycxspn-n0tbkg-1787039112770",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msycxspn-n0tbkg",
-      "name": "idle-report",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:45:12.770Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msycxspn-n0tbkg-1787039112770",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msycxspn-n0tbkg",
-      "name": "idle-report",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:44:57.755Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycxspn-n0tbkg",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:44:55.552Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycxr0g-m80t8l",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:44:54.058Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msycxp2v-ep1hsv",
-      "name": "tea-time",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:44:54.055Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msycxp2v-ep1hsv-1787039094053",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msycxp2v-ep1hsv",
-      "name": "tea-time",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:44:54.053Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msycxp2v-ep1hsv-1787039094053",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msycxp2v-ep1hsv",
-      "name": "tea-time",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:44:53.047Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycxp2v-ep1hsv",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:44:52.546Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msycxoos-x20ntd",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:44:52.545Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msycxoos-x20ntd-1787039092543",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msycxoos-x20ntd",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:44:52.543Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msycxoos-x20ntd-1787039092543",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msycxoos-x20ntd",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:44:52.540Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycxoos-x20ntd",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:44:52.236Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycxogc-x7gpeo",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:44:51.937Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msycxo7j-okalji",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:44:51.935Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msycxo7j-okalji-1787039091922",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msycxo7j-okalji",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:44:51.928Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msycxo7j-okalji-1787039091922",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msycxo7j-okalji",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:44:51.919Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycxo7j-okalji",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:44:51.916Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
-  },
-  {
-    "ts": "2026-08-18T07:44:51.913Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycxo7d-je22mu",
-      "name": "ev",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:44:51.910Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycxo78-35l0f0",
-      "name": "downloads-watcher",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:31:00.274Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycfuia-ukrkgi",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:31:00.178Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msycfsmy-lz9g1l",
-      "name": "tmp-watch",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:31:00.176Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msycfsmy-lz9g1l-1787038260173",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msycfsmy-lz9g1l",
-      "name": "tmp-watch",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:31:00.173Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msycfsmy-lz9g1l-1787038260173",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msycfsmy-lz9g1l",
-      "name": "tmp-watch",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:57.850Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycfsmy-lz9g1l",
-      "name": "tmp-watch",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:57.547Z",
-    "actionId": "automation:toggle",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycfseg-gjap7u",
-      "enabled": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:57.545Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycfseg-gjap7u",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:41.540Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycfg1w-resm2o",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:40.555Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msycf3pb-xz6w3d",
-      "name": "idle-report",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:40.553Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msycf3pb-xz6w3d-1787038240550",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msycf3pb-xz6w3d",
-      "name": "idle-report",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:40.551Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msycf3pb-xz6w3d-1787038240550",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msycf3pb-xz6w3d",
-      "name": "idle-report",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:25.535Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycf3pb-xz6w3d",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:23.332Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycf204-22vs8y",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:21.836Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msycf02j-e9q8nz",
-      "name": "tea-time",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:21.834Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msycf02j-e9q8nz-1787038221832",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msycf02j-e9q8nz",
-      "name": "tea-time",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:21.832Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msycf02j-e9q8nz-1787038221832",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msycf02j-e9q8nz",
-      "name": "tea-time",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:20.827Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycf02j-e9q8nz",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:20.326Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msycezog-lg8day",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:20.324Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msycezog-lg8day-1787038220322",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msycezog-lg8day",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:20.322Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msycezog-lg8day-1787038220322",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msycezog-lg8day",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:20.320Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycezog-lg8day",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:20.016Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycezg0-c3pq2y",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:19.716Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msycez76-9atr38",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:19.714Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msycez76-9atr38-1787038219701",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msycez76-9atr38",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:19.707Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msycez76-9atr38-1787038219701",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msycez76-9atr38",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:19.698Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycez76-9atr38",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:19.696Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
-  },
-  {
-    "ts": "2026-08-18T07:30:19.692Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycez70-ws08fl",
-      "name": "ev",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:30:19.690Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msycez6v-w58ma4",
-      "name": "downloads-watcher",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:43.868Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyc6hrw-cagx6u",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:43.772Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyc6fwl-xzcq3f",
-      "name": "tmp-watch",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:43.770Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyc6fwl-xzcq3f-1787037823767",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyc6fwl-xzcq3f",
-      "name": "tmp-watch",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:43.767Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyc6fwl-xzcq3f-1787037823767",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyc6fwl-xzcq3f",
-      "name": "tmp-watch",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:41.445Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyc6fwl-xzcq3f",
-      "name": "tmp-watch",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:41.142Z",
-    "actionId": "automation:toggle",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyc6fo4-qq3ui0",
-      "enabled": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:41.140Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyc6fo4-qq3ui0",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:25.136Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyc63bk-4xtdtk",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:24.152Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyc5qyz-bsvuhs",
-      "name": "idle-report",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:24.150Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyc5qyz-bsvuhs-1787037804147",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyc5qyz-bsvuhs",
-      "name": "idle-report",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:24.147Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyc5qyz-bsvuhs-1787037804147",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyc5qyz-bsvuhs",
-      "name": "idle-report",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:09.132Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyc5qyz-bsvuhs",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:06.928Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyc5p9s-y2ai2u",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:05.433Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyc5nc7-is9xmf",
-      "name": "tea-time",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:05.430Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyc5nc7-is9xmf-1787037785427",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyc5nc7-is9xmf",
-      "name": "tea-time",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:05.427Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyc5nc7-is9xmf-1787037785427",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyc5nc7-is9xmf",
-      "name": "tea-time",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:04.423Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyc5nc7-is9xmf",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:03.921Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyc5my3-nydbbc",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:03.920Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyc5my3-nydbbc-1787037783918",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyc5my3-nydbbc",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:03.918Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyc5my3-nydbbc-1787037783918",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyc5my3-nydbbc",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:03.915Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyc5my3-nydbbc",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:03.611Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyc5mpn-cruh4u",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:03.312Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyc5mgu-4twshd",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:03.310Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyc5mgu-4twshd-1787037783297",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyc5mgu-4twshd",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:03.303Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyc5mgu-4twshd-1787037783297",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyc5mgu-4twshd",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:03.294Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyc5mgu-4twshd",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:03.292Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
-  },
-  {
-    "ts": "2026-08-18T07:23:03.288Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyc5mgo-uaavyg",
-      "name": "ev",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:23:03.286Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyc5mgj-ze6ken",
-      "name": "downloads-watcher",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:50.923Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybshyj-kozi2m",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:50.830Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msybsg39-ziqpfp",
-      "name": "tmp-watch",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:50.828Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msybsg39-ziqpfp-1787037170825",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybsg39-ziqpfp",
-      "name": "tmp-watch",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:50.825Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msybsg39-ziqpfp-1787037170825",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybsg39-ziqpfp",
-      "name": "tmp-watch",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:48.501Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybsg39-ziqpfp",
-      "name": "tmp-watch",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:48.198Z",
-    "actionId": "automation:toggle",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybsfus-wqxdm5",
-      "enabled": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:48.196Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybsfus-wqxdm5",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:32.191Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybs3i7-9qt87u",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:31.207Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msybrr5m-2zu4f1",
-      "name": "idle-report",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:31.205Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msybrr5m-2zu4f1-1787037151202",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybrr5m-2zu4f1",
-      "name": "idle-report",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:31.202Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msybrr5m-2zu4f1-1787037151202",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybrr5m-2zu4f1",
-      "name": "idle-report",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:16.187Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybrr5m-2zu4f1",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:13.983Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybrpgf-fxh8l2",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:12.488Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msybrniu-l89nsf",
-      "name": "tea-time",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:12.486Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msybrniu-l89nsf-1787037132483",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybrniu-l89nsf",
-      "name": "tea-time",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:12.483Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msybrniu-l89nsf-1787037132483",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybrniu-l89nsf",
-      "name": "tea-time",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:11.478Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybrniu-l89nsf",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:10.977Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msybrn4r-geiyaz",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:10.976Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msybrn4r-geiyaz-1787037130974",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybrn4r-geiyaz",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:10.974Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msybrn4r-geiyaz-1787037130974",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybrn4r-geiyaz",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:10.971Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybrn4r-geiyaz",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:10.667Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybrmwb-ssfc4f",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:10.368Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msybrmnk-65hp3w",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:10.366Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msybrmnk-65hp3w-1787037130356",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybrmnk-65hp3w",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:10.360Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msybrmnk-65hp3w-1787037130356",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybrmnk-65hp3w",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:10.352Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybrmnk-65hp3w",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:10.350Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
-  },
-  {
-    "ts": "2026-08-18T07:12:10.347Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybrmnf-t2xqxj",
-      "name": "ev",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:12:10.344Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybrmn9-ih43b5",
-      "name": "downloads-watcher",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:03:05.200Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybfy0g-d60evy",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:03:05.106Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msybfw53-74d3df",
-      "name": "tmp-watch",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:03:05.105Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msybfw53-74d3df-1787036585102",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybfw53-74d3df",
-      "name": "tmp-watch",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:03:05.102Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msybfw53-74d3df-1787036585102",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybfw53-74d3df",
-      "name": "tmp-watch",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:03:02.775Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybfw53-74d3df",
-      "name": "tmp-watch",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:03:02.471Z",
-    "actionId": "automation:toggle",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybfvwl-drdnki",
-      "enabled": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:03:02.469Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybfvwl-drdnki",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:02:46.463Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybfjjz-dv17jz",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:02:45.479Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msybf77d-b4ti4i",
-      "name": "idle-report",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:02:45.477Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msybf77d-b4ti4i-1787036565473",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybf77d-b4ti4i",
-      "name": "idle-report",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:02:45.473Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msybf77d-b4ti4i-1787036565473",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybf77d-b4ti4i",
-      "name": "idle-report",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:02:30.457Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybf77d-b4ti4i",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:02:28.253Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybf5i5-nur0kk",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:02:26.759Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msybf3kk-slx10p",
-      "name": "tea-time",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:02:26.757Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msybf3kk-slx10p-1787036546753",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybf3kk-slx10p",
-      "name": "tea-time",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:02:26.753Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msybf3kk-slx10p-1787036546753",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybf3kk-slx10p",
-      "name": "tea-time",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:02:25.749Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybf3kk-slx10p",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:02:25.247Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msybf36g-x768fh",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:02:25.245Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msybf36g-x768fh-1787036545243",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybf36g-x768fh",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:02:25.243Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msybf36g-x768fh-1787036545243",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybf36g-x768fh",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:02:25.240Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybf36g-x768fh",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:02:24.934Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybf2xy-x6mbsq",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:02:24.636Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msybf2p8-1ce69h",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:02:24.633Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msybf2p8-1ce69h-1787036544623",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybf2p8-1ce69h",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T07:02:24.626Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msybf2p8-1ce69h-1787036544623",
-    "durationMs": 1,
-    "detail": {
-      "automationId": "auto-msybf2p8-1ce69h",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T07:02:24.620Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybf2p8-1ce69h",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:02:24.618Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
-  },
-  {
-    "ts": "2026-08-18T07:02:24.614Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybf2p2-qdxrua",
-      "name": "ev",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T07:02:24.611Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybf2ox-bzpa0u",
-      "name": "downloads-watcher",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:48.091Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybbpx7-zafkzs",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:47.999Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msybbo1x-inag4u",
-      "name": "tmp-watch",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:47.997Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msybbo1x-inag4u-1787036387995",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybbo1x-inag4u",
-      "name": "tmp-watch",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:47.995Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msybbo1x-inag4u-1787036387995",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybbo1x-inag4u",
-      "name": "tmp-watch",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:45.669Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybbo1x-inag4u",
-      "name": "tmp-watch",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:45.365Z",
-    "actionId": "automation:toggle",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybbnte-nzlp21",
-      "enabled": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:45.362Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybbnte-nzlp21",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:29.357Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybbbgt-d7nggv",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:28.373Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msybaz48-g91l14",
-      "name": "idle-report",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:28.371Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msybaz48-g91l14-1787036368367",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybaz48-g91l14",
-      "name": "idle-report",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:28.367Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msybaz48-g91l14-1787036368367",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybaz48-g91l14",
-      "name": "idle-report",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:13.352Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybaz48-g91l14",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:11.147Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybaxez-ucpc09",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:09.651Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msybavhf-vxg6fm",
-      "name": "tea-time",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:09.648Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msybavhf-vxg6fm-1787036349645",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybavhf-vxg6fm",
-      "name": "tea-time",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:09.646Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msybavhf-vxg6fm-1787036349645",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybavhf-vxg6fm",
-      "name": "tea-time",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:08.643Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybavhf-vxg6fm",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:08.142Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msybav3c-xoqvab",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:08.140Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msybav3c-xoqvab-1787036348138",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybav3c-xoqvab",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:08.138Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msybav3c-xoqvab-1787036348138",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybav3c-xoqvab",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:08.136Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybav3c-xoqvab",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:07.831Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybauuv-ayu7aa",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:07.532Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msybaum5-9st43r",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:07.530Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msybaum5-9st43r-1787036347520",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybaum5-9st43r",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:07.524Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msybaum5-9st43r-1787036347520",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msybaum5-9st43r",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:07.517Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybaum5-9st43r",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:07.515Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
-  },
-  {
-    "ts": "2026-08-18T06:59:07.511Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybaulz-1lt4rj",
-      "name": "ev",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:59:07.507Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msybaulu-q2l08u",
-      "name": "downloads-watcher",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:56:06.555Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyb6yzf-ykhg26",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:56:06.460Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyb6x43-n9mk1x",
-      "name": "tmp-watch",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:56:06.458Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyb6x43-n9mk1x-1787036166455",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyb6x43-n9mk1x",
-      "name": "tmp-watch",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:56:06.455Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyb6x43-n9mk1x-1787036166455",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyb6x43-n9mk1x",
-      "name": "tmp-watch",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:56:04.131Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyb6x43-n9mk1x",
-      "name": "tmp-watch",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:56:03.827Z",
-    "actionId": "automation:toggle",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyb6wvl-mfrksi",
-      "enabled": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:56:03.825Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyb6wvl-mfrksi",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:55:47.820Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyb6kj0-dptt3f",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:55:46.835Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyb686e-pv8egx",
-      "name": "idle-report",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:55:46.833Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyb686e-pv8egx-1787036146830",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyb686e-pv8egx",
-      "name": "idle-report",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:55:46.831Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyb686e-pv8egx-1787036146830",
-    "durationMs": 1,
-    "detail": {
-      "automationId": "auto-msyb686e-pv8egx",
-      "name": "idle-report",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:55:31.814Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyb686e-pv8egx",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:55:29.610Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyb66h6-l2gjhx",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:55:28.113Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyb64jm-fi9bud",
-      "name": "tea-time",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:55:28.111Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyb64jm-fi9bud-1787036128109",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyb64jm-fi9bud",
-      "name": "tea-time",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:55:28.109Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyb64jm-fi9bud-1787036128109",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyb64jm-fi9bud",
-      "name": "tea-time",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:55:27.106Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyb64jm-fi9bud",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:55:26.605Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyb645i-u2metp",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:55:26.603Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyb645i-u2metp-1787036126602",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyb645i-u2metp",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:55:26.602Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyb645i-u2metp-1787036126602",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyb645i-u2metp",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:55:26.598Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyb645i-u2metp",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:55:26.294Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyb63x2-mo8eph",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:55:25.995Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyb63oc-tvxuwh",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:55:25.994Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyb63oc-tvxuwh-1787036125983",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyb63oc-tvxuwh",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:55:25.987Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyb63oc-tvxuwh-1787036125983",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyb63oc-tvxuwh",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:55:25.980Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyb63oc-tvxuwh",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:55:25.979Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
-  },
-  {
-    "ts": "2026-08-18T06:55:25.976Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyb63o8-ifarl6",
-      "name": "ev",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:55:25.972Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyb63o3-av2q0r",
-      "name": "downloads-watcher",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:48:21.652Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyax09g-rp2to8",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:48:21.556Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyawye5-2luu6r",
-      "name": "tmp-watch",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:48:21.553Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyawye5-2luu6r-1787035701551",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyawye5-2luu6r",
-      "name": "tmp-watch",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:48:21.551Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyawye5-2luu6r-1787035701551",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyawye5-2luu6r",
-      "name": "tmp-watch",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:48:19.229Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyawye5-2luu6r",
-      "name": "tmp-watch",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:48:18.926Z",
-    "actionId": "automation:toggle",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyawy5o-rcbxsb",
-      "enabled": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:48:18.924Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyawy5o-rcbxsb",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:48:02.920Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyawlt4-5tujeu",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:48:01.936Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyaw9gj-59aq48",
-      "name": "idle-report",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:48:01.934Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyaw9gj-59aq48-1787035681932",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaw9gj-59aq48",
-      "name": "idle-report",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:48:01.932Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyaw9gj-59aq48-1787035681932",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaw9gj-59aq48",
-      "name": "idle-report",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:47:46.915Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaw9gj-59aq48",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:47:44.711Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaw7rb-cbcp3q",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:47:43.213Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyaw5tr-dnghoo",
-      "name": "tea-time",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:47:43.212Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyaw5tr-dnghoo-1787035663210",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaw5tr-dnghoo",
-      "name": "tea-time",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:47:43.210Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyaw5tr-dnghoo-1787035663210",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaw5tr-dnghoo",
-      "name": "tea-time",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:47:42.207Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaw5tr-dnghoo",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:47:41.706Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyaw5fo-033w7k",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:47:41.705Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyaw5fo-033w7k-1787035661702",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaw5fo-033w7k",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:47:41.702Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyaw5fo-033w7k-1787035661702",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaw5fo-033w7k",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:47:41.700Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaw5fo-033w7k",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:47:41.396Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaw578-wr1tu9",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:47:41.096Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyaw4yj-qnvqhc",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:47:41.095Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyaw4yj-qnvqhc-1787035661086",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaw4yj-qnvqhc",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:47:41.089Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyaw4yj-qnvqhc-1787035661086",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaw4yj-qnvqhc",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:47:41.083Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaw4yj-qnvqhc",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:47:41.081Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
-  },
-  {
-    "ts": "2026-08-18T06:47:41.078Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaw4ye-vzied5",
-      "name": "ev",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:47:41.075Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaw4y9-b8gege",
-      "name": "downloads-watcher",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:43.512Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyajbvc-huzfcl",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:43.416Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyaja01-a83ozh",
-      "name": "tmp-watch",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:43.414Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyaja01-a83ozh-1787035063412",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaja01-a83ozh",
-      "name": "tmp-watch",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:43.412Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyaja01-a83ozh-1787035063412",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaja01-a83ozh",
-      "name": "tmp-watch",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:41.089Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaja01-a83ozh",
-      "name": "tmp-watch",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:40.786Z",
-    "actionId": "automation:toggle",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaj9rk-dbk1s9",
-      "enabled": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:40.784Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaj9rk-dbk1s9",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:24.780Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaixf0-k6xi7i",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:23.795Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyail2f-tmywnm",
-      "name": "idle-report",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:23.793Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyail2f-tmywnm-1787035043790",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyail2f-tmywnm",
-      "name": "idle-report",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:23.790Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyail2f-tmywnm-1787035043790",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyail2f-tmywnm",
-      "name": "idle-report",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:08.775Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyail2f-tmywnm",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:06.572Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaijd8-glwypi",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:05.076Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyaihfp-jj8saw",
-      "name": "tea-time",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:05.075Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyaihfp-jj8saw-1787035025073",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaihfp-jj8saw",
-      "name": "tea-time",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:05.073Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyaihfp-jj8saw-1787035025073",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaihfp-jj8saw",
-      "name": "tea-time",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:04.069Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaihfp-jj8saw",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:03.569Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyaih1n-f4vevm",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:03.567Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyaih1n-f4vevm-1787035023565",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaih1n-f4vevm",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:03.565Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyaih1n-f4vevm-1787035023565",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaih1n-f4vevm",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:03.563Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaih1n-f4vevm",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:03.261Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaigt9-4qi5g4",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:02.961Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyaigkl-c7yjlb",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:02.960Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyaigkl-c7yjlb-1787035022952",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaigkl-c7yjlb",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:02.954Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyaigkl-c7yjlb-1787035022952",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaigkl-c7yjlb",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:02.949Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaigkl-c7yjlb",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:02.947Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
-  },
-  {
-    "ts": "2026-08-18T06:37:02.945Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaigkh-a3fib4",
-      "name": "ev",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:37:02.941Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaigkc-davdvv",
-      "name": "downloads-watcher",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:31:17.952Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyab2dc-w5fsuk",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:31:17.857Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyab0i3-out7sk",
-      "name": "tmp-watch",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:31:17.855Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyab0i3-out7sk-1787034677853",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyab0i3-out7sk",
-      "name": "tmp-watch",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:31:17.853Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyab0i3-out7sk-1787034677853",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyab0i3-out7sk",
-      "name": "tmp-watch",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:31:15.531Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyab0i3-out7sk",
-      "name": "tmp-watch",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:31:15.227Z",
-    "actionId": "automation:toggle",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyab09l-qdl7ta",
-      "enabled": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:31:15.225Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyab09l-qdl7ta",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:30:59.221Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaanx1-2blkof",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:30:58.235Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyaabkg-fvtk4w",
-      "name": "idle-report",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:30:58.234Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyaabkg-fvtk4w-1787034658231",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaabkg-fvtk4w",
-      "name": "idle-report",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:30:58.231Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyaabkg-fvtk4w-1787034658231",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaabkg-fvtk4w",
-      "name": "idle-report",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:30:43.216Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaabkg-fvtk4w",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:30:41.013Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaa9v9-0sxnzp",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:30:39.517Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyaa7xq-10evgd",
-      "name": "tea-time",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:30:39.515Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyaa7xq-10evgd-1787034639513",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaa7xq-10evgd",
-      "name": "tea-time",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:30:39.513Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyaa7xq-10evgd-1787034639513",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaa7xq-10evgd",
-      "name": "tea-time",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:30:38.510Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaa7xq-10evgd",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:30:38.008Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyaa7jo-h3om95",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:30:38.007Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyaa7jo-h3om95-1787034638006",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaa7jo-h3om95",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:30:38.006Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyaa7jo-h3om95-1787034638006",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaa7jo-h3om95",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:30:38.004Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaa7jo-h3om95",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:30:37.700Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaa7b8-cvhlpt",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:30:37.401Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyaa72l-ca580n",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:30:37.399Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyaa72l-ca580n-1787034637391",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaa72l-ca580n",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:30:37.394Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyaa72l-ca580n-1787034637391",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyaa72l-ca580n",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:30:37.389Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaa72l-ca580n",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:30:37.387Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
-  },
-  {
-    "ts": "2026-08-18T06:30:37.385Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaa72g-utt92s",
-      "name": "ev",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:30:37.382Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyaa72c-cic94o",
-      "name": "downloads-watcher",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:27:11.255Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msya5s0n-531qai",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:27:11.161Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msya5q5c-jfvr82",
-      "name": "tmp-watch",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:27:11.159Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msya5q5c-jfvr82-1787034431157",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msya5q5c-jfvr82",
-      "name": "tmp-watch",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:27:11.157Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msya5q5c-jfvr82-1787034431157",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msya5q5c-jfvr82",
-      "name": "tmp-watch",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:27:08.832Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msya5q5c-jfvr82",
-      "name": "tmp-watch",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:27:08.529Z",
-    "actionId": "automation:toggle",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msya5pwv-22jl2w",
-      "enabled": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:27:08.528Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msya5pwv-22jl2w",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:26:52.523Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msya5dkb-f5d0zi",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:26:51.538Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msya517r-yalu9e",
-      "name": "idle-report",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:26:51.536Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msya517r-yalu9e-1787034411534",
-    "durationMs": 1,
-    "detail": {
-      "automationId": "auto-msya517r-yalu9e",
-      "name": "idle-report",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:26:51.534Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msya517r-yalu9e-1787034411534",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msya517r-yalu9e",
-      "name": "idle-report",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:26:36.519Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msya517r-yalu9e",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:26:34.316Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msya4zik-jpnsc7",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:26:32.820Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msya4xl1-hopok2",
-      "name": "tea-time",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:26:32.818Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msya4xl1-hopok2-1787034392816",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msya4xl1-hopok2",
-      "name": "tea-time",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:26:32.816Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msya4xl1-hopok2-1787034392816",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msya4xl1-hopok2",
-      "name": "tea-time",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:26:31.813Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msya4xl1-hopok2",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:26:31.311Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msya4x6z-yvlgrc",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:26:31.310Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msya4x6z-yvlgrc-1787034391309",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msya4x6z-yvlgrc",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:26:31.309Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msya4x6z-yvlgrc-1787034391309",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msya4x6z-yvlgrc",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:26:31.307Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msya4x6z-yvlgrc",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:26:31.004Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msya4wyk-rgx30u",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:26:30.703Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msya4wpw-69uywn",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:26:30.702Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msya4wpw-69uywn-1787034390694",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msya4wpw-69uywn",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:26:30.697Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msya4wpw-69uywn-1787034390694",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msya4wpw-69uywn",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:26:30.692Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msya4wpw-69uywn",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:26:30.690Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
-  },
-  {
-    "ts": "2026-08-18T06:26:30.686Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msya4wpq-gw63vy",
-      "name": "ev",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:26:30.684Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msya4wpn-rs1fwy",
-      "name": "downloads-watcher",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:58.313Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9whyg-ekkn5d",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:58.214Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msy9wg36-j8r7ht",
-      "name": "tmp-watch",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:58.213Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msy9wg36-j8r7ht-1787033998211",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msy9wg36-j8r7ht",
-      "name": "tmp-watch",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:58.211Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msy9wg36-j8r7ht-1787033998211",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msy9wg36-j8r7ht",
-      "name": "tmp-watch",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:55.890Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9wg36-j8r7ht",
-      "name": "tmp-watch",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:55.586Z",
-    "actionId": "automation:toggle",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9wfup-8cxi97",
-      "enabled": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:55.585Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9wfup-8cxi97",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:39.582Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9w3i6-xdgurp",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:38.596Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msy9vr5m-7dk1mv",
-      "name": "idle-report",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:38.595Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msy9vr5m-7dk1mv-1787033978593",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msy9vr5m-7dk1mv",
-      "name": "idle-report",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:38.593Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msy9vr5m-7dk1mv-1787033978593",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msy9vr5m-7dk1mv",
-      "name": "idle-report",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:23.578Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9vr5m-7dk1mv",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:21.376Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9vpgg-edgero",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:19.880Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msy9vniw-0ditsx",
-      "name": "tea-time",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:19.878Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msy9vniw-0ditsx-1787033959876",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msy9vniw-0ditsx",
-      "name": "tea-time",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:19.876Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msy9vniw-0ditsx-1787033959876",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msy9vniw-0ditsx",
-      "name": "tea-time",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:18.872Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9vniw-0ditsx",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:18.372Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msy9vn4v-kzbdsy",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:18.371Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msy9vn4v-kzbdsy-1787033958369",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msy9vn4v-kzbdsy",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:18.369Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msy9vn4v-kzbdsy-1787033958369",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msy9vn4v-kzbdsy",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:18.367Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9vn4v-kzbdsy",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:18.065Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9vmwh-pyhtkn",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:17.765Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msy9vmnu-ib4ekx",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:17.764Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msy9vmnu-ib4ekx-1787033957757",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msy9vmnu-ib4ekx",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:17.759Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msy9vmnu-ib4ekx-1787033957757",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msy9vmnu-ib4ekx",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:17.754Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9vmnu-ib4ekx",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:17.753Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
-  },
-  {
-    "ts": "2026-08-18T06:19:17.749Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9vmnp-uzbi75",
-      "name": "ev",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:19:17.747Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9vmnm-86m844",
-      "name": "downloads-watcher",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:16:35.278Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9s5am-a95h0x",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:16:35.179Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msy9s3fa-yid99s",
-      "name": "tmp-watch",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:16:35.178Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msy9s3fa-yid99s-1787033795176",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msy9s3fa-yid99s",
-      "name": "tmp-watch",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:16:35.176Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msy9s3fa-yid99s-1787033795176",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msy9s3fa-yid99s",
-      "name": "tmp-watch",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:16:32.854Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9s3fa-yid99s",
-      "name": "tmp-watch",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:16:32.551Z",
-    "actionId": "automation:toggle",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9s36u-m4r5yr",
-      "enabled": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:16:32.550Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9s36u-m4r5yr",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:16:16.545Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9rqu9-8n0lwo",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:16:15.559Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msy9rehp-0cb5fp",
-      "name": "idle-report",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:16:15.558Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msy9rehp-0cb5fp-1787033775556",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msy9rehp-0cb5fp",
-      "name": "idle-report",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:16:15.556Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msy9rehp-0cb5fp-1787033775556",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msy9rehp-0cb5fp",
-      "name": "idle-report",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:16:00.541Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9rehp-0cb5fp",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:15:58.339Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9rcsj-bkt747",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:15:56.842Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msy9rauz-ego69l",
-      "name": "tea-time",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:15:56.841Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msy9rauz-ego69l-1787033756839",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msy9rauz-ego69l",
-      "name": "tea-time",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:15:56.839Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msy9rauz-ego69l-1787033756839",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msy9rauz-ego69l",
-      "name": "tea-time",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:15:55.835Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9rauz-ego69l",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:15:55.334Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msy9ragy-gnj26n",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:15:55.333Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msy9ragy-gnj26n-1787033755331",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msy9ragy-gnj26n",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:15:55.331Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msy9ragy-gnj26n-1787033755331",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msy9ragy-gnj26n",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:15:55.330Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9ragy-gnj26n",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:15:55.027Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9ra8j-zsxv0j",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:15:54.727Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msy9r9zw-n8djdq",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:15:54.726Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msy9r9zw-n8djdq-1787033754718",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msy9r9zw-n8djdq",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:15:54.721Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msy9r9zw-n8djdq-1787033754718",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msy9r9zw-n8djdq",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:15:54.716Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9r9zw-n8djdq",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:15:54.714Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
-  },
-  {
-    "ts": "2026-08-18T06:15:54.711Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9r9zr-grng1h",
-      "name": "ev",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:15:54.709Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9r9zo-61mvjh",
-      "name": "downloads-watcher",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:13:49.451Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9olcb-hk1oqu",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:13:49.354Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msy9ojh1-lzf17a",
-      "name": "tmp-watch",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:13:49.353Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msy9ojh1-lzf17a-1787033629351",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msy9ojh1-lzf17a",
-      "name": "tmp-watch",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T06:13:49.352Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msy9ojh1-lzf17a-1787033629351",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msy9ojh1-lzf17a",
-      "name": "tmp-watch",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:13:47.029Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9ojh1-lzf17a",
-      "name": "tmp-watch",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T06:13:46.726Z",
-    "actionId": "automation:toggle",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9oj8l-p1zs1i",
-      "enabled": false
-    }
-  },
-  {
-    "ts": "2026-08-18T06:13:46.725Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msy9oj8l-p1zs1i",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
     }
   }
 ]
