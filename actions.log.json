@@ -1,5 +1,3056 @@
 [
   {
+    "ts": "2026-08-18T11:05:05.037Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35l6-ma0c85",
+            "text": "client onboarding",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:05.034Z",
+            "updatedAt": "2026-08-18T11:05:05.034Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:05.035Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35l6-ma0c85",
+            "text": "client onboarding",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:05.034Z",
+            "updatedAt": "2026-08-18T11:05:05.034Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:05.031Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35l3-bcm75g",
+            "text": "task 4 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:05.031Z",
+            "updatedAt": "2026-08-18T11:05:05.031Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35l3-wpmyid",
+            "text": "task 5 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:05.031Z",
+            "updatedAt": "2026-08-18T11:05:05.031Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35l3-q8wzev",
+            "text": "task 6 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:05.031Z",
+            "updatedAt": "2026-08-18T11:05:05.031Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35l3-5dk70v",
+            "text": "task 7 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:05.031Z",
+            "updatedAt": "2026-08-18T11:05:05.031Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35l3-mrp40u",
+            "text": "task 8 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:05.031Z",
+            "updatedAt": "2026-08-18T11:05:05.031Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35l3-dfzimj",
+            "text": "task 9 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:05.031Z",
+            "updatedAt": "2026-08-18T11:05:05.031Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35l3-v9y99d",
+            "text": "task 10 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:05.031Z",
+            "updatedAt": "2026-08-18T11:05:05.031Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35l3-s5gd1w",
+            "text": "task 11 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:05.031Z",
+            "updatedAt": "2026-08-18T11:05:05.031Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35l2-9gz906",
+            "text": "task 0 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:05.030Z",
+            "updatedAt": "2026-08-18T11:05:05.030Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35l2-blad8l",
+            "text": "task 1 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:05.030Z",
+            "updatedAt": "2026-08-18T11:05:05.030Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "projectx",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:05.028Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [],
+      "query": "zzzqwerty",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:05.024Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35ki-xwywpd",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:05.010Z",
+            "updatedAt": "2026-08-18T11:05:05.010Z",
+            "dueDate": "2026-08-17T11:05:05.010Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "rent",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:05.021Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35ki-xwywpd",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:05.010Z",
+            "updatedAt": "2026-08-18T11:05:05.010Z",
+            "dueDate": "2026-08-17T11:05:05.010Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        },
+        {
+          "task": {
+            "id": "n-msyk35ki-ca9hcu",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:05.010Z",
+            "updatedAt": "2026-08-18T11:05:05.010Z",
+            "dueDate": "2026-08-18T11:05:05.010Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        },
+        {
+          "task": {
+            "id": "n-msyk35ki-qw40c2",
+            "text": "client report",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:05.010Z",
+            "updatedAt": "2026-08-18T11:05:05.010Z",
+            "dueDate": "2026-08-25T11:05:05.010Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        }
+      ],
+      "query": "rent team report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:05.018Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35ki-ca9hcu",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:05.010Z",
+            "updatedAt": "2026-08-18T11:05:05.010Z",
+            "dueDate": "2026-08-18T11:05:05.010Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "standup",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:05.015Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35ki-qw40c2",
+            "text": "client report",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:05.010Z",
+            "updatedAt": "2026-08-18T11:05:05.010Z",
+            "dueDate": "2026-08-25T11:05:05.010Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:05.013Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35ki-ca9hcu",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:05.010Z",
+            "updatedAt": "2026-08-18T11:05:05.010Z",
+            "dueDate": "2026-08-18T11:05:05.010Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "standup",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:05.011Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 1,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35ki-xwywpd",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:05.010Z",
+            "updatedAt": "2026-08-18T11:05:05.010Z",
+            "dueDate": "2026-08-17T11:05:05.010Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        }
+      ],
+      "query": "pay rent",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:05.007Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 1,
+    "detail": {
+      "matches": [],
+      "query": "milk",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:05.004Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35jy-rr90xz",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.990Z",
+            "updatedAt": "2026-08-18T11:05:04.990Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35jy-u3wpl3",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.990Z",
+            "updatedAt": "2026-08-18T11:05:04.990Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35jx-qas6f9",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.989Z",
+            "updatedAt": "2026-08-18T11:05:04.989Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:05.001Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35jy-3zug51",
+            "text": "buy milk",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.990Z",
+            "updatedAt": "2026-08-18T11:05:04.990Z"
+          },
+          "score": 5,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "mil",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:04.999Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35jy-rcjw64",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.990Z",
+            "updatedAt": "2026-08-18T11:05:04.990Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "billing",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:04.996Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35jy-rcjw64",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.990Z",
+            "updatedAt": "2026-08-18T11:05:04.990Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "billing",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:04.993Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35jy-rr90xz",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.990Z",
+            "updatedAt": "2026-08-18T11:05:04.990Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35jy-u3wpl3",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.990Z",
+            "updatedAt": "2026-08-18T11:05:04.990Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35jx-qas6f9",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.989Z",
+            "updatedAt": "2026-08-18T11:05:04.989Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:04.991Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 1,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35jy-u3wpl3",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.990Z",
+            "updatedAt": "2026-08-18T11:05:04.990Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyk35jx-qas6f9",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.989Z",
+            "updatedAt": "2026-08-18T11:05:04.989Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyk35jy-rr90xz",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.990Z",
+            "updatedAt": "2026-08-18T11:05:04.990Z"
+          },
+          "score": 10,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyk35jy-rcjw64",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.990Z",
+            "updatedAt": "2026-08-18T11:05:04.990Z"
+          },
+          "score": 10,
+          "matchedTokens": 2
+        }
+      ],
+      "query": "client report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:04.985Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 3,
+    "detail": {
+      "matches": [],
+      "query": "the report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:04.872Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35gm-nhhuzj",
+            "text": "client onboarding",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.870Z",
+            "updatedAt": "2026-08-18T11:05:04.870Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:04.870Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35gm-nhhuzj",
+            "text": "client onboarding",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.870Z",
+            "updatedAt": "2026-08-18T11:05:04.870Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:04.867Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35gj-ekplck",
+            "text": "task 10 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.867Z",
+            "updatedAt": "2026-08-18T11:05:04.867Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35gj-955tz1",
+            "text": "task 11 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.867Z",
+            "updatedAt": "2026-08-18T11:05:04.867Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35gi-ojzsar",
+            "text": "task 0 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.866Z",
+            "updatedAt": "2026-08-18T11:05:04.866Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35gi-1bfoca",
+            "text": "task 1 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.866Z",
+            "updatedAt": "2026-08-18T11:05:04.866Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35gi-68p3ye",
+            "text": "task 2 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.866Z",
+            "updatedAt": "2026-08-18T11:05:04.866Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35gi-0wbroi",
+            "text": "task 3 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.866Z",
+            "updatedAt": "2026-08-18T11:05:04.866Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35gi-feo010",
+            "text": "task 4 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.866Z",
+            "updatedAt": "2026-08-18T11:05:04.866Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35gi-ar4kaz",
+            "text": "task 5 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.866Z",
+            "updatedAt": "2026-08-18T11:05:04.866Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35gi-1bf7r1",
+            "text": "task 6 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.866Z",
+            "updatedAt": "2026-08-18T11:05:04.866Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35gi-f2d889",
+            "text": "task 7 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.866Z",
+            "updatedAt": "2026-08-18T11:05:04.866Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "projectx",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:04.863Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [],
+      "query": "zzzqwerty",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:04.861Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35g0-7g0uap",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.848Z",
+            "updatedAt": "2026-08-18T11:05:04.848Z",
+            "dueDate": "2026-08-17T11:05:04.848Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "rent",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:04.859Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35g0-7eg9m4",
+            "text": "client report",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.849Z",
+            "updatedAt": "2026-08-18T11:05:04.849Z",
+            "dueDate": "2026-08-25T11:05:04.848Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        },
+        {
+          "task": {
+            "id": "n-msyk35g0-7g0uap",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.848Z",
+            "updatedAt": "2026-08-18T11:05:04.848Z",
+            "dueDate": "2026-08-17T11:05:04.848Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        },
+        {
+          "task": {
+            "id": "n-msyk35g0-o98vru",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.848Z",
+            "updatedAt": "2026-08-18T11:05:04.848Z",
+            "dueDate": "2026-08-18T11:05:04.848Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        }
+      ],
+      "query": "rent team report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:04.856Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35g0-o98vru",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.848Z",
+            "updatedAt": "2026-08-18T11:05:04.848Z",
+            "dueDate": "2026-08-18T11:05:04.848Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "standup",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:04.854Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35g0-7eg9m4",
+            "text": "client report",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.849Z",
+            "updatedAt": "2026-08-18T11:05:04.849Z",
+            "dueDate": "2026-08-25T11:05:04.848Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:04.852Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35g0-o98vru",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.848Z",
+            "updatedAt": "2026-08-18T11:05:04.848Z",
+            "dueDate": "2026-08-18T11:05:04.848Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "standup",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:04.849Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35g0-7g0uap",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.848Z",
+            "updatedAt": "2026-08-18T11:05:04.848Z",
+            "dueDate": "2026-08-17T11:05:04.848Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        }
+      ],
+      "query": "pay rent",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:04.845Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [],
+      "query": "milk",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:04.843Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35fh-aixv5o",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.829Z",
+            "updatedAt": "2026-08-18T11:05:04.829Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35fh-ryclaw",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.829Z",
+            "updatedAt": "2026-08-18T11:05:04.829Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35fh-0z4x1c",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.829Z",
+            "updatedAt": "2026-08-18T11:05:04.829Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:04.840Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35fh-sxmkts",
+            "text": "buy milk",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.829Z",
+            "updatedAt": "2026-08-18T11:05:04.829Z"
+          },
+          "score": 5,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "mil",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:04.838Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35fh-nn4585",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.829Z",
+            "updatedAt": "2026-08-18T11:05:04.829Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "billing",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:04.835Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35fh-nn4585",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.829Z",
+            "updatedAt": "2026-08-18T11:05:04.829Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "billing",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:04.833Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35fh-aixv5o",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.829Z",
+            "updatedAt": "2026-08-18T11:05:04.829Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35fh-ryclaw",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.829Z",
+            "updatedAt": "2026-08-18T11:05:04.829Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyk35fh-0z4x1c",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.829Z",
+            "updatedAt": "2026-08-18T11:05:04.829Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:04.830Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyk35fh-aixv5o",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.829Z",
+            "updatedAt": "2026-08-18T11:05:04.829Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyk35fh-0z4x1c",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.829Z",
+            "updatedAt": "2026-08-18T11:05:04.829Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyk35fh-ryclaw",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.829Z",
+            "updatedAt": "2026-08-18T11:05:04.829Z"
+          },
+          "score": 10,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyk35fh-nn4585",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T11:05:04.829Z",
+            "updatedAt": "2026-08-18T11:05:04.829Z"
+          },
+          "score": 10,
+          "matchedTokens": 2
+        }
+      ],
+      "query": "client report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:05:04.824Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 3,
+    "detail": {
+      "matches": [],
+      "query": "the report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:04:12.634Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk215m-3jkrj8",
+      "name": "tea-time",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "time"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:04:12.541Z",
+    "actionId": "automation:event-run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msyk1zac-op8n9b",
+      "name": "tmp-watch",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:04:12.538Z",
+    "actionId": "automation:run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msyk1zac-op8n9b-1787051052535",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyk1zac-op8n9b",
+      "name": "tmp-watch",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T11:04:12.535Z",
+    "actionId": "automation:run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msyk1zac-op8n9b-1787051052535",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyk1zac-op8n9b",
+      "name": "tmp-watch",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T11:04:10.212Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk1zac-op8n9b",
+      "name": "tmp-watch",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "file"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:04:09.907Z",
+    "actionId": "automation:toggle",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk1z1k-yfkykd",
+      "enabled": false
+    }
+  },
+  {
+    "ts": "2026-08-18T11:04:09.896Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk1z1k-yfkykd",
+      "name": "wake-note",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:53.892Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk1moz-g7e8ib",
+      "name": "idle-report",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "idle"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:52.909Z",
+    "actionId": "automation:event-run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msyk1ace-oavimg",
+      "name": "idle-report",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:52.906Z",
+    "actionId": "automation:run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msyk1ace-oavimg-1787051032903",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyk1ace-oavimg",
+      "name": "idle-report",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:52.903Z",
+    "actionId": "automation:run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msyk1ace-oavimg-1787051032903",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyk1ace-oavimg",
+      "name": "idle-report",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:37.886Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk1ace-oavimg",
+      "name": "idle-report",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "idle"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:35.680Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk18n4-eo7yew",
+      "name": "tea-time",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "time"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:34.186Z",
+    "actionId": "automation:event-run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msyk16pj-76l8cx",
+      "name": "tea-time",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:34.183Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msyk16pj-76l8cx-1787051014180",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyk16pj-76l8cx",
+      "name": "tea-time",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:34.180Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msyk16pj-76l8cx-1787051014180",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyk16pj-76l8cx",
+      "name": "tea-time",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:33.175Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk16pj-76l8cx",
+      "name": "tea-time",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "time"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:32.675Z",
+    "actionId": "automation:event-run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msyk16bg-5dmygl",
+      "name": "wake-note",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:32.673Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msyk16bg-5dmygl-1787051012671",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyk16bg-5dmygl",
+      "name": "wake-note",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:32.671Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msyk16bg-5dmygl-1787051012671",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyk16bg-5dmygl",
+      "name": "wake-note",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:32.668Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk16bg-5dmygl",
+      "name": "wake-note",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:32.364Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk1630-sz3cd3",
+      "name": "wake-note",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:32.064Z",
+    "actionId": "automation:event-run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msyk15tr-zfm5ft",
+      "name": "wake-note",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:32.062Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msyk15tr-zfm5ft-1787051012034",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyk15tr-zfm5ft",
+      "name": "wake-note",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:32.047Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msyk15tr-zfm5ft-1787051012034",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyk15tr-zfm5ft",
+      "name": "wake-note",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:32.031Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk15tr-zfm5ft",
+      "name": "wake-note",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:32.029Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
+  },
+  {
+    "ts": "2026-08-18T11:03:32.024Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk15tk-uluemu",
+      "name": "ev",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:32.021Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk15te-x7pv50",
+      "name": "downloads-watcher",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "file"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:31.928Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk15qw-i0w3f0",
+      "name": "tea-time",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "time"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:31.830Z",
+    "actionId": "automation:event-run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msyk13vj-9l16xq",
+      "name": "tmp-watch",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:31.828Z",
+    "actionId": "automation:run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msyk13vj-9l16xq-1787051011824",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyk13vj-9l16xq",
+      "name": "tmp-watch",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:31.824Z",
+    "actionId": "automation:run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msyk13vj-9l16xq-1787051011824",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyk13vj-9l16xq",
+      "name": "tmp-watch",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:29.503Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk13vj-9l16xq",
+      "name": "tmp-watch",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "file"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:29.199Z",
+    "actionId": "automation:toggle",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk13mz-c0ream",
+      "enabled": false
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:29.195Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk13mz-c0ream",
+      "name": "wake-note",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:13.190Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk0rae-w52jir",
+      "name": "idle-report",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "idle"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:12.206Z",
+    "actionId": "automation:event-run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msyk0exs-58w9sh",
+      "name": "idle-report",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:12.203Z",
+    "actionId": "automation:run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msyk0exs-58w9sh-1787050992200",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyk0exs-58w9sh",
+      "name": "idle-report",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T11:03:12.200Z",
+    "actionId": "automation:run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msyk0exs-58w9sh-1787050992200",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyk0exs-58w9sh",
+      "name": "idle-report",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T11:02:57.184Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk0exs-58w9sh",
+      "name": "idle-report",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "idle"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:02:54.980Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk0d8k-8hm2wu",
+      "name": "tea-time",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "time"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:02:53.486Z",
+    "actionId": "automation:event-run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msyk0baz-h5257z",
+      "name": "tea-time",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:02:53.484Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msyk0baz-h5257z-1787050973481",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyk0baz-h5257z",
+      "name": "tea-time",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T11:02:53.481Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msyk0baz-h5257z-1787050973481",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyk0baz-h5257z",
+      "name": "tea-time",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T11:02:52.475Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk0baz-h5257z",
+      "name": "tea-time",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "time"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:02:51.975Z",
+    "actionId": "automation:event-run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msyk0awv-pei37h",
+      "name": "wake-note",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:02:51.973Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msyk0awv-pei37h-1787050971971",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyk0awv-pei37h",
+      "name": "wake-note",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T11:02:51.971Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msyk0awv-pei37h-1787050971971",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyk0awv-pei37h",
+      "name": "wake-note",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T11:02:51.967Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk0awv-pei37h",
+      "name": "wake-note",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:02:51.664Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk0aog-xvzroi",
+      "name": "wake-note",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:02:51.364Z",
+    "actionId": "automation:event-run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msyk0af7-030eb8",
+      "name": "wake-note",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:02:51.362Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msyk0af7-030eb8-1787050971334",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyk0af7-030eb8",
+      "name": "wake-note",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T11:02:51.347Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msyk0af7-030eb8-1787050971334",
+    "durationMs": 1,
+    "detail": {
+      "automationId": "auto-msyk0af7-030eb8",
+      "name": "wake-note",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T11:02:51.331Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk0af7-030eb8",
+      "name": "wake-note",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:02:51.329Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
+  },
+  {
+    "ts": "2026-08-18T11:02:51.325Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk0af1-l2lba8",
+      "name": "ev",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:02:51.322Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyk0aeu-xuoc4r",
+      "name": "downloads-watcher",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "file"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:22.463Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyjqo2l-6uvkzv",
+            "text": "client onboarding",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.461Z",
+            "updatedAt": "2026-08-18T10:55:22.461Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:22.461Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyjqo2l-6uvkzv",
+            "text": "client onboarding",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.461Z",
+            "updatedAt": "2026-08-18T10:55:22.461Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:22.459Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyjqo2i-24gjqo",
+            "text": "task 10 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.458Z",
+            "updatedAt": "2026-08-18T10:55:22.459Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyjqo2j-lrosuo",
+            "text": "task 11 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.459Z",
+            "updatedAt": "2026-08-18T10:55:22.459Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyjqo2i-641v9c",
+            "text": "task 0 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.458Z",
+            "updatedAt": "2026-08-18T10:55:22.458Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyjqo2i-t9l5br",
+            "text": "task 1 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.458Z",
+            "updatedAt": "2026-08-18T10:55:22.458Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyjqo2i-z4wx5v",
+            "text": "task 2 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.458Z",
+            "updatedAt": "2026-08-18T10:55:22.458Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyjqo2i-1mkv95",
+            "text": "task 3 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.458Z",
+            "updatedAt": "2026-08-18T10:55:22.458Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyjqo2i-aiq1xo",
+            "text": "task 4 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.458Z",
+            "updatedAt": "2026-08-18T10:55:22.458Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyjqo2i-kgstd5",
+            "text": "task 5 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.458Z",
+            "updatedAt": "2026-08-18T10:55:22.458Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyjqo2i-li8usg",
+            "text": "task 6 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.458Z",
+            "updatedAt": "2026-08-18T10:55:22.458Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyjqo2i-ikchuo",
+            "text": "task 7 about projectx",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.458Z",
+            "updatedAt": "2026-08-18T10:55:22.458Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "projectx",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:22.456Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [],
+      "query": "zzzqwerty",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:22.454Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyjqo23-bturnh",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.443Z",
+            "updatedAt": "2026-08-18T10:55:22.443Z",
+            "dueDate": "2026-08-17T10:55:22.443Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "rent",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:22.452Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyjqo24-b4l6h8",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.444Z",
+            "updatedAt": "2026-08-18T10:55:22.444Z",
+            "dueDate": "2026-08-18T10:55:22.444Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        },
+        {
+          "task": {
+            "id": "n-msyjqo24-ohma88",
+            "text": "client report",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.444Z",
+            "updatedAt": "2026-08-18T10:55:22.444Z",
+            "dueDate": "2026-08-25T10:55:22.444Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        },
+        {
+          "task": {
+            "id": "n-msyjqo23-bturnh",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.443Z",
+            "updatedAt": "2026-08-18T10:55:22.443Z",
+            "dueDate": "2026-08-17T10:55:22.443Z"
+          },
+          "score": 10,
+          "matchedTokens": 3
+        }
+      ],
+      "query": "rent team report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:22.450Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyjqo24-b4l6h8",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.444Z",
+            "updatedAt": "2026-08-18T10:55:22.444Z",
+            "dueDate": "2026-08-18T10:55:22.444Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "standup",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:22.448Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyjqo24-ohma88",
+            "text": "client report",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.444Z",
+            "updatedAt": "2026-08-18T10:55:22.444Z",
+            "dueDate": "2026-08-25T10:55:22.444Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:22.446Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyjqo24-b4l6h8",
+            "text": "team standup",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.444Z",
+            "updatedAt": "2026-08-18T10:55:22.444Z",
+            "dueDate": "2026-08-18T10:55:22.444Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "standup",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:22.444Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyjqo23-bturnh",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.443Z",
+            "updatedAt": "2026-08-18T10:55:22.443Z",
+            "dueDate": "2026-08-17T10:55:22.443Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        }
+      ],
+      "query": "pay rent",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:22.441Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 1,
+    "detail": {
+      "matches": [],
+      "query": "milk",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:22.439Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 1,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyjqo1n-5qzx8h",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.427Z",
+            "updatedAt": "2026-08-18T10:55:22.427Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyjqo1n-rt19ox",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.427Z",
+            "updatedAt": "2026-08-18T10:55:22.427Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyjqo1n-q56xrn",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.427Z",
+            "updatedAt": "2026-08-18T10:55:22.427Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:22.437Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyjqo1n-ifucfz",
+            "text": "buy milk",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.427Z",
+            "updatedAt": "2026-08-18T10:55:22.427Z"
+          },
+          "score": 5,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "mil",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:22.435Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyjqo1n-88pp7m",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.427Z",
+            "updatedAt": "2026-08-18T10:55:22.427Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "billing",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:22.432Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyjqo1n-88pp7m",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.427Z",
+            "updatedAt": "2026-08-18T10:55:22.427Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "billing",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:22.430Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyjqo1n-5qzx8h",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.427Z",
+            "updatedAt": "2026-08-18T10:55:22.427Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyjqo1n-rt19ox",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.427Z",
+            "updatedAt": "2026-08-18T10:55:22.427Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        },
+        {
+          "task": {
+            "id": "n-msyjqo1n-q56xrn",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.427Z",
+            "updatedAt": "2026-08-18T10:55:22.427Z"
+          },
+          "score": 10,
+          "matchedTokens": 1
+        }
+      ],
+      "query": "client",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:22.428Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "matches": [
+        {
+          "task": {
+            "id": "n-msyjqo1n-5qzx8h",
+            "text": "finish the client report",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.427Z",
+            "updatedAt": "2026-08-18T10:55:22.427Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyjqo1n-q56xrn",
+            "text": "client report follow-up meeting",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.427Z",
+            "updatedAt": "2026-08-18T10:55:22.427Z"
+          },
+          "score": 20,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyjqo1n-rt19ox",
+            "text": "client onboarding call",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.427Z",
+            "updatedAt": "2026-08-18T10:55:22.427Z"
+          },
+          "score": 10,
+          "matchedTokens": 2
+        },
+        {
+          "task": {
+            "id": "n-msyjqo1n-88pp7m",
+            "text": "report review with billing team",
+            "done": false,
+            "createdAt": "2026-08-18T10:55:22.427Z",
+            "updatedAt": "2026-08-18T10:55:22.427Z"
+          },
+          "score": 10,
+          "matchedTokens": 2
+        }
+      ],
+      "query": "client report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:22.423Z",
+    "actionId": "notes:task-search",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 2,
+    "detail": {
+      "matches": [],
+      "query": "the report",
+      "kind": "search"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:05.927Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyjqbbb-l9d0gj",
+      "name": "tea-time",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "time"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:05.831Z",
+    "actionId": "automation:event-run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msyjq9fy-i7kqeg",
+      "name": "tmp-watch",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:05.828Z",
+    "actionId": "automation:run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msyjq9fy-i7kqeg-1787050505825",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyjq9fy-i7kqeg",
+      "name": "tmp-watch",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:05.825Z",
+    "actionId": "automation:run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msyjq9fy-i7kqeg-1787050505825",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyjq9fy-i7kqeg",
+      "name": "tmp-watch",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:03.502Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyjq9fy-i7kqeg",
+      "name": "tmp-watch",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "file"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:03.198Z",
+    "actionId": "automation:toggle",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyjq97f-m460fy",
+      "enabled": false
+    }
+  },
+  {
+    "ts": "2026-08-18T10:55:03.195Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyjq97f-m460fy",
+      "name": "wake-note",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:54:47.190Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyjpwuu-qy6f8x",
+      "name": "idle-report",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "idle"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:54:46.206Z",
+    "actionId": "automation:event-run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msyjpki8-g843sp",
+      "name": "idle-report",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:54:46.204Z",
+    "actionId": "automation:run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msyjpki8-g843sp-1787050486201",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyjpki8-g843sp",
+      "name": "idle-report",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T10:54:46.201Z",
+    "actionId": "automation:run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msyjpki8-g843sp-1787050486201",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyjpki8-g843sp",
+      "name": "idle-report",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T10:54:31.184Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyjpki8-g843sp",
+      "name": "idle-report",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "idle"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:54:28.979Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyjpisz-95j2jz",
+      "name": "tea-time",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "time"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:54:27.486Z",
+    "actionId": "automation:event-run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msyjpgvf-u0wo8x",
+      "name": "tea-time",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:54:27.483Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msyjpgvf-u0wo8x-1787050467480",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyjpgvf-u0wo8x",
+      "name": "tea-time",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T10:54:27.480Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msyjpgvf-u0wo8x-1787050467480",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyjpgvf-u0wo8x",
+      "name": "tea-time",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T10:54:26.475Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyjpgvf-u0wo8x",
+      "name": "tea-time",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "time"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:54:25.975Z",
+    "actionId": "automation:event-run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msyjpghb-s5ggi6",
+      "name": "wake-note",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:54:25.973Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msyjpghb-s5ggi6-1787050465971",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyjpghb-s5ggi6",
+      "name": "wake-note",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T10:54:25.971Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msyjpghb-s5ggi6-1787050465971",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyjpghb-s5ggi6",
+      "name": "wake-note",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T10:54:25.967Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyjpghb-s5ggi6",
+      "name": "wake-note",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:54:25.663Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyjpg8v-ceflqu",
+      "name": "wake-note",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:54:25.365Z",
+    "actionId": "automation:event-run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msyjpfzn-39u0m9",
+      "name": "wake-note",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:54:25.362Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msyjpfzn-39u0m9-1787050465334",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyjpfzn-39u0m9",
+      "name": "wake-note",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T10:54:25.347Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msyjpfzn-39u0m9-1787050465334",
+    "durationMs": 1,
+    "detail": {
+      "automationId": "auto-msyjpfzn-39u0m9",
+      "name": "wake-note",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T10:54:25.331Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyjpfzn-39u0m9",
+      "name": "wake-note",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:54:25.329Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
+  },
+  {
+    "ts": "2026-08-18T10:54:25.325Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyjpfzh-d41pfd",
+      "name": "ev",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T10:54:25.321Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyjpfza-j2dw03",
+      "name": "downloads-watcher",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "file"
+    }
+  },
+  {
     "ts": "2026-08-18T10:45:13.796Z",
     "actionId": "notes:task-search",
     "level": 1,
@@ -7636,1141 +10687,6 @@
       "name": "tmp-watch",
       "steps": 1,
       "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:59.125Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyfif3p-9faw6x",
-      "name": "tmp-watch",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:58.822Z",
-    "actionId": "automation:toggle",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyfiev9-cnl5bo",
-      "enabled": false
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:58.821Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyfiev9-cnl5bo",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:42.819Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyfi2iq-0lgx9a",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:41.832Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyfhq67-pzwc88",
-      "name": "idle-report",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:41.831Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyfhq67-pzwc88-1787043401829",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyfhq67-pzwc88",
-      "name": "idle-report",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:41.829Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyfhq67-pzwc88-1787043401829",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyfhq67-pzwc88",
-      "name": "idle-report",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:26.815Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyfhq67-pzwc88",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:24.613Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyfhoh1-w1levu",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:23.113Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyfhmji-n42qwb",
-      "name": "tea-time",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:23.112Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyfhmji-n42qwb-1787043383111",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyfhmji-n42qwb",
-      "name": "tea-time",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:23.112Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyfhmji-n42qwb-1787043383111",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyfhmji-n42qwb",
-      "name": "tea-time",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:22.110Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyfhmji-n42qwb",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:21.607Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyfhm5h-g0e0cr",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:21.607Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyfhm5h-g0e0cr-1787043381606",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyfhm5h-g0e0cr",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:21.606Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyfhm5h-g0e0cr-1787043381606",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyfhm5h-g0e0cr",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:21.605Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyfhm5h-g0e0cr",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:21.302Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyfhlx2-ynk87b",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:21.001Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyfhlo6-mpsyel",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:21.000Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyfhlo6-mpsyel-1787043380984",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyfhlo6-mpsyel",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:20.991Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyfhlo6-mpsyel-1787043380984",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyfhlo6-mpsyel",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:20.982Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyfhlo6-mpsyel",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:20.981Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
-  },
-  {
-    "ts": "2026-08-18T08:56:20.978Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyfhlo2-0ha2ps",
-      "name": "ev",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:56:20.977Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyfhlo1-3fapqq",
-      "name": "downloads-watcher",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:46:11.338Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyf4j9m-40rx0l",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:46:11.241Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyf4hec-031zle",
-      "name": "tmp-watch",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:46:11.240Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyf4hec-031zle-1787042771239",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyf4hec-031zle",
-      "name": "tmp-watch",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T08:46:11.239Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyf4hec-031zle-1787042771239",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyf4hec-031zle",
-      "name": "tmp-watch",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T08:46:08.916Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyf4hec-031zle",
-      "name": "tmp-watch",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:46:08.614Z",
-    "actionId": "automation:toggle",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyf4h5x-w70mjj",
-      "enabled": false
-    }
-  },
-  {
-    "ts": "2026-08-18T08:46:08.613Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyf4h5x-w70mjj",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:45:52.610Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyf44te-93uf2j",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:45:51.611Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyf3sgu-hab64z",
-      "name": "idle-report",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:45:51.610Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyf3sgu-hab64z-1787042751609",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyf3sgu-hab64z",
-      "name": "idle-report",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T08:45:51.609Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyf3sgu-hab64z-1787042751609",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyf3sgu-hab64z",
-      "name": "idle-report",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T08:45:36.606Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyf3sgu-hab64z",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:45:34.404Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyf3qro-h6cttz",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:45:32.906Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyf3ou6-ga4ka9",
-      "name": "tea-time",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:45:32.906Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyf3ou6-ga4ka9-1787042732905",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyf3ou6-ga4ka9",
-      "name": "tea-time",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T08:45:32.905Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyf3ou6-ga4ka9-1787042732905",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyf3ou6-ga4ka9",
-      "name": "tea-time",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T08:45:31.902Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyf3ou6-ga4ka9",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:45:31.399Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyf3og4-uee9wz",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:45:31.399Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyf3og4-uee9wz-1787042731397",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyf3og4-uee9wz",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T08:45:31.398Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyf3og4-uee9wz-1787042731397",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyf3og4-uee9wz",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T08:45:31.396Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyf3og4-uee9wz",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:45:31.093Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyf3o7p-1dujl5",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:45:30.792Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyf3nys-u44c1q",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:45:30.791Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyf3nys-u44c1q-1787042730774",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyf3nys-u44c1q",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T08:45:30.782Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyf3nys-u44c1q-1787042730774",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyf3nys-u44c1q",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T08:45:30.772Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyf3nys-u44c1q",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:45:30.772Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
-  },
-  {
-    "ts": "2026-08-18T08:45:30.768Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyf3nyo-d91jp4",
-      "name": "ev",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:45:30.767Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyf3nym-urywit",
-      "name": "downloads-watcher",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:43:00.733Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyf0g71-rhsrme",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:43:00.633Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyf0ebp-mkv8lu",
-      "name": "tmp-watch",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:43:00.633Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyf0ebp-mkv8lu-1787042580631",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyf0ebp-mkv8lu",
-      "name": "tmp-watch",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T08:43:00.632Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyf0ebp-mkv8lu-1787042580631",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyf0ebp-mkv8lu",
-      "name": "tmp-watch",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:58.309Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyf0ebp-mkv8lu",
-      "name": "tmp-watch",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:58.006Z",
-    "actionId": "automation:toggle",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyf0e3a-e8i7lj",
-      "enabled": false
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:58.006Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyf0e3a-e8i7lj",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:42.002Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyf01qq-u79qo2",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:41.015Z",
-    "actionId": "automation:event-run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyezpe6-ypx4ly",
-      "name": "idle-report",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:41.014Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyezpe6-ypx4ly-1787042561013",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyezpe6-ypx4ly",
-      "name": "idle-report",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:41.013Z",
-    "actionId": "automation:run",
-    "level": 0,
-    "levelName": "read",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyezpe6-ypx4ly-1787042561013",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyezpe6-ypx4ly",
-      "name": "idle-report",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:25.998Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyezpe6-ypx4ly",
-      "name": "idle-report",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "idle"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:23.796Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyeznp0-zv1p55",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:22.298Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyezlrh-v60anu",
-      "name": "tea-time",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:22.297Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyezlrh-v60anu-1787042542296",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyezlrh-v60anu",
-      "name": "tea-time",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:22.297Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyezlrh-v60anu-1787042542296",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyezlrh-v60anu",
-      "name": "tea-time",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:21.293Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyezlrh-v60anu",
-      "name": "tea-time",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "time"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:20.791Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyezldg-s8msf7",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:20.790Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyezldg-s8msf7-1787042540790",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyezldg-s8msf7",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:20.790Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyezldg-s8msf7-1787042540790",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyezldg-s8msf7",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:20.788Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyezldg-s8msf7",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:20.485Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyezl51-vqhig5",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:20.184Z",
-    "actionId": "automation:event-run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "detail": {
-      "automationId": "auto-msyezkw6-t1l4uu",
-      "name": "wake-note",
-      "status": "partial"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:20.184Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "taskId": "auto-run-auto-msyezkw6-t1l4uu-1787042540168",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyezkw6-t1l4uu",
-      "name": "wake-note",
-      "status": "partial",
-      "stepsRun": 1
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:20.175Z",
-    "actionId": "automation:run",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "taskId": "auto-run-auto-msyezkw6-t1l4uu-1787042540168",
-    "durationMs": 0,
-    "detail": {
-      "automationId": "auto-msyezkw6-t1l4uu",
-      "name": "wake-note",
-      "steps": 1,
-      "gated": false
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:20.166Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyezkw6-t1l4uu",
-      "name": "wake-note",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:20.165Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "failed",
-    "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
-  },
-  {
-    "ts": "2026-08-18T08:42:20.163Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyezkw3-oo0qkg",
-      "name": "ev",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "event"
-    }
-  },
-  {
-    "ts": "2026-08-18T08:42:20.162Z",
-    "actionId": "automation:add",
-    "level": 1,
-    "levelName": "safe",
-    "outcome": "success",
-    "detail": {
-      "automationId": "auto-msyezkw2-23bm6e",
-      "name": "downloads-watcher",
-      "steps": 1,
-      "status": "safe",
-      "trigger": "file"
     }
   }
 ]

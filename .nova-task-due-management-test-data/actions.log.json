@@ -1,45 +1,26 @@
 [
   {
-    "ts": "2026-08-18T10:45:10.504Z",
+    "ts": "2026-08-18T11:05:04.712Z",
     "actionId": "notes:complete-task",
     "level": 2,
     "levelName": "reversible",
     "outcome": "success",
-    "durationMs": 0,
+    "durationMs": 1,
     "detail": {
       "task": {
-        "id": "n-msyjdegk-bmqne1",
+        "id": "n-msyk2zwy-qvl5s8",
         "text": "finish report",
         "done": true,
-        "createdAt": "2026-08-18T10:45:03.476Z",
-        "updatedAt": "2026-08-18T10:45:10.504Z",
+        "createdAt": "2026-08-18T11:04:57.682Z",
+        "updatedAt": "2026-08-18T11:05:04.711Z",
         "dueDate": "2026-08-18T23:59:59.999Z",
-        "completedAt": "2026-08-18T10:45:10.504Z"
+        "completedAt": "2026-08-18T11:05:04.711Z"
       },
       "kind": "task-done"
     }
   },
   {
-    "ts": "2026-08-18T10:45:03.498Z",
-    "actionId": "notes:set-task-due",
-    "level": 2,
-    "levelName": "reversible",
-    "outcome": "success",
-    "durationMs": 0,
-    "detail": {
-      "task": {
-        "id": "n-msyjdegk-bmqne1",
-        "text": "finish report",
-        "done": false,
-        "createdAt": "2026-08-18T10:45:03.476Z",
-        "updatedAt": "2026-08-18T10:45:03.498Z"
-      },
-      "kind": "task-due-set",
-      "oldDueDate": "2026-08-21T23:59:59.999Z"
-    }
-  },
-  {
-    "ts": "2026-08-18T10:45:03.497Z",
+    "ts": "2026-08-18T11:04:57.706Z",
     "actionId": "notes:set-task-due",
     "level": 2,
     "levelName": "reversible",
@@ -47,11 +28,30 @@
     "durationMs": 1,
     "detail": {
       "task": {
-        "id": "n-msyjdegk-bmqne1",
+        "id": "n-msyk2zwy-qvl5s8",
         "text": "finish report",
         "done": false,
-        "createdAt": "2026-08-18T10:45:03.476Z",
-        "updatedAt": "2026-08-18T10:45:03.496Z",
+        "createdAt": "2026-08-18T11:04:57.682Z",
+        "updatedAt": "2026-08-18T11:04:57.705Z"
+      },
+      "kind": "task-due-set",
+      "oldDueDate": "2026-08-21T23:59:59.999Z"
+    }
+  },
+  {
+    "ts": "2026-08-18T11:04:57.704Z",
+    "actionId": "notes:set-task-due",
+    "level": 2,
+    "levelName": "reversible",
+    "outcome": "success",
+    "durationMs": 1,
+    "detail": {
+      "task": {
+        "id": "n-msyk2zwy-qvl5s8",
+        "text": "finish report",
+        "done": false,
+        "createdAt": "2026-08-18T11:04:57.682Z",
+        "updatedAt": "2026-08-18T11:04:57.703Z",
         "dueDate": "2026-08-21T23:59:59.999Z"
       },
       "kind": "task-due-set",

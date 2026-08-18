@@ -45,7 +45,14 @@ async function runAction(actionId, payload = {}, opts = {}) {
   // Private Mode: block anything sensitive/destructive (network-touching),
   // AND any physically-invasive action (mouse/keyboard control) — controlling
   // the user's machine is invasive regardless of network reach.
-  if (settings.isPrivateMode()) {
+  //
+  // Round 35: the settings toggles themselves must stay reachable while
+  // Private Mode is ON — otherwise the user could switch it on by voice but
+  // never switch it off again, since every L3 action gets blocked first.
+  // The toggles still require the normal modal Confirm (or toast for L2),
+  // so nothing is silently applied.
+  const toggleableInPrivate = action.id === "settings:set-private-mode" || action.id === "settings:set-developer-mode";
+  if (settings.isPrivateMode() && !toggleableInPrivate) {
     if (action.level >= RISK_LEVEL.SENSITIVE || action.physical) {
       actionLog.append({ actionId, level: action.level, outcome: "blocked", taskId: opts.taskId, reason: "private-mode" });
       log.info(`[permissions] "${actionId}" blocked by Private Mode`);

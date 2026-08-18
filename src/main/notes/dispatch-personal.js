@@ -537,4 +537,35 @@ function recurringRemoveText({ removed } = {}) {
   };
 }
 
-module.exports = { personalizeNarration, applyTimePreference, userFacts, greetSnapshot, latestMood, moodAge, moodNarration, moodGreet, LOW_ENERGY_RE, prioritize, planDay, focusStatsSummary, ageOf, topicSearchText, recurringConfirmText, recurringRemoveText };
+// ---------------------------------------------------------------------------
+// Round 35: spoken confirmation for voice-controlled settings.
+//
+// Pure (no store, no network): the dispatcher hands in {kind, on, previous,
+// next}; this module decides how the confirmation sounds. Additive: the
+// chosen setting token is always echoed verbatim (personality / mode state),
+// never reworded or normalized.
+// ---------------------------------------------------------------------------
+/** Spoken + written confirmation for a settings change. */
+function settingsConfirmText({ kind, on, previous, next } = {}) {
+  if (kind === "personality") {
+    const token = String(next || "");
+    const was = previous && previous !== token ? ` I was ${previous} before` : "";
+    return {
+      text: `Okay — I'm ${token} now.${was} Every acknowledgement gets that voice from now on.`,
+      narration: `Personality switched to ${token}.`,
+    };
+  }
+  if (kind === "private-mode") {
+    return on
+      ? { text: "Private mode is now on — nothing I do leaves this machine from now on, and the lock badge is lit.", narration: "Private mode on — everything stays local." }
+      : { text: "Private mode is off again — I can reach my models, same as before.", narration: "Private mode off." };
+  }
+  if (kind === "developer-mode") {
+    return on
+      ? { text: "Developer mode is on — run details, timings, and errors show in the Developer panel from now on.", narration: "Developer mode on." }
+      : { text: "Developer mode is off — the panel goes quiet again.", narration: "Developer mode off." };
+  }
+  return { text: "Done — the setting took effect.", narration: "Setting updated." };
+}
+
+module.exports = { personalizeNarration, applyTimePreference, userFacts, greetSnapshot, latestMood, moodAge, moodNarration, moodGreet, LOW_ENERGY_RE, prioritize, planDay, focusStatsSummary, ageOf, topicSearchText, recurringConfirmText, recurringRemoveText, settingsConfirmText };

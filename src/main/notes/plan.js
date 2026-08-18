@@ -199,6 +199,48 @@ const RE_PLAN_DAY = /^(?:nova\s*,?\s*)?(?:plan (?:my|the|this|today's|todays) da
 // remind me" is never stored as a personal fact about the user.
 const RE_RECURRING = /^(?:nova\s*,?\s*)?(?:(?:every|each)\s+(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday|day|weekday|week(?:ly)?|month(?:ly)?|morning|afternoon|evening|night)\s+(?:(?:at\s+)?(\d{1,2}(?::\d{2})?\s*(?:am|pm)?))?\s+(?:remind\s+me\s+(?:to\s+)?|remind me to\s+)(.+)|(?:every|each)\s+(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday|day|weekday|week(?:ly)?|month(?:ly)?|morning|afternoon|evening|night)\s+(?:(?:at\s+)?(\d{1,2}(?::\d{2})?\s*(?:am|pm)?))?(?:\s*(?:[:\-])?\s*(?:weekly\s+)?)?task\s*[:\s]+(.+)|(?:weekly|daily|every\s+day|every\s+week|every\s+month)\s+(?:task|recurring\s+task|recurring\s+reminder)\s*[:\s]+(.+))\s*$/i;
 
+// Round 35: voice-controlled settings — personality + Private/Developer Mode.
+// Personality ("set my personality to playful", "be more concise", "make Nova
+// warm") is validated at PLAN TIME against the known personality set — an
+// unknown token returns a plain-language planning error instead of reaching
+// the actions module. Private/Developer mode toggles route on explicit
+// on/off phrasing only ("turn on|off … mode", "enable|disable … mode",
+// "go private", "exit private mode", "private mode on|off").
+const VALID_PERSONALITIES = ["concise", "professional", "warm", "playful"];
+// Round 35: voice-controlled settings — personality + Private/Developer Mode.
+// Personality ("set my personality to playful", "be more concise", "make Nova
+// warm") only matches when the tail token is one of the four known
+// personalities — no false positives from free-form "be more X" text.
+// Private/Developer mode toggles route on explicit on/off phrasing only:
+// "turn on|off … mode", "enable|disable … mode", "go private",
+// "exit private mode", "private mode on|off".
+const RE_PERSONALITY = new RegExp(
+  `^(?:nova\\s*,?\\s*)?(?:(?:set|change|switch)\\s+(?:my|nova(?:'s|s)?)?\\s*personality\\s+(?:to\\s+)?(${VALID_PERSONALITIES.join("|")})\\b|(?:be|get|become)\\s+(?:more\\s+)?(${VALID_PERSONALITIES.join("|")})\\b|(?:make\\s+nova\\s+)(?:more\\s+)?(${VALID_PERSONALITIES.join("|")})\\b)\\s*$`,
+  "i",
+);
+const RE_PRIVATE_MODE = /^(?:nova\s*,?\s*)?(?:(?:turn on|enable)\s+(?:private mode|privacy mode)|(?:turn off|disable)\s+private mode|(?:turn|switch|set)\s+private mode\s+(on|off)|private mode\s+(on|off)|go\s+private|exit\s+(?:private mode|private))\s*$/i;
+const RE_DEVELOPER_MODE = /^(?:nova\s*,?\s*)?(?:(?:turn on|enable)\s+developer mode|(?:turn off|disable)\s+developer mode|(?:turn|switch|set)\s+developer mode\s+(on|off)|developer mode\s+(on|off))\s*$/i;
+
+/** Personality route — token already validated by the regex. */
+function personalityRoute(text) {
+  const m = RE_PERSONALITY.exec(text);
+  if (!m) return null;
+  const token = ((m[1] || m[2] || m[3]) || "").trim().toLowerCase();
+  if (!token) return null;
+  return { actionId: "settings:set-personality", payload: { personality: token } };
+}
+
+/** Private/Developer mode toggle routes — capture groups carry the on/off. */
+function modeToggleRoute(text) {
+  const OFF_RE = /^(?:nova\s*,?\s*)?(?:(?:turn off|disable)\s+(?:private|developer)\s+mode|(?:turn|switch|set)\s+(?:private|developer)\s+mode\s+off|(?:private|developer)\s+mode\s+off|exit\s+(?:private mode|private))\s*$/i;
+  const isOff = OFF_RE.test(text);
+  let m = RE_PRIVATE_MODE.exec(text);
+  if (m) return { actionId: "settings:set-private-mode", payload: { on: !isOff } };
+  m = RE_DEVELOPER_MODE.exec(text);
+  if (m) return { actionId: "settings:set-developer-mode", payload: { on: !isOff } };
+  return null;
+}
+
 // "delete my note about milk" / "delete the task buy milk"
 const RE_DELETE = /^delete\s+(?:my |the )?(note|task)\s+["“]?(.+?)["”]?\s*$/i;
 
@@ -415,6 +457,15 @@ function planNoteAction(text, ctx = {}) {
   // RE_NOTE's third alternation "(note down|write down|remember) that? (.+)"
   // would otherwise swallow "remember I work from home on Fridays" as a
   // plain note. Same for forget/ask/greeting.
+  // Round 35: voice-controlled settings — personality + Private/Developer Mode.
+  // Checked BEFORE RE_REMEMBER_FACT and RE_NOTE: "set my personality to
+  // playful" must never be stored as a personal fact or a plain note, and
+  // "turn on private mode" is a settings change, not a memory.
+  const personalityPlan = personalityRoute(t);
+  if (personalityPlan) return personalityPlan;
+  const modePlan = modeToggleRoute(t);
+  if (modePlan) return modePlan;
+
   if (RE_FORGET_FACT.test(t)) {
     const fact = t.replace(/^(?:nova\s*,?\s*)?forget(?:\s+that)?\s+/i, "").trim();
     return fact ? { actionId: "notes:forget-fact", payload: { fact } } : { error: "Forget what about yourself? Say \"forget that I work from home on Fridays\"." };

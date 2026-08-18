@@ -170,6 +170,24 @@ function formatLocalResult(actionId, payload, detail) {
       const { text: remText, narration: remNarr } = recurringRemoveText({ removed: rc });
       return { ok: true, intent: "notes", text: remText, narration: remNarr, actionId, detail: { kind: "recurring-removed", removed: rc } };
     }
+    // Round 35: voice-controlled settings — confirmation text is composed by
+    // dispatch-personal (pure module); the spoken echo is verbatim about the
+    // chosen setting, and each action's reverse() restores the previous value.
+    case "settings:set-personality": {
+      const pc = detail || {};
+      const { text: pText, narration: pNarr } = settingsConfirmText({ kind: pc.kind, on: true, previous: pc.previous, next: pc.personality || pc.next });
+      return { ok: true, intent: "notes", text: pText, narration: pNarr, actionId, detail: { kind: "personality", personality: pc.personality || pc.next, previous: pc.previous } };
+    }
+    case "settings:set-private-mode": {
+      const pc = detail || {};
+      const { text: pmText, narration: pmNarr } = settingsConfirmText({ kind: pc.kind, on: pc.next, previous: pc.previous, next: pc.next });
+      return { ok: true, intent: "notes", text: pmText, narration: pmNarr, actionId, detail: { kind: "private-mode", on: pc.next, previous: pc.previous } };
+    }
+    case "settings:set-developer-mode": {
+      const pc = detail || {};
+      const { text: dText, narration: dNarr } = settingsConfirmText({ kind: pc.kind, on: pc.next, previous: pc.previous, next: pc.next });
+      return { ok: true, intent: "notes", text: dText, narration: dNarr, actionId, detail: { kind: "developer-mode", on: pc.next, previous: pc.previous } };
+    }
     case "notes:list-notes": {
       const notes = detail.notes || [];
       if (!notes.length) return { ok: true, intent: "notes", text: "You have no notes yet.", actionId, detail: { kind: "list", notes } };
@@ -741,7 +759,7 @@ function formatLocalResult(actionId, payload, detail) {
 // Round 24: greeting helper — time-of-day greeting personalized by the user's
 // name and Nova's identity personality (tone only, never fact wording).
 const { get: identityGet } = require("../identity/identity");
-const { personalizeNarration, applyTimePreference, greetSnapshot, userFacts, latestMood, moodAge, moodNarration, moodGreet, prioritize, planDay, focusStatsSummary, topicSearchText, recurringConfirmText, recurringRemoveText } = require("./dispatch-personal");
+const { personalizeNarration, applyTimePreference, greetSnapshot, userFacts, latestMood, moodAge, moodNarration, moodGreet, prioritize, planDay, focusStatsSummary, topicSearchText, recurringConfirmText, recurringRemoveText, settingsConfirmText } = require("./dispatch-personal");
 
 function greetLine(personality, userName) {
   const hour = new Date().getHours();

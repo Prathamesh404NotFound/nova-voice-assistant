@@ -10,11 +10,17 @@ const fs = require("fs");
 const path = require("path");
 const log = require("electron-log");
 
-const DEFAULTS = { privateMode: false };
+const DEFAULTS = { privateMode: false, developerMode: false };
 
 let data = { ...DEFAULTS };
+// Test harnesses may set __NOVA_SETTINGS_TEST before the first require —
+// picked up at load() time so no writes ever land in real userData.
+let dataPath = process.env.__NOVA_SETTINGS_TEST
+  ? path.join(process.env.__NOVA_SETTINGS_TEST, "settings.json")
+  : null;
 
 function settingsPath() {
+  if (dataPath) return dataPath;
   let dataDir;
   try {
     dataDir = require("electron").app.getPath("userData");
@@ -22,6 +28,18 @@ function settingsPath() {
     dataDir = process.cwd();
   }
   return path.join(dataDir, "settings.json");
+}
+
+// Testing hooks — point settings.json at a temp file and reset memory.
+function setStorePathForTesting(dir) {
+  dataPath = path.join(dir, "settings.json");
+  data = { ...DEFAULTS };
+}
+function resetForTesting() {
+  if (dataPath && fs.existsSync(dataPath)) {
+    try { fs.unlinkSync(dataPath); } catch { /* */ }
+  }
+  data = { ...DEFAULTS };
 }
 
 function load() {
@@ -90,5 +108,5 @@ function setRaw(key, value) {
 
 load();
 
-module.exports = { isPrivateMode, setPrivateMode, isDeveloperMode, setDeveloperMode, all, setRaw };
+module.exports = { isPrivateMode, setPrivateMode, isDeveloperMode, setDeveloperMode, all, setRaw, setStorePathForTesting, resetForTesting };
 

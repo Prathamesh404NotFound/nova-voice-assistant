@@ -12,6 +12,8 @@ const { RISK_LEVEL } = require("../permissions/risk-levels");
 const actionLog = require("../permissions/action-log");
 const store = require("./store");
 const userModels = require("../identity/user-model");
+const identity = require("../identity/identity");
+const settings = require("../settings");
 
 // ---------------------------------------------------------------------------
 // L1 — safe, run immediately (still logged)
@@ -500,6 +502,65 @@ registerAction({
     const ended = store.stopFocus("completed", p && p.now ? new Date(p.now).toISOString() : undefined);
     const pending = store.all().tasks.filter((t) => !t.done);
     return { ended, pendingCount: pending.length, kind: "focus-stop" };
+  },
+});
+
+// Round 35: voice-controlled settings. Personality is a wording change only,
+// so it gets the faster L2 REVERSIBLE toast treatment; Private Mode and
+// Developer Mode change what future actions may do (all network calls, and
+// debug exposure), so they are L3 SENSITIVE — modal Confirm, each reversible
+// via reverse() which restores the previous value losslessly.
+registerAction({
+  id: "settings:set-personality",
+  level: RISK_LEVEL.REVERSIBLE,
+  description: "Change Nova's personality (affects acknowledgement tone only)",
+  simulate: async (p) => ({ summary: `would switch Nova's personality to "${p.personality}"` }),
+  execute: async (p) => {
+    const prev = identity.get().personality;
+    const next = identity.set({ personality: p.personality }).personality;
+    return { previous: prev, next, personality: next, kind: "personality" };
+  },
+  reverse: async (p, result) => {
+    const prev = (result && result.previous) || null;
+    if (!prev) return { undone: false, error: "no previous personality recorded" };
+    identity.set({ personality: prev });
+    return { undone: true, personality: prev };
+  },
+});
+
+registerAction({
+  id: "settings:set-private-mode",
+  level: RISK_LEVEL.SENSITIVE,
+  description: "Turn Private Mode on or off (on = all outbound work refused)",
+  simulate: async (p) => ({ summary: p.on ? "would turn Private Mode ON — no outbound network calls from now on" : "would turn Private Mode OFF" }),
+  execute: async (p) => {
+    const prev = settings.isPrivateMode();
+    settings.setPrivateMode(!!p.on);
+    return { previous: prev, next: !!p.on, kind: "private-mode" };
+  },
+  reverse: async (p, result) => {
+    const prev = (result && typeof result.previous === "boolean") ? result.previous : null;
+    if (prev === null) return { undone: false, error: "no previous value recorded" };
+    settings.setPrivateMode(prev);
+    return { undone: true, privateMode: prev };
+  },
+});
+
+registerAction({
+  id: "settings:set-developer-mode",
+  level: RISK_LEVEL.SENSITIVE,
+  description: "Turn Developer Mode on or off (exposes run details in the Dev panel)",
+  simulate: async (p) => ({ summary: p.on ? "would turn Developer Mode ON — run details appear in the Developer panel" : "would turn Developer Mode OFF" }),
+  execute: async (p) => {
+    const prev = settings.isDeveloperMode();
+    settings.setDeveloperMode(!!p.on);
+    return { previous: prev, next: !!p.on, kind: "developer-mode" };
+  },
+  reverse: async (p, result) => {
+    const prev = (result && typeof result.previous === "boolean") ? result.previous : null;
+    if (prev === null) return { undone: false, error: "no previous value recorded" };
+    settings.setDeveloperMode(prev);
+    return { undone: true, developerMode: prev };
   },
 });
 
