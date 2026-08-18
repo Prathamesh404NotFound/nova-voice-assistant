@@ -11,3 +11,4 @@ output/__pycache__/
 output/final_media/
 output/partial/
 *.pyc
+.nova-screen-note-test-data/
