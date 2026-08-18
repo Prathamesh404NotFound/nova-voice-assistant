@@ -100,6 +100,12 @@ const RE_NOTES_LIST = /^(?:show|list|what('s| is))\s+(?:my\s+)?notes$/i;
 // "brief" phrasings are never read as a search/list request.
 const RE_BRIEFING = /^(?:nova\s*,?\s*)?(?:what('s| is) on my plate today|brief me on today|(?:today|morning|daily)\s+briefing|what do i have due today|give me my briefing)\s*$/i;
 
+// Round 23: "my week in review" / "weekly digest" / "how did my week go" —
+// one spoken snapshot of the week: completed, pending, overdue, next week's
+// dues, and upcoming reminders. Checked right after RE_BRIEFING so "weekly"
+// phrasings never leak into list/search.
+const RE_WEEKLY = /^(?:nova\s*,?\s*)?(?:my week in review|weekly digest|how did my week go|what happened this week)\s*$/i;
+
 // Round 14: "how am I doing on my tasks" / "task stats" / "my completion rate"
 // NOTE: the optional-group + \b combo ((?:istics)?\b) breaks under JS regex
 // backtracking — use explicit alternation instead. The 'task stats(s)' branch
@@ -448,6 +454,10 @@ function planNoteAction(text, ctx = {}) {
   // "…due today"), and the fallback below would read an undefined `subj`.
   if (RE_BRIEFING.test(t)) {
     return { actionId: "notes:daily-briefing", payload: {} };
+  }
+  // Round 23: weekly digest — same placement logic as RE_BRIEFING.
+  if (RE_WEEKLY.test(t)) {
+    return { actionId: "notes:weekly-digest", payload: {} };
   }
   const im = RE_IMPLICIT_SET_DUE.exec(t);
   if (im) {

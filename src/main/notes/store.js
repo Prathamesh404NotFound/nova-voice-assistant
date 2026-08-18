@@ -293,6 +293,64 @@ function dailyBriefing(now) {
     .map((r) => ({ id: r.id, text: r.text, dueAt: r.dueAt, fired: !!r.fired }));
   return { dueToday, overdue, remindersToday };
 }
+/**
+ * Round 23: "my week in review" — one local-only snapshot of the week:
+ * tasks completed this week (by completedAt), all pending tasks, overdue
+ * pending tasks, tasks due next week (Mon–Sun), and reminders landing in the
+ * next 7 days. Day granularity everywhere; done tasks drop out of pending,
+ * overdue, and next-week — matching the daily briefing's rules.
+ * Week start is Monday 00:00 local; `now` and `weekStart` may be injected
+ * for deterministic tests (default to the live clock).
+ */
+function weeklyDigest(now, weekStart) {
+  load();
+  const today = new Date(now || Date.now());
+  today.setHours(0, 0, 0, 0);
+  const ws = weekStart ? new Date(weekStart) : (() => {
+    const d = new Date(today);
+    d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); // Monday
+    d.setHours(0, 0, 0, 0);
+    return d;
+  })();
+  const tonight = new Date(today.getTime() + 86_400_000);
+  const nextMon = new Date(ws.getTime() + 7 * 86_400_000);
+  const nextMonPlus7 = new Date(nextMon.getTime() + 7 * 86_400_000);
+  const weekAgo = new Date(today.getTime() - 7 * 86_400_000);
+  const all = __data.tasks || [];
+  const reminders = (__data.reminders || []).slice();
+  const safeDay = (iso) => {
+    if (!iso) return null;
+    try {
+      const d = new Date(iso);
+      d.setHours(0, 0, 0, 0);
+      return d;
+    } catch { return null; }
+  };
+  const completedThisWeek = all
+    .filter((t) => t.done && t.completedAt && new Date(t.completedAt).getTime() >= weekAgo.getTime() && new Date(t.completedAt).getTime() < tonight.getTime())
+    .sort((a, b) => (b.completedAt || "").localeCompare(a.completedAt || ""))
+    .map((t) => ({ id: t.id, text: t.text, completedAt: t.completedAt }));
+  const pending = all
+    .filter((t) => !t.done)
+    .sort((a, b) => (a.createdAt || "").localeCompare(b.createdAt || ""))
+    .map((t) => ({ id: t.id, text: t.text }));
+  const overdue = all
+    .filter((t) => !t.done && safeDay(t.dueDate) && safeDay(t.dueDate) < today)
+    .sort((a, b) => safeDay(a.dueDate) - safeDay(b.dueDate)) // oldest (most overdue) first
+    .map((t) => ({ id: t.id, text: t.text, dueDate: t.dueDate }));
+  const dueNextWeek = all
+    .filter((t) => !t.done && safeDay(t.dueDate) && safeDay(t.dueDate).getTime() >= nextMon.getTime() && safeDay(t.dueDate).getTime() < nextMonPlus7.getTime())
+    .sort((a, b) => safeDay(a.dueDate) - safeDay(b.dueDate))
+    .map((t) => ({ id: t.id, text: t.text, dueDate: t.dueDate }));
+  const remindersUpcoming = reminders
+    .filter((r) => {
+      const at = new Date(r.dueAt).getTime();
+      return at >= today.getTime() && at < tonight.getTime() + 6 * 86_400_000;
+    })
+    .sort((a, b) => new Date(a.dueAt).getTime() - new Date(b.dueAt).getTime())
+    .map((r) => ({ id: r.id, text: r.text, dueAt: r.dueAt, fired: !!r.fired }));
+  return { completedThisWeek, pending, overdue, dueNextWeek, remindersUpcoming, weekStart: ws.toISOString() };
+}
 
 /** Delete a note; returns its content for undo/telemetry. */
 function deleteNote(id) {
@@ -383,7 +441,7 @@ function resetForTesting() {
 
 module.exports = {
   all, addNote, addReminder, rearmReminder, addTask, setTaskDone, setTaskDue, taskStats,
-  dailyBriefing,
+  dailyBriefing, weeklyDigest,
   deleteNote, deleteTask, cancelReminder, searchNotes, summarizeOf,
   dueReminders, markFired,
   setStorePathForTesting, resetForTesting, filePath,

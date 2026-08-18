@@ -131,6 +131,10 @@ const RE_CONTROL =
 // briefing"-style clause forms routable.
 const RE_BRIEFING_STEP =
   /(?:tell me|give me|read me)?\s*(?:what('s| is)\s+on my plate today|brief me on today|(?:today|morning|daily)\s+briefing|my (daily|morning) briefing|what do i have due today|give me my briefing)/i;
+// Round 23: weekly digest clause forms — "my week in review", "weekly digest",
+// "how did my week go" — route to NOTES (reads from the same digest action).
+const RE_DIGEST_STEP =
+  /(?:tell me|give me|show me)?\s*(?:my week in review|weekly digest|how did my week go|what happened this week)/i;
 
 function classifyClause(clause) {
   const c = clause.trim();
@@ -147,7 +151,7 @@ function classifyClause(clause) {
   if (RE_FILES_STATS.test(c) || RE_FILES_SEARCH.test(c)) {
     return { kind: STEP_KINDS.FILES, text: c };
   }
-  if (RE_NOTES_REMIND.test(c) || RE_NOTES_TASKS.test(c) || RE_NOTES_SUMMARIZE.test(c) || RE_BRIEFING_STEP.test(c)) {
+  if (RE_NOTES_REMIND.test(c) || RE_NOTES_TASKS.test(c) || RE_NOTES_SUMMARIZE.test(c) || RE_BRIEFING_STEP.test(c) || RE_DIGEST_STEP.test(c)) {
     return { kind: STEP_KINDS.NOTES, text: c };
   }
   // Default: files search ("check for new files in Downloads") — the most
@@ -204,6 +208,8 @@ function makeName(cron) {
 // "Morning briefing".
 const RE_BRIEFING_PRESET =
   /^(?:set up|create|start|schedule|make me|add)\s+(?:a\s+)?(?:(?:daily|morning)\s+)?briefing(?:\s+(?:at|for)\s+(.+))?\s*$/i;
+const RE_DIGEST_PRESET =
+  /^(?:set up|create|start|schedule|make me|add)\s+(?:a\s+)?(?:my\s+)?(?:weekly\s+)?digest(?:\s+(?:at|on|for)\s+(.+))?\s*$/i;
 
 function parseAutomation(text, opts = {}) {
   const trimmed = String(text || "").trim();
@@ -220,6 +226,24 @@ function parseAutomation(text, opts = {}) {
         name: opts.name || "Morning briefing",
         cron: `${t.min} ${t.hour} * * *`,
         steps: [{ kind: STEP_KINDS.NOTES, text: "what's on my plate today" }],
+      },
+    };
+  }
+
+  // Round 23: weekly digest preset — "set up a weekly digest at 7 PM" /
+  // "create a weekly digest for Sunday at 8 PM" / bare "create a digest".
+  // Weekly cron (day 0 = Sunday) at the requested time (7 PM default).
+  const digest = RE_DIGEST_PRESET.exec(trimmed);
+  if (digest) {
+    const timeExpr = (digest[1] || "").trim();
+    const t = timeExpr ? (parseTime(`at ${timeExpr}`) || parseTime(timeExpr)) : { hour: 19, min: 0 };
+    if (!t) return { ok: false, error: `I could not parse \u201c${timeExpr}\u201d as a time — try \u201c7 PM\u201d or \u201c8:30 PM\u201d.` };
+    return {
+      ok: true,
+      automation: {
+        name: opts.name || "Weekly digest",
+        cron: `${t.min} ${t.hour} * * 0`,
+        steps: [{ kind: STEP_KINDS.NOTES, text: "my week in review" }],
       },
     };
   }

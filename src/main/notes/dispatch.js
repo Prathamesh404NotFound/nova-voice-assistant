@@ -290,6 +290,35 @@ function formatLocalResult(actionId, payload, detail) {
         actionId, detail: { kind: "daily-briefing", briefing: b },
       };
     }
+    // Round 23: read-only weekly digest — the week's completions, what's
+    // still pending, overdue, next week's dues, and upcoming reminders.
+    case "notes:weekly-digest": {
+      const d = detail.result || {};
+      const named = (list) => list.map((x) => `"${x.text.slice(0, 40)}"`).join(", ");
+      const done = d.completedThisWeek || [];
+      const pend = d.pending || [];
+      const ov = d.overdue || [];
+      const nxt = d.dueNextWeek || [];
+      const rem = d.remindersUpcoming || [];
+      let text;
+      if (!done.length && !pend.length && !ov.length && !nxt.length && !rem.length) {
+        text = "Quiet week — nothing to report.";
+      } else {
+        const parts = [];
+        if (done.length) parts.push(`${done.length} task${done.length === 1 ? "" : "s"} completed this week: ${named(done)}`);
+        if (pend.length) parts.push(`${pend.length} task${pend.length === 1 ? "" : "s"} still pending: ${named(pend)}`);
+        if (ov.length) parts.push(`${ov.length} overdue: ${named(ov)}`);
+        if (nxt.length) parts.push(`${nxt.length} due next week: ${named(nxt)}`);
+        if (rem.length) parts.push(`${rem.length} reminder${rem.length === 1 ? "" : "s"} coming up: ${named(rem)}`);
+        text = `Here's your week in review: ${parts.join(". ")}.`;
+      }
+      return {
+        ok: true, intent: "notes",
+        text,
+        narration: "Here's your week in review\u2026",
+        actionId, detail: { kind: "weekly-digest", digest: d },
+      };
+    }
     // Round 13: snooze — re-arms the last fired reminder.
     case "notes:snooze-reminder": {
       const r = detail.reminder || {};

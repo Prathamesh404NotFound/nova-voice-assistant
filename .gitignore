@@ -20,3 +20,4 @@ output/partial/
 .nova-dbug/
 .nova-daily-briefing-test-data/
 .nova-morning-briefing-test-data/
+.nova-weekly-digest-test-data/
