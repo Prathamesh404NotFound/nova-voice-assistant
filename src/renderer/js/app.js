@@ -35,6 +35,9 @@
     devTask: $("devTask"), devTaskBody: $("devTaskBody"), devToggle: $("devToggle"),
     undoBtn: $("undoBtn"), onboarding: $("onboarding"), onboardingTitle: $("onboardingTitle"),
     onboardingWhy: $("onboardingWhy"), onboardingAck: $("onboardingAck"), onboardingBtn: $("onboardingBtn"),
+    wizardSteps: $("wizardSteps"), wizardStepLabel: $("wizardStepLabel"), wizardStepFill: $("wizardStepFill"),
+    wizardIntro: $("wizardIntro"), wizardIntroLine: $("wizardIntroLine"),
+    onboardingFeatures: $("onboardingFeatures"), wizardDots: $("wizardDots"), wizardSkip: $("wizardSkip"),
     devFallback: $("devFallback"), devLog: $("devLog"),
     setKeyBtn: $("setKeyBtn"), keyStatus: $("keyStatus"),
     keyOverlay: $("keyOverlay"), keyInput: $("keyInput"),
@@ -1848,27 +1851,141 @@ let historyItems = [];
 
   el.devToggle?.addEventListener("click", toggleDevMode);
 
-  function showOnboarding(pending, state) {
+  // Round 7: first-run welcome wizard. Steps are renderer-driven:
+  //   welcome → api-key → [screen-recording] → [accessibility] → done
+  // Only the permission steps touch the main process; the tour is marked
+  // complete via nova:complete-wizard so it never shows again.
+  const WELCOME_FEATURES = [
+    ["See your screen", "\u201CWhat's on my screen?\u201D — offline OCR + optional vision model"],
+    ["Move & type for you", "Open apps, click, type — gated by a 5-level safety framework"],
+    ["Manage your files", "Search, organize and tidy with dry-run previews first"],
+    ["Answer about your docs", "A fully local knowledge base: indexing, embeddings and RAG on this machine"],
+    ["Notes, tasks & reminders", "Everything stored on-device, never sent to a cloud service"],
+    ["Repeat it automatically", "Scheduled or event-triggered automations of any of the above"],
+  ];
+  const PRIVACY_NOTE = "Your data stays on this machine. An OpenRouter key is optional (unlocks better answers) — every tool still works locally, and Private Mode blocks all outbound calls.";
+
+  let wizard = null; // { step, steps: [{id, label}], platform }
+  let wizardStepIndex = 0;
+
+  function hideWizardChrome() {
+    if (el.wizardSteps) el.wizardSteps.hidden = true;
+    if (el.wizardIntro) el.wizardIntro.hidden = true;
+    if (el.wizardDots) el.wizardDots.hidden = true;
+    if (el.onboardingFeatures) el.onboardingFeatures.hidden = true;
+    if (el.wizardSkip) el.wizardSkip.hidden = true;
+  }
+
+  function renderWizardDots() {
+    if (!el.wizardDots || !wizard) return;
+    el.wizardDots.hidden = false;
+    el.wizardDots.innerHTML = "";
+    wizard.steps.forEach((_, i) => {
+      const dot = document.createElement("span");
+      if (i === wizardStepIndex) dot.className = "active";
+      el.wizardDots.appendChild(dot);
+    });
+  }
+
+  function setWizardProgress() {
+    if (!wizard || !el.wizardStepLabel || !el.wizardStepFill) return;
+    const n = wizard.steps.length;
+    const pct = n > 1 ? Math.round(((wizardStepIndex + 1) / n) * 100) : 100;
+    el.wizardStepLabel.textContent = (wizardStepIndex + 1) + " of " + n;
+    el.wizardStepFill.style.width = pct + "%";
+  }
+
+  function showOnboarding(pending, state, firstRun = false) {
     if (!el.onboarding) return;
-    const screen = pending[0];
-    if (!screen) {
-      el.onboarding.hidden = true;
+    if (firstRun && !wizard) {
+      // Build the step list for this run: welcome + api-key are renderer steps;
+      // permission screens (macOS) come from the main process.
+      const steps = [{ id: "welcome", label: "Welcome" }, { id: "api-key", label: "API key" }];
+      for (const s of pending) steps.push(s);
+      wizard = { step: steps[0].id, steps, pending, state };
+      wizardStepIndex = 0;
+    }
+    // No wizard (returning user) or wizard exhausted → plain permission screens.
+    if (!wizard) {
+      const screen = pending[0];
+      if (!screen) { el.onboarding.hidden = true; return; }
+      el.onboarding.hidden = false;
+      hideWizardChrome();
+      el.onboardingTitle.textContent = "Nova needs " + (screen.id === "screen-recording" ? "Screen Recording" : "Accessibility") + " access";
+      el.onboardingWhy.textContent = screen.why;
+      if (el.onboardingAck) el.onboardingAck.textContent = "Allow";
+      if (el.wizardSteps) el.wizardSteps.hidden = true;
       return;
     }
     el.onboarding.hidden = false;
+    const step = wizard.steps[wizardStepIndex];
+    if (step) wizard.step = step.id;
+    renderWizardDots();
+    setWizardProgress();
     const titles = {
+      "welcome": "Welcome to Nova",
+      "api-key": "Unlock better answers (optional)",
       "screen-recording": "Nova needs Screen Recording access",
       "accessibility": "Nova needs Accessibility access",
     };
     const whys = {
-      "screen-recording": "To answer questions like \u201Cwhat's on my screen\u201D, Nova reads your display. macOS asks you to allow this in System Settings → Privacy & Security → Screen Recording.",
-      "accessibility": "To control the mouse and keyboard for you (typing, clicking), Nova sends system-level input events. macOS asks you to allow this in System Settings → Privacy & Security → Accessibility.",
+      "welcome": PRIVACY_NOTE,
+      "api-key": "Nova works fully offline, but an OpenRouter API key unlocks smarter answers for questions, vision and your knowledge base. The key is stored with your OS keychain — never logged or sent anywhere else.",
+      "screen-recording": "To answer questions like \u201Cwhat's on my screen\u201D, Nova reads your display. macOS asks you to allow this in System Settings \u2192 Privacy & Security \u2192 Screen Recording.",
+      "accessibility": "To control the mouse and keyboard for you (typing, clicking), Nova sends system-level input events. macOS asks you to allow this in System Settings \u2192 Privacy & Security \u2192 Accessibility.",
     };
-    el.onboardingTitle.textContent = titles[screen.id] || screen.why;
-    el.onboardingWhy.textContent = whys[screen.id] || screen.why;
+    const acks = {
+      "welcome": "Get started",
+      "api-key": "Continue",
+      "screen-recording": "Allow",
+      "accessibility": "Allow",
+    };
+    el.onboardingTitle.textContent = titles[step.id] || step.why;
+    el.onboardingWhy.textContent = whys[step.id] || step.why;
+    if (el.onboardingAck) el.onboardingAck.textContent = acks[step.id] || "Continue";
+    if (el.wizardIntro) {
+      el.wizardIntro.hidden = step.id !== "welcome";
+      if (el.wizardIntroLine) el.wizardIntroLine.textContent = "A voice-first assistant for your desktop";
+    }
+    if (el.onboardingFeatures) {
+      const show = step.id === "welcome";
+      el.onboardingFeatures.hidden = !show;
+      if (show && el.onboardingFeatures.children.length === 0) {
+        for (const [name, desc] of WELCOME_FEATURES) {
+          const li = document.createElement("li");
+          li.innerHTML = "<strong>" + name + "</strong> — " + desc;
+          el.onboardingFeatures.appendChild(li);
+        }
+      }
+    }
+    if (el.wizardSkip) el.wizardSkip.hidden = step.id === "accessibility"; // last step has no skip
   }
 
+  // Round 7: boot the wizard on first run; fall back to the legacy permission flow.
+  async function bootWizard() {
+    try {
+      if (window.nova.getWizard) {
+        const res = await window.nova.getWizard();
+        if (res?.ok && res.welcomeDue) {
+          showOnboarding(res.pending || [], res.state, true);
+          return;
+        }
+      }
+      if (window.nova.getOnboarding) {
+        const res = await window.nova.getOnboarding();
+        if (res?.ok && res.pending?.length) showOnboarding(res.pending, res.state, false);
+      }
+    } catch { /* offline */ }
+  }
+  bootWizard();
   if (window.nova.onOnboarding) window.nova.onOnboarding((data) => showOnboarding(data.pending, data.state));
+
+  // Round 7: Alt+M global hotkey (main process) arrives as nova:toggle-mic.
+  // Reuse the talk button's existing toggle behavior so wake-word arm state
+  // and barge-in rules stay consistent.
+  if (window.nova.onToggleMic && el.talkBtn) {
+    window.nova.onToggleMic(() => el.talkBtn.click());
+  }
   initNotesPanel();
   initKbPanel();
   initAutoPanel();
@@ -1876,6 +1993,69 @@ let historyItems = [];
 
   el.onboardingAck?.addEventListener("click", async () => {
     try {
+      if (wizard) {
+        const step = wizard.steps[wizardStepIndex];
+        if (step.id === "welcome") {
+          wizardStepIndex += 1;
+          showOnboarding(wizard.pending, wizard.state);
+          return;
+        }
+        if (step.id === "api-key") {
+          // The key lives in the side panel (Settings) — skip without nagging.
+          wizardStepIndex += 1;
+          showOnboarding(wizard.pending, wizard.state);
+          return;
+        }
+        // Permission steps (screen-recording / accessibility).
+        const current = await window.nova.getOnboarding();
+        const screen = (current?.ok ? current.pending : wizard.pending)[0];
+        if (!screen) {
+          await window.nova.completeWizard?.().catch(() => {});
+          wizard = null;
+          el.onboarding.hidden = true;
+          return;
+        }
+        if (screen.id === "accessibility") {
+          const res = await window.nova.runAccessibilityTest();
+          if (res?.status === "granted") {
+            await window.nova.ackOnboarding(screen.id);
+            const next = await window.nova.getOnboarding();
+            const remaining = (next?.ok ? next.pending : []).length;
+            if (remaining === 0) {
+              await window.nova.completeWizard?.().catch(() => {});
+              wizard = null;
+              el.onboarding.hidden = true;
+            } else {
+              wizard.pending = next?.ok ? next.pending : wizard.pending;
+              wizard.state = res?.state || wizard.state;
+              wizardStepIndex += 1;
+              showOnboarding(wizard.pending, wizard.state);
+            }
+            return;
+          }
+          if (res?.ok) {
+            el.onboardingAck.textContent = "I allowed it in the OS dialog";
+            el.onboardingAck.dataset.step = "verify";
+            return;
+          }
+          return;
+        }
+        await window.nova.ackOnboarding(screen.id);
+        const next = await window.nova.getOnboarding();
+        const remaining = (next?.ok ? next.pending : []).length;
+        if (remaining === 0) {
+          await window.nova.completeWizard?.().catch(() => {});
+          wizard = null;
+          el.onboarding.hidden = true;
+        } else {
+          wizard.pending = next?.ok ? next.pending : wizard.pending;
+          wizard.state = next?.state || wizard.state;
+          wizardStepIndex += 1;
+          showOnboarding(wizard.pending, wizard.state);
+        }
+        return;
+      }
+      // Legacy path (returning user, permission screens only).
       const current = await window.nova.getOnboarding();
       if (!current?.ok) return;
       const screen = current.pending[0];
@@ -1903,5 +2083,13 @@ let historyItems = [];
         return;
       }
     } catch { /* offline */ }
+  });
+
+  el.wizardSkip?.addEventListener("click", async () => {
+    try {
+      await window.nova.completeWizard?.();
+    } catch { /* offline */ }
+    wizard = null;
+    el.onboarding.hidden = true;
   });
 })();

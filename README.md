@@ -255,6 +255,35 @@ npm run smoke:auto        # gated runner + scheduler clock injection + 1-minute 
 
 **Known limitations:** routines only fire while Nova is running (same as the notes reminder scheduler); the NL parser covers the tested phrasings (every day/weekday/<weekday> at HH:MM, every morning/evening) — unusual schedules can still be set via a raw cron entry through the store's testing/admin paths.
 
+## Event-triggered automations (Round 5)
+
+Beyond cron schedules, automations can now fire on **events**, sitting alongside the scheduler (`src/main/automation/event-triggers.js`):
+
+| Trigger | Behavior |
+|---------|----------|
+| `type: "file"` | Watches a folder (chokidar, same engine as the knowledge-base watcher) with depth limit, optional filename match, and debounced firing; `ignoreInitial` avoids boot storms |
+| `type: "time-of-day"` | Fires at a fixed HH:MM in the local timezone (no date math needed for "remind me at 8 AM") |
+| `type: "event"` | Subscribes to named events on the global app-event bus — any subsystem (vision, control, reminders, scheduler) can `emit("app-event", { name: "startup" })`; "when Nova starts up" automations use this |
+| `type: "idle"` | Fires after the OS reports `systemPreferences.getUserIdleTime()` exceeding a threshold (Electron-only) |
+
+Every event trigger keeps the automation engine's safety rules: the 5-minute flood cooldown, original risk levels per step, and the Level 3+ in-app confirmation pause. `npm run test:event-triggers` covers debounce, cooldown, clock injection, and the app-event bus.
+
+## Conversation memory (Round 6)
+
+Every chat exchange is appended to a rolling, fully-local journal (`userData/nova-memory.json`) and pruned to the most recent entries. On subsequent sessions the last exchanges plus a compact history summary are injected into the chat model's context, so follow-up questions like "what about that thing earlier?" work across restarts. **Private Mode blocks the memory context entirely** — only the current message ever leaves the machine, and only when Private Mode is off. `memory:clear` and `memory:stats` are Level 1 actions routed through the permission gate; the chat side panel marks messages that used cross-session memory with a small badge.
+
+## Onboarding wizard & global shortcuts (Round 7)
+
+First-run users now see a **welcome wizard** instead of a single permission screen: a branded intro, a capability tour (vision, control, files, knowledge base, notes, automations) with the privacy model stated up front, an optional OpenRouter key pointer, and then the existing macOS permission screens. Completion is recorded in settings (`onboardingWelcomeCompleted`), so the tour appears once per install — it can be re-shown by clearing that setting. Returning users still get the plain permission screens when any are pending.
+
+Three global shortcuts are registered after `app.whenReady()`:
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl+Shift+Esc` | Hard kill-switch — aborts any running control sequence |
+| `Alt+Space` | Show/hide Nova: minimizes when focused; restores, steals focus and centers otherwise |
+| `Alt+M` | Toggle the microphone on/off (reuses the talk button's barge-in logic) |
+
 ## Test the model router headlessly
 
 ```bash

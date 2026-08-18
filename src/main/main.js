@@ -596,6 +596,49 @@ function registerKillHotkey() {
   }
 }
 
+/**
+ * Round 7: everyday global shortcuts.
+ *   Alt+Space → show/hide Nova (minimizes when focused; restores + centers otherwise).
+ *   Alt+M     → toggle the microphone on/off (renderer decides start/stop).
+ */
+function registerNovaHotkeys() {
+  try {
+    globalShortcut.register("Alt+Space", () => {
+      try {
+        if (!mainWindow) return;
+        const focused = mainWindow.isVisible() && mainWindow.isFocused() && !mainWindow.isMinimized();
+        if (focused) {
+          mainWindow.minimize();
+          log.info("[hotkey] Alt+Space → minimized Nova");
+        } else {
+          mainWindow.show();
+          mainWindow.focus({ steal: true });
+          mainWindow.center();
+          log.info("[hotkey] Alt+Space → showed Nova");
+        }
+      } catch (e) {
+        log.warn("[hotkey] Alt+Space failed:", e?.message);
+      }
+    });
+    log.info("[hotkey] window toggle registered: Alt+Space");
+  } catch (err) {
+    log.warn("[hotkey] Alt+Space registration failed:", err?.message);
+  }
+  try {
+    globalShortcut.register("Alt+M", () => {
+      try {
+        if (mainWindow) mainWindow.webContents.send("nova:toggle-mic", {});
+        log.info("[hotkey] Alt+M → mic toggle sent to renderer");
+      } catch (e) {
+        log.warn("[hotkey] Alt+M failed:", e?.message);
+      }
+    });
+    log.info("[hotkey] mic toggle registered: Alt+M");
+  } catch (err) {
+    log.warn("[hotkey] Alt+M registration failed:", err?.message);
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Startup
 // ---------------------------------------------------------------------------
@@ -635,6 +678,7 @@ app.whenReady().then(async () => {
     log.info(`Model router: current=${router.currentModel()} freeModels=${router.freeModelCount()} fallback=${router.isFallbackInUse()}`);
   // 3. Register the hard kill-switch hotkey (must happen after app is ready)
   registerKillHotkey();
+  registerNovaHotkeys();
   createWindow();
   // 4. Start the local reminder scheduler (boots scan catches anything due
   //    while the app was closed; 15 s polling thereafter). Reminders only

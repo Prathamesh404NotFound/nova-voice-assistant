@@ -88,5 +88,31 @@ ipcMain.handle("nova:run-accessibility-test", async () => {
   }
 });
 
+// ---------------------------------------------------------------------------
+// Round 7: welcome wizard (first-run only)
+//
+//   nova:get-wizard        → whether the welcome tour is due + what follows.
+//   nova:complete-wizard   → marks the tour done (recorded in settings.json;
+//                            re-shown via a "Show welcome tour" setting if
+//                            the user ever wants it back).
+// ---------------------------------------------------------------------------
+
+ipcMain.handle("nova:get-wizard", async () => {
+  try {
+    return { ok: true, ...onboarding.wizardState() };
+  } catch (err) {
+    return { ok: false, error: String(err?.message || err) };
+  }
+});
+
+ipcMain.handle("nova:complete-wizard", async () => {
+  try {
+    onboarding.completeWizard();
+    return { ok: true, firstRun: onboarding.isFirstRun() };
+  } catch (err) {
+    return { ok: false, error: String(err?.message || err) };
+  }
+});
+
 // Expose for tests (reset the undo tracker between runs).
 module.exports = { resetUndoTrackerForTesting };

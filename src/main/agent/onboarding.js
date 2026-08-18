@@ -23,6 +23,8 @@ const settings = require("../settings");
 const ACK_KEYS = {
   screenRecording: "onboardingAckScreenRecording",
   accessibility: "onboardingAckAccessibility",
+  /** Round 7: the welcome wizard has been completed at least once. */
+  welcomeCompleted: "onboardingWelcomeCompleted",
 };
 
 function platform() {
@@ -113,4 +115,38 @@ function acknowledge(id) {
   if (id === "accessibility") settings.setRaw(ACK_KEYS.accessibility, true);
 }
 
-module.exports = { platform, permissionState, runAccessibilityTest, pendingScreens, acknowledge, ACK_KEYS };
+// ---------------------------------------------------------------------------
+// Round 7: first-run welcome wizard
+// ---------------------------------------------------------------------------
+
+/**
+ * Is this the very first run? The welcome wizard appears once per install
+ * (tracked by `onboardingWelcomeCompleted` in settings.json).
+ */
+function isFirstRun() {
+  const all = settings.all();
+  return !all[ACK_KEYS.welcomeCompleted];
+}
+
+/** Mark the welcome wizard as done. */
+function completeWizard() {
+  settings.setRaw(ACK_KEYS.welcomeCompleted, true);
+}
+
+/**
+ * What the wizard should show right now. The renderer drives the UI; this
+ * simply says whether the welcome tour is due and how many permission
+ * screens follow it. Steps are:
+ *   welcome → api-key (renderer) → [screen-recording] → [accessibility] → done
+ */
+function wizardState() {
+  const firstRun = isFirstRun();
+  const pending = pendingScreens();
+  return {
+    firstRun,
+    pending: pending,
+    welcomeDue: firstRun,
+  };
+}
+
+module.exports = { platform, permissionState, runAccessibilityTest, pendingScreens, acknowledge, isFirstRun, completeWizard, wizardState, ACK_KEYS };

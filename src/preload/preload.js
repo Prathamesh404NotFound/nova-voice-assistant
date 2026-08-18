@@ -122,6 +122,9 @@ contextBridge.exposeInMainWorld("nova", {
   getOnboarding: () => ipcRenderer.invoke("nova:get-onboarding"),
   ackOnboarding: (id) => ipcRenderer.invoke("nova:ack-onboarding", id),
   runAccessibilityTest: () => ipcRenderer.invoke("nova:run-accessibility-test"),
+  // --- Round 7: welcome wizard (first-run tour) ---
+  getWizard: () => ipcRenderer.invoke("nova:get-wizard"),
+  completeWizard: () => ipcRenderer.invoke("nova:complete-wizard"),
   onOnboarding: (cb) => {
     const listener = (_evt, data) => cb(data);
     ipcRenderer.on("nova:onboarding", listener);
@@ -133,6 +136,13 @@ contextBridge.exposeInMainWorld("nova", {
     return () => ipcRenderer.removeListener("nova:permission-toast", listener);
   },
   cancelToast: (toastId) => ipcRenderer.send("nova:permission-toast-reply", { toastId }),
+
+  // --- Round 7: global hotkeys (Alt+M mic toggle) ---
+  onToggleMic: (cb) => {
+    const listener = (_evt, data) => cb(data);
+    ipcRenderer.on("nova:toggle-mic", listener);
+    return () => ipcRenderer.removeListener("nova:toggle-mic", listener);
+  },
 
   // --- Screen vision (Level 0 READ — every capture is logged) ---
   visionQuery: (question) => ipcRenderer.invoke("nova:vision-query", question),

@@ -235,12 +235,25 @@
         </div>
       </div>
     </div>
-      <!-- Stage 5: first-run permission onboarding overlay -->
+      <!-- Stage 5 / Round 7: first-run permission onboarding + welcome wizard -->
       <div id="onboarding" class="onboarding hidden">
         <div class="onboarding-card">
+          <div id="wizardSteps" class="onboarding-steps" hidden>
+            <span class="onboarding-step-label" id="wizardStepLabel"></span>
+            <div class="onboarding-step-bar"><div class="onboarding-step-fill" id="wizardStepFill"></div></div>
+          </div>
+          <div id="wizardIntro" class="onboarding-intro" hidden>
+            <div class="onboarding-orb"></div>
+            <p id="wizardIntroLine"></p>
+          </div>
           <h2 id="onboardingTitle"></h2>
           <p id="onboardingWhy"></p>
-          <button id="onboardingAck" class="cta">Allow</button>
+          <ul id="onboardingFeatures" class="onboarding-features" hidden></ul>
+          <div id="wizardDots" class="onboarding-dots" hidden></div>
+          <div id="wizardActions" class="onboarding-actions">
+            <button id="wizardSkip" class="cta ghost" hidden>Skip</button>
+            <button id="onboardingAck" class="cta">Allow</button>
+          </div>
         </div>
       </div>
   </div>
