@@ -253,19 +253,24 @@
     }
   }
 
-  function showNotesToast(text) {
+  function showNotesToast(text, augment) {
     const existing = document.getElementById("notesToast");
     if (existing) existing.remove();
     const div = document.createElement("div");
     div.id = "notesToast";
     div.className = "notes-toast";
     div.textContent = text;
+    if (typeof augment === "function") augment(div);
     document.body.appendChild(div);
     setTimeout(() => div.classList.add("show"), 10);
+    // Round 19: if the banner carries snooze chips, keep the toast up for 90 s
+    // so the chips remain clickable (the fired reminder itself is re-armed
+    // with a fresh 10-minute window, so the chips stay meaningful).
+    const sticky = !!div.querySelector(".nova-snooze-chip");
     setTimeout(() => {
       div.classList.remove("show");
       setTimeout(() => div.remove(), 300);
-    }, 3500);
+    }, sticky ? 90_000 : 3500);
   }
 
   async function refreshNotesPanel() {
@@ -290,10 +295,20 @@
     refreshNotesPanel();
     // OS notifications fire in the main process; the renderer speaks them
     // aloud when Nova is focused and shows a small banner either way.
+    // Round 19: snooze chips on the fired-reminder banner — every chip
+    // routes through the same L1 notes:snooze-reminder action as the voice
+    // path, so the Action Log and risk model stay identical.
+    window.NovaSnoozeUI.init({
+      ipc: (id, seconds) => window.nova.snoozeReminder(id, seconds),
+      speak,
+    });
     window.nova.onReminderFired((data) => {
       if (!data) return;
       const msg = `Reminder: ${data.text}`;
-      showNotesToast(msg);
+      showNotesToast(msg, (container) => {
+        const bar = window.NovaSnoozeUI.buildBanner({ id: data.id, text: data.text });
+        if (bar && container) container.appendChild(bar);
+      });
       // Speak only when the window is focused (the main process already
       // emitted to both; the spoken version is renderer-side so barge-in
       // works and Private Mode stays irrelevant — TTS is fully local).

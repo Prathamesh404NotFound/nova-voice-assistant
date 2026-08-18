@@ -500,6 +500,24 @@ ipcMain.handle("nova:get-notes-store", () => {
  * mouse/keyboard path — same actions as the voice path, same levels).
  * Summarize is the only action that ever leaves the machine.
  */
+// Round 19: UI snooze chips target a specific fired reminder by id. Routed
+// through the SAME notes:snooze-reminder L1 action as the voice path so the
+// Action Log entry, risk level and limits stay identical.
+ipcMain.handle("nova:snooze-reminder", async (_evt, req) => {
+  try {
+    const id = String(req?.id || "");
+    const seconds = Number(req?.seconds) > 0 ? Number(req?.seconds) : 600;
+    // Route through the permission gate exactly like the voice path does,
+    // including the Action Log entry and the fromUi marker (the action's
+    // execute() targets the named id instead of "most recently fired").
+    const result = await runAction("notes:snooze-reminder", { id, seconds, fromUi: true });
+    return result || { ok: false, message: "The snooze could not be completed." };
+  } catch (err) {
+    log.error("[notes] nova:snooze-reminder failed:", err?.message || err);
+    return { ok: false, message: "Something went wrong snoozing the reminder — details are in Developer Mode." };
+  }
+});
+
 ipcMain.handle("nova:notes-run", async (_evt, text) => {
   try {
     const { getKey } = require("./keys");

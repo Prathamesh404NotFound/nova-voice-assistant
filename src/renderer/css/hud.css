@@ -1389,3 +1389,29 @@ html, body {
   transition: color 0.15s, border-color 0.15s;
 }
 .palette-hint:hover { color: #39d2ff; border-color: rgba(57, 210, 255, 0.45); }
+
+/* ---------------------------------------------------------------------------
+ * Round 19: snooze chips on the fired-reminder banner (snooze-ui.js).
+ * L1 action — re-arms the reminder locally, same gate as the voice snooze.
+ * --------------------------------------------------------------------------- */
+.nova-snooze-bar {
+  display: flex; align-items: center; gap: 5px;
+  margin-top: 6px; width: 100%; flex-wrap: nowrap; overflow: hidden;
+}
+.nova-snooze-bar-label {
+  font-family: var(--font-mono, "JetBrains Mono", monospace); font-size: 11px;
+  color: #7d8aa0; margin-right: 2px; white-space: nowrap;
+}
+.nova-snooze-chip {
+  font-family: var(--font-mono, "JetBrains Mono", monospace); font-size: 11px;
+  color: #9fb3cc; background: rgba(57, 210, 255, 0.08);
+  border: 1px solid rgba(57, 210, 255, 0.22); border-radius: 5px;
+  padding: 3px 8px; cursor: pointer; line-height: 1; white-space: nowrap;
+  transition: color 0.12s, background 0.12s, border-color 0.12s;
+}
+.nova-snooze-chip:hover { color: #39d2ff; border-color: rgba(57, 210, 255, 0.5); }
+.nova-snooze-chip:active { background: rgba(57, 210, 255, 0.16); }
+.nova-snooze-chip.disabled, .nova-snooze-chip:disabled {
+  color: #4a5568; background: rgba(74, 85, 104, 0.10);
+  border-color: rgba(74, 85, 104, 0.25); cursor: default;
+}

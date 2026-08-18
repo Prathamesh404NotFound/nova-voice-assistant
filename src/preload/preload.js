@@ -95,6 +95,9 @@ contextBridge.exposeInMainWorld("nova", {
     ipcRenderer.on("nova:reminder-fired", listener);
     return () => ipcRenderer.removeListener("nova:reminder-fired", listener);
   },
+  // Round 19: UI snooze chips — snooze a specific fired reminder by id
+  // (routes through the same L1 notes:snooze-reminder action as voice).
+  snoozeReminder: (id, seconds) => ipcRenderer.invoke("nova:snooze-reminder", { id, seconds }),
   // Round 18: one-per-session overdue-task boot nudge (main → renderer).
   onTaskDueNudge: (cb) => {
     const listener = (_evt, data) => cb(data);

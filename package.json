@@ -2,7 +2,7 @@
   "name": "nova-assistant",
   "productName": "Nova",
   "version": "0.1.0",
-  "description": "Nova — a voice-first desktop AI assistant",
+  "description": "Nova \u2014 a voice-first desktop AI assistant",
   "author": "Nova",
   "license": "MIT",
   "repository": {
@@ -22,7 +22,7 @@
     "test:control": "node src/main/test-control.js",
     "test:agent": "node src/main/test-agent.js",
     "test:files": "node src/main/test-files.js",
-    "test": "npm run test:permissions && npm run test:vision && npm run test:control && npm run test:agent && npm run test:files && npm run test:notes && npm run test:kb && npm run test:automation && npm run test:event-triggers && npm run test:memory && npm run test:screenshot-note && npm run test:snooze-reminder && npm run test:command-palette && npm run test:themes && npm run test:task-stats && npm run test:palette-ranking && npm run test:history-export && npm run test:task-due-dates && npm run test:task-due-management",
+    "test": "npm run test:permissions && npm run test:vision && npm run test:control && npm run test:agent && npm run test:files && npm run test:notes && npm run test:kb && npm run test:automation && npm run test:event-triggers && npm run test:memory && npm run test:screenshot-note && npm run test:snooze-reminder && npm run test:command-palette && npm run test:themes && npm run test:task-stats && npm run test:palette-ranking && npm run test:history-export && npm run test:task-due-dates && npm run test:task-due-management && npm run test:snooze-ui && npm run test:snooze-ui-renderer",
     "test:event-triggers": "node src/main/test-event-triggers.js",
     "test:memory": "node src/main/test-memory.js",
     "test:command-palette": "node src/main/test-command-palette.js",
@@ -37,7 +37,9 @@
     "test:notes": "node src/main/test-notes.js",
     "test:kb": "node src/main/test-kb.js",
     "test:automation": "node src/main/test-automation.js",
-    "smoke:auto": "node scripts/smoke-auto-e2e.js"
+    "smoke:auto": "node scripts/smoke-auto-e2e.js",
+    "test:snooze-ui": "node src/main/test-snooze-ui.js",
+    "test:snooze-ui-renderer": "node src/main/test-snooze-ui-renderer.js"
   },
   "build": {
     "appId": "com.nova.assistant",

@@ -210,10 +210,16 @@ registerAction({
   description: "Snooze the last fired reminder for a duration (default 10 minutes)",
   simulate: async (p) => ({ summary: `would snooze the last fired reminder by ${Math.round(((p.seconds || 0) * 1000) / 60000)} minute(s) — fires again at ${new Date(p.dueAt).toLocaleTimeString()}` }),
   execute: async (p) => {
+    // Round 19: the UI snooze chips name the reminder by id (p.fromUi +
+    // p.id). The voice path still targets the most recently fired one.
+    // When the caller gives `seconds`, the new due time is now + seconds.
     const fired = (store.all().reminders || []).filter((r) => r.fired).sort((a, b) => (b.updatedAt || b.createdAt || "").localeCompare(a.updatedAt || a.createdAt || ""));
     if (!fired.length) return { ok: false, error: "no-fired" };
-    const last = fired[0];
-    const rearmed = store.rearmReminder(last.id, p.dueAt);
+    const targetId = p.fromUi ? String(p.id || "") : null;
+    const last = targetId ? (fired.find((r) => r.id === targetId) || null) : fired[0];
+    if (!last) return { ok: false, error: "no-fired" };
+    const dueAt = p.dueAt || (Number(p.seconds) > 0 ? new Date(Date.now() + Number(p.seconds) * 1000).toISOString() : null);
+    const rearmed = store.rearmReminder(last.id, dueAt);
     if (!rearmed) return { ok: false, error: "reminder vanished while snoozing" };
     return { ok: true, reminder: rearmed, dueAt: rearmed.dueAt, seconds: p.seconds || 600, kind: "reminder-snoozed" };
   },
