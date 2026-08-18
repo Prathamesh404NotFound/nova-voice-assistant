@@ -140,10 +140,73 @@ function setTaskDone(id, done) {
   load();
   const item = __data.tasks.find((t) => t.id === id);
   if (!item) return null;
+  const goingDone = !!done && !item.done;
   item.done = !!done;
   item.updatedAt = nowISO();
+  // Round 14: record the completion moment so the task-stats streak can see
+  // which days actually had a completion — set to null on un-done, since the
+  // history is then rewritten.
+  item.completedAt = goingDone ? nowISO() : null;
   save();
   return stripInternal(item);
+}
+
+/**
+ * Round 14: task statistics — completion rate, weekly completions, and the
+ * current streak (consecutive days ending today or yesterday with at least
+ * one task completed). Fully local read; the store never invents history it
+ * did not record (completedAt is nil for tasks done before this round).
+ */
+function taskStats() {
+  load();
+  const tasks = __data.tasks || [];
+  const done = tasks.filter((t) => t.done);
+  const pending = tasks.length - done.length;
+  const rate = tasks.length ? Math.round((done.length / tasks.length) * 100) : 0;
+  // Weekly window: the last 7 days (rolling), completions in the window.
+  const weekAgo = Date.now() - 7 * 86_400_000;
+  const weekCompletions = done.filter((t) => t.completedAt && new Date(t.completedAt).getTime() >= weekAgo).length;
+  // Streak: walk back day-by-day from today; each day counts only if the day
+  // had >=1 completion. A gap breaks the streak — but today not-yet-having a
+  // completion is tolerated (yesterday closes the streak instead).
+  const daysWith = new Set(
+    done
+      .filter((t) => t.completedAt)
+      .map((t) => new Date(t.completedAt).toISOString().slice(0, 10)),
+  );
+  let streak = 0;
+  const start = new Date();
+  let offset = 0; // 0 = today
+  while (true) {
+    const d = new Date(start.getTime() - offset * 86_400_000);
+    const key = d.toISOString().slice(0, 10);
+    if (offset === 0) {
+      // Today only extends the streak if it already has a completion; the
+      // streak window is then anchored to yesterday instead (or stays 0).
+      if (daysWith.has(key)) {
+        streak += 1;
+        offset += 1;
+      } else {
+        offset += 1; // anchor point: yesterday
+      }
+      continue;
+    }
+    if (daysWith.has(key)) {
+      streak += 1;
+      offset += 1;
+    } else {
+      break;
+    }
+    if (streak >= 365) break; // history cap — no older than a year
+  }
+  return {
+    totalTasks: tasks.length,
+    done: done.length,
+    pending,
+    completionRate: rate,
+    weekCompletions,
+    currentStreakDays: streak,
+  };
 }
 
 /** Delete a note; returns its content for undo/telemetry. */
@@ -234,7 +297,7 @@ function resetForTesting() {
 }
 
 module.exports = {
-  all, addNote, addReminder, rearmReminder, addTask, setTaskDone,
+  all, addNote, addReminder, rearmReminder, addTask, setTaskDone, taskStats,
   deleteNote, deleteTask, cancelReminder, searchNotes, summarizeOf,
   dueReminders, markFired,
   setStorePathForTesting, resetForTesting, filePath,

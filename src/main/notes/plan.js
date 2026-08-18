@@ -57,6 +57,14 @@ const RE_SEARCH_NOTES =
 // "show my notes" / "list my notes"
 const RE_NOTES_LIST = /^(?:show|list|what('s| is))\s+(?:my\s+)?notes$/i;
 
+// Round 14: "how am I doing on my tasks" / "task stats" / "my completion rate"
+// NOTE: the optional-group + \b combo ((?:istics)?\b) breaks under JS regex
+// backtracking — use explicit alternation instead. The 'task stats(s)' branch
+// excludes task-creation/mark-done phrasings ('add task …', 'mark task …
+// done') via lookbehind/negative-lookahead — those belong to their own rules
+// that run before/after this check.
+const RE_TASK_STATS = /(?:how(?: am i|('s| is)) (?:doing (?:with|on) my|is my task))\s*tasks?\b|(?<!\b(?:add|mark)\b\s+.*)\b(?:create|new)\s+task stats(?:istics)?\b|(?<!\b(?:add|mark)\b\s+.*)\b(?:task stats|task statistics)\b(?!\s+(?:sheet|review|list|for|about))|\bcompletion rate\b|how many tasks have i done|my task (?:completion rate|progress|stats|statistics)/i;
+
 // "delete my note about milk" / "delete the task buy milk"
 const RE_DELETE = /^delete\s+(?:my |the )?(note|task)\s+["“]?(.+?)["”]?\s*$/i;
 
@@ -184,6 +192,13 @@ function planNoteAction(text, ctx = {}) {
   // Round 12: screenshot-to-note — checked BEFORE the generic RE_NOTE.
   if (RE_SCREEN_NOTE.test(t)) {
     return { actionId: "notes:screen-to-note", payload: {} };
+  }
+
+  // Round 14: task stats — checked first, before every add/list/delete rule
+  // so phrases like "task stats" or "task completion rate" are never read as
+  // "add task 'stats'" / "delete task …".
+  if (RE_TASK_STATS.test(t)) {
+    return { actionId: "notes:task-stats", payload: {} };
   }
 
   m = RE_NOTE.exec(t);
@@ -350,5 +365,5 @@ module.exports = {
   planNoteAction, parseTime, matchTask, findById,
   RE_NOTE, RE_REMIND, RE_TASK_ADD, RE_TASKS_LIST, RE_TASK_DONE,
   RE_SEARCH_NOTES, RE_NOTES_LIST, RE_DELETE, RE_DELETE_ID, RE_REMIND_CANCEL, RE_SUMMARIZE,
-  RE_SNOOZE,
+  RE_SNOOZE, RE_TASK_STATS,
 };

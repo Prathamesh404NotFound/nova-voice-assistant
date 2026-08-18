@@ -159,6 +159,19 @@ registerAction({
   },
 });
 
+// Round 14: task stats — read-only aggregate over the local store. L1 (safe):
+// completion rate, weekly completions, current streak. Zero network.
+registerAction({
+  id: "notes:task-stats",
+  level: RISK_LEVEL.SAFE,
+  description: "Read-only task statistics: completion rate, weekly completions, current streak",
+  simulate: async () => ({ summary: "would read your task list and compute completion stats locally" }),
+  execute: async () => {
+    const s = store.taskStats();
+    return { stats: s, kind: "task-stats" };
+  },
+});
+
 // Round 13: snooze — re-arms the most recently FIRED reminder (there is no
 // newer fired one to speak of — snooze is only meaningful against a reminder
 // that already nudged the user). Re-arming is L1 (safe, local only); the

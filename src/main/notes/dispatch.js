@@ -217,6 +217,23 @@ function formatLocalResult(actionId, payload, detail) {
         actionId, detail: { kind: "reminder-cancelled", reminder: r },
       };
     }
+    // Round 14: read-only task statistics.
+    case "notes:task-stats": {
+      const s = detail.stats || {};
+      const verdict = s.completionRate >= 80
+        ? "Great pace!"
+        : s.completionRate >= 50
+          ? "You're past half way."
+          : s.totalTasks
+            ? "Lots still to do — keep going."
+            : "No tasks yet — say \"add X to my tasks\" anytime.";
+      return {
+        ok: true, intent: "notes",
+        text: `You have ${s.totalTasks} task${s.totalTasks === 1 ? "" : "s"}: ${s.done} done, ${s.pending} pending — a ${s.completionRate}% completion rate. ${s.weekCompletions} completed in the last 7 days${s.currentStreakDays ? `, and your current streak is ${s.currentStreakDays} day${s.currentStreakDays === 1 ? "" : "s"}` : ""}. ${verdict}`,
+        narration: "Here's your task progress…",
+        actionId, detail: { kind: "task-stats", stats: s },
+      };
+    }
     // Round 13: snooze — re-arms the last fired reminder.
     case "notes:snooze-reminder": {
       const r = detail.reminder || {};
