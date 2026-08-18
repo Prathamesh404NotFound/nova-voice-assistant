@@ -205,6 +205,29 @@
         </div>
         <button id="setKeyBtn" class="flat-btn">Set / change key</button>
         <div class="settings-note">Key is stored with your OS keychain — never a plaintext file, never logged. You can also launch Nova with the <code>OPENROUTER_API_KEY</code> environment variable.</div>
+        <!-- Round 8: TTS voice customization (speechSynthesis — local only) -->
+        <div class="settings-row toggle-row" style="margin-top:10px;">
+          <span>Voice (TTS)</span>
+          <label class="switch">
+            <input id="ttsMuteToggle" type="checkbox" />
+            <span class="switch-slider"></span>
+          </label>
+        </div>
+        <div id="ttsVoiceRow" class="tts-voice-row">
+          <select id="ttsVoiceSelect" title="Pick the voice Nova speaks with"></select>
+          <button id="ttsPreviewBtn" class="flat-btn small" title="Preview this voice">&#9654; Preview</button>
+        </div>
+        <div class="tts-slider-row">
+          <label class="tts-slider-label">Speed</label>
+          <input id="ttsRate" type="range" min="0.5" max="2" step="0.05" value="1.02" />
+          <span id="ttsRateVal" class="tts-slider-val">1.02x</span>
+        </div>
+        <div class="tts-slider-row">
+          <label class="tts-slider-label">Pitch</label>
+          <input id="ttsPitch" type="range" min="0.5" max="2" step="0.05" value="1.0" />
+          <span id="ttsPitchVal" class="tts-slider-val">1.00</span>
+        </div>
+        <div class="settings-note">Voice, speed and pitch are stored on this machine only — Nova reads them from the browser's built-in speech voices, nothing is downloaded.</div>
         <!-- Stage 10 Round 2: Wake word (Porcupine) -->
         <div class="settings-row toggle-row" style="margin-top:8px;">
           <span>Wake word ("Hey Nova")</span>

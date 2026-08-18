@@ -1283,3 +1283,13 @@ html, body {
 .onboarding-actions { display: flex; gap: 10px; justify-content: center; }
 .cta.ghost { background: transparent; border: 1px solid #3a3a55; color: #8a8aa4; }
 .cta.ghost:hover { border-color: var(--cyan, #39d2ff); color: var(--cyan, #39d2ff); }
+
+/* Round 8 — TTS voice customization in the side panel */
+.tts-voice-row { display: flex; gap: 6px; margin-top: 7px; align-items: stretch; }
+#ttsVoiceSelect { flex: 1; background: #0a0d14; color: #c2cbd8; border: 1px solid #262b3a; border-radius: 7px; padding: 5px 7px; font-family: var(--font-body, system-ui); font-size: 12px; outline: none; }
+#ttsVoiceSelect:focus { border-color: var(--cyan, #39d2ff); }
+#ttsVoiceSelect option { background: #10131e; }
+.tts-slider-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.tts-slider-label { font-size: 11px; color: #8493a6; min-width: 42px; }
+.tts-slider-row input[type="range"] { flex: 1; accent-color: var(--cyan, #39d2ff); height: 14px; }
+.tts-slider-val { font-size: 11px; font-family: var(--font-mono, monospace); color: var(--cyan, #39d2ff); min-width: 38px; text-align: right; }

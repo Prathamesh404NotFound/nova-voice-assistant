@@ -57,6 +57,9 @@
     autoPendingCard: $("autoPendingCard"),
     wakeWordToggle: $("wakeWordToggle"), wakeWordStatus: $("wakeWordStatus"),
     setAccessKeyBtn: $("setAccessKeyBtn"),
+    ttsMuteToggle: $("ttsMuteToggle"), ttsVoiceSelect: $("ttsVoiceSelect"),
+    ttsPreviewBtn: $("ttsPreviewBtn"), ttsRate: $("ttsRate"), ttsRateVal: $("ttsRateVal"),
+    ttsPitch: $("ttsPitch"), ttsPitchVal: $("ttsPitchVal"), ttsVoiceRow: $("ttsVoiceRow"),
   };
 
   // ------------------------------------------------------------------ clock
@@ -1192,14 +1195,37 @@
   // ======================================================================
   // TTS (speechSynthesis) with instant barge-in
   // ======================================================================
+  // Round 8: TTS customization persisted in localStorage (voiceURI, rate,
+  // pitch, muted). Settings apply immediately to the next utterance.
+  const TTS_KEY = "nova-tts-settings";
+  const ttsDefaults = { voiceURI: null, rate: 1.02, pitch: 1.0, muted: false };
+  function loadTtsSettings() {
+    try {
+      const raw = localStorage.getItem(TTS_KEY);
+      const saved = raw ? JSON.parse(raw) : {};
+      return { ...ttsDefaults, ...saved };
+    } catch { return { ...ttsDefaults }; }
+  }
+  function saveTtsSettings(s) {
+    try { localStorage.setItem(TTS_KEY, JSON.stringify(s)); } catch { /* quota/privacy mode */ }
+  }
+  let ttsSettings = loadTtsSettings();
+
   function speak(text) {
     if (!window.speechSynthesis) return;
     stopSpeaking();
+    if (ttsSettings.muted) {
+      // Muted: nothing is spoken, but the prepared answer still shows.
+      setMode("idle", "IDLE");
+      el.liveLine.textContent = text + "\u2009(sound muted)";
+      return;
+    }
     const utter = new SpeechSynthesisUtterance(text);
-    utter.rate = 1.02;
-    utter.pitch = 1.0;
+    utter.rate = Math.min(2, Math.max(0.5, Number(ttsSettings.rate) || 1.02));
+    utter.pitch = Math.min(2, Math.max(0.5, Number(ttsSettings.pitch) || 1.0));
     const voices = speechSynthesis.getVoices();
-    const preferred = voices.find((v) => /en[-_]US/i.test(v.lang) && /female|samantha|zira|google us english/i.test(v.name))
+    const preferred = (ttsSettings.voiceURI ? voices.find((v) => v.voiceURI === ttsSettings.voiceURI) : null)
+                   || voices.find((v) => /en[-_]US/i.test(v.lang) && /female|samantha|zira|google us english/i.test(v.name))
                    || voices.find((v) => /en/i.test(v.lang));
     if (preferred) utter.voice = preferred;
     utter.onstart = () => { state.ttsActive = true; setMode("speaking", "SPEAKING"); el.liveLine.textContent = text; };
@@ -1235,10 +1261,96 @@
     if (state.ttsActive) stopSpeaking();
   });
 
+  // Round 8: TTS settings UI — voice picker, speed/pitch sliders, mute toggle.
+  // All persisted in localStorage only; no outbound traffic.
+  function voiceDisplayName(v) {
+    return (v.name ? v.name + (v.localService ? "" : " (online)") : v.voiceURI)
+         + " — " + (v.lang || "");
+  }
+  function populateVoiceSelect(keepSelection) {
+    const s = el.ttsVoiceSelect;
+    if (!s || !window.speechSynthesis) return;
+    const current = keepSelection && s.value ? s.value : ttsSettings.voiceURI;
+    s.innerHTML = "";
+    const voices = speechSynthesis.getVoices();
+    const english = voices.filter((v) => /en/i.test(v.lang));
+    const others = voices.filter((v) => !/en/i.test(v.lang));
+    const addOption = (v) => {
+      const o = document.createElement("option");
+      o.value = v.voiceURI;
+      o.textContent = voiceDisplayName(v);
+      s.appendChild(o);
+    };
+    if (english.length) { english.forEach(addOption); }
+    if (others.length) { others.forEach(addOption); }
+    if (!s.options.length) {
+      const o = document.createElement("option");
+      o.value = "";
+      o.textContent = "No voices available";
+      s.appendChild(o);
+    } else if (current && Array.from(s.options).some((o) => o.value === current)) {
+      s.value = current;
+    }
+    el.ttsVoiceRow.hidden = false;
+  }
+  function applyTtsUI() {
+    if (el.ttsRate) { el.ttsRate.value = ttsSettings.rate; el.ttsRateVal.textContent = Number(ttsSettings.rate).toFixed(2).replace(/0$/, "") + "x"; }
+    if (el.ttsPitch) { el.ttsPitch.value = ttsSettings.pitch; el.ttsPitchVal.textContent = Number(ttsSettings.pitch).toFixed(2); }
+    if (el.ttsMuteToggle) {
+      el.ttsMuteToggle.checked = !!ttsSettings.muted;
+      if (el.ttsVoiceRow) el.ttsVoiceRow.hidden = !!ttsSettings.muted;
+    }
+  }
+  if (el.ttsMuteToggle) {
+    el.ttsMuteToggle.addEventListener("change", () => {
+      ttsSettings.muted = el.ttsMuteToggle.checked;
+      saveTtsSettings(ttsSettings);
+      if (el.ttsVoiceRow) el.ttsVoiceRow.hidden = ttsSettings.muted;
+    });
+  }
+  if (el.ttsVoiceSelect) {
+    el.ttsVoiceSelect.addEventListener("change", () => {
+      ttsSettings.voiceURI = el.ttsVoiceSelect.value || null;
+      saveTtsSettings(ttsSettings);
+    });
+  }
+  if (el.ttsRate) {
+    el.ttsRate.addEventListener("input", () => {
+      ttsSettings.rate = Number(el.ttsRate.value);
+      el.ttsRateVal.textContent = ttsSettings.rate.toFixed(2).replace(/0$/, "") + "x";
+      saveTtsSettings(ttsSettings);
+    });
+  }
+  if (el.ttsPitch) {
+    el.ttsPitch.addEventListener("input", () => {
+      ttsSettings.pitch = Number(el.ttsPitch.value);
+      el.ttsPitchVal.textContent = ttsSettings.pitch.toFixed(2);
+      saveTtsSettings(ttsSettings);
+    });
+  }
+  if (el.ttsPreviewBtn) {
+    el.ttsPreviewBtn.addEventListener("click", () => {
+      if (ttsSettings.muted) return;
+      stopSpeaking();
+      const preview = new SpeechSynthesisUtterance("Hello! This is Nova speaking with your selected voice.");
+      preview.rate = ttsSettings.rate;
+      preview.pitch = ttsSettings.pitch;
+      const voices = speechSynthesis.getVoices();
+      const v = ttsSettings.voiceURI ? voices.find((x) => x.voiceURI === ttsSettings.voiceURI) : null;
+      if (v) preview.voice = v;
+      speechSynthesis.speak(preview);
+    });
+  }
+  applyTtsUI();
+
   // Load voice list asynchronously
   if (window.speechSynthesis) {
-    speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+    const fillAndRestore = () => populateVoiceSelect(true);
+    speechSynthesis.onvoiceschanged = fillAndRestore;
     speechSynthesis.getVoices();
+    // Voices may already be loaded before onvoiceschanged ever fires.
+    const alreadyLoaded = speechSynthesis.getVoices().length > 0;
+    if (alreadyLoaded) populateVoiceSelect(true);
   }
 
   // ======================================================================
