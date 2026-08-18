@@ -13,3 +13,4 @@ output/partial/
 *.pyc
 .nova-screen-note-test-data/
 .nova-snooze-test-data/
+.nova-task-stats-test-data/
