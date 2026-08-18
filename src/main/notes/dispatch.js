@@ -371,13 +371,19 @@ function formatLocalResult(actionId, payload, detail) {
       };
     }
     // Round 24: greeting — personalized by user name and Nova's personality.
+    // Round 26: when a user name is set and today has anything on it, the
+    // greeting carries a one-line day preview (counts only — no item text —
+    // so the first "good morning" already hints at the plate).
     case "notes:greet": {
       const id = identityGet();
+      const greeting = greetLine(id.personality, id.userName);
+      // Round 26: day preview — additive (empty name/day → untouched line).
+      const preview = greetSnapshot(store.dailyBriefing());
       return {
         ok: true, intent: "notes",
-        text: greetLine(id.personality, id.userName),
-        narration: greetLine(id.personality, id.userName),
-        actionId, detail: { kind: "greet", identity: id },
+        text: greeting + preview,
+        narration: greeting + preview,
+        actionId, detail: { kind: "greet", identity: id, snapshot: !!preview },
       };
     }
     // Round 24: remember a fact about the user. L1 SAFE — acknowledgement
@@ -444,7 +450,7 @@ function formatLocalResult(actionId, payload, detail) {
 // Round 24: greeting helper — time-of-day greeting personalized by the user's
 // name and Nova's identity personality (tone only, never fact wording).
 const { get: identityGet } = require("../identity/identity");
-const { personalizeNarration, applyTimePreference } = require("./dispatch-personal");
+const { personalizeNarration, applyTimePreference, greetSnapshot, userFacts } = require("./dispatch-personal");
 
 function greetLine(personality, userName) {
   const hour = new Date().getHours();
@@ -456,4 +462,4 @@ function greetLine(personality, userName) {
   // warm (default)
   return `${tod}${who} — glad you're here. What shall we do today?`;
 }
-module.exports = { runNoteAction, planNoteAction, storeContext, formatLocalResult, greetLine };
+module.exports = { runNoteAction, planNoteAction, storeContext, formatLocalResult, greetLine, greetSnapshot };

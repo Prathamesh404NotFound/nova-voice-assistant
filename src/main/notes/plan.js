@@ -98,7 +98,10 @@ const RE_NOTES_LIST = /^(?:show|list|what('s| is))\s+(?:my\s+)?notes$/i;
 // / "morning briefing" / "what do I have due today" — one spoken snapshot of
 // today: due tasks, overdue, and reminders. Checked before the notes list so
 // "brief" phrasings are never read as a search/list request.
-const RE_BRIEFING = /^(?:nova\s*,?\s*)?(?:what('s| is) on my plate today|brief me on today|(?:today|morning|daily)\s+briefing|what do i have due today|give me my briefing)\s*$/i;
+// Round 26: question phrasings ("how's my day looking", "what's the plan for
+// today") join the same test so the natural ask-and-greet shape of a voice
+// assistant routes to the daily-briefing gate from the first conversation.
+const RE_BRIEFING = /^(?:nova\s*,?\s*)?(?:what('s| is) on my plate today|brief me on today|(?:today|morning|daily)\s+briefing|what do i have due today|give me my briefing|how('s| is) (?:my day looking|today looking|today for me)|how does today look|what('s| is) the plan for today)\s*$/i;
 
 // Round 23: "my week in review" / "weekly digest" / "how did my week go" —
 // one spoken snapshot of the week: completed, pending, overdue, next week's

@@ -25,3 +25,4 @@ output/partial/
 .nova-identity-briefing-test-data/
 identity.json
 actions.log.json
+.nova-greeting-test-data/

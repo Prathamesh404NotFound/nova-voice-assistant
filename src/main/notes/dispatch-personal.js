@@ -97,4 +97,53 @@ function applyTimePreference(items) {
   return items;
 }
 
-module.exports = { personalizeNarration, applyTimePreference, userFacts };
+/**
+ * One-line day preview for the greeting path (Round 26).
+ *
+ * A greeting still opens the same way as always — but when the user's name
+ * is set and today actually has anything on it (due/overdue tasks or
+ * reminders firing), Nova adds a short, personality-tuned preview so the
+ * very first thing Nova says when you say "good morning" carries your day:
+ * "Good morning, Alex — two things on the plate today, and buy milk is overdue."
+ *
+ * Additive: no name or an empty day → greeting line is untouched (byte-
+ * identical pre-R26), so no earlier harness or conversation regresses.
+ * Pure local composition — no model call, no networking.
+ * @param {object} briefing  store.dailyBriefing() result {dueToday, overdue, remindersToday}
+ * @returns {string} empty string (no preview) or the preview clause, leading " — "
+ */
+function greetSnapshot(briefing) {
+  const id = identityGet();
+  const name = (id.userName || "").trim();
+  const personality = id.personality || "warm";
+  if (!name || !briefing) return "";
+  const nDue = (briefing.dueToday || []).length;
+  const nOv = (briefing.overdue || []).length;
+  // Greeting previews what's still waiting — a fired or cancelled reminder
+  // already rang today, so it doesn't belong in the hello line.
+  const nRem = (briefing.remindersToday || []).filter((r) => !r.fired).length;
+  if (!nDue && !nOv && !nRem) return "";
+
+  // Name the day in the user's preferred time of day when a time fact exists
+  // (R25 bridge): "your morning" vs "your afternoon" — otherwise "today".
+  const timeFact = userFacts(2).find((f) => TIME_FACT_REGEX.test(f));
+  const when = timeFact
+    ? { morning: "morning", afternoon: "afternoon", evening: "evening", night: "night" }[(TIME_FACT_REGEX.exec(timeFact)[1].toLowerCase())]
+    : null;
+  const dayWord = when ? `${when} ` : "";
+
+  const pieces = [];
+  if (nDue) pieces.push(`${nDue} thing${nDue === 1 ? "" : "s"} on the plate`);
+  if (nOv) pieces.push(`${nOv} overdue`);
+  // The " today" tail would double "today has … today" on a reminder-only
+  // plate — drop it when nothing else is on the plate.
+  if (nRem) pieces.push(`${nRem} reminder${nRem === 1 ? "" : "s"}${nDue || nOv ? " today" : ""}`);
+  const summary = pieces.join(" and ");
+  if (personality === "concise") return ` — ${summary}.`;
+  if (personality === "professional") return ` — ${dayWord}today: ${summary}.`;
+  if (personality === "playful") return ` — the ${dayWord}cosmos wrote you ${summary}!`;
+  // warm (default)
+  return ` — ${dayWord}today has ${summary}.`;
+}
+
+module.exports = { personalizeNarration, applyTimePreference, userFacts, greetSnapshot };
