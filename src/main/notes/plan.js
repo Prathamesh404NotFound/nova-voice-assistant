@@ -130,6 +130,14 @@ const RE_USER_MODEL_ASK = /^(?:nova\s*,?\s*)?(?:what do you know about me|what h
 // alternation below covers both shapes explicitly.
 const RE_GREETING = /^(?:nova\s*,?\s*)?(?:good\s+(?:morning|afternoon|evening)(?:\s+nova)?|hey(?:\s+nova)?|hi(?:\s+nova)?|hello(?:\s+nova)?)\s*$/i;
 
+// Round 28: mood-aware task prioritization. "what should I work on first" /
+// "prioritize my tasks" → notes:priority-check. Purely read-only (L1 SAFE):
+// it answers from the pending task list + the latest mood check-in (low-
+// energy moods surface the smallest tasks first). Exact-match phrases that
+// run BEFORE RE_NOTE — otherwise "what should I work on first" would be
+// swallowed as a plain note.
+const RE_PRIORITY_CHECK = /^(?:nova\s*,?\s*)?(?:what should i work on first|prioritize my tasks|what(?:'s| is) (?:most )?urgent|what(?:'s| is) the most important(?: task)?|help me prioritize|what comes first|order my tasks|what should i do first)\s*$/i;
+
 // Round 27: mood/energy check-in. "how am i feeling today" / "check in with
 // me" → notes:mood-check (reads the latest mood fact). The question must run
 // BEFORE the user-model ask branch: without it, "how am i feeling today" would
@@ -384,6 +392,13 @@ function planNoteAction(text, ctx = {}) {
   }
   if (RE_GREETING.test(t)) {
     return { actionId: "notes:greet", payload: {} };
+  }
+  // Round 28: mood-aware prioritization. Exact-match read-only phrases run
+  // right after mood check-in — before RE_NOTE and before every task-
+  // creation/edit rule, so "prioritize my tasks" is never read as "add task
+  // 'my tasks'" or "what should I work on first" as a plain note.
+  if (RE_PRIORITY_CHECK.test(t)) {
+    return { actionId: "notes:priority-check", payload: {} };
   }
   // Round 27: mood/energy check-in. Questions run first (they're exact-match
   // phrases, so they can't accidentally swallow real notes).

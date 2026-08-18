@@ -1,11 +1,11 @@
 [
   {
-    "ts": "2026-08-18T09:15:27.482Z",
+    "ts": "2026-08-18T09:28:24.458Z",
     "actionId": "notes:task-stats",
     "level": 1,
     "levelName": "safe",
     "outcome": "success",
-    "durationMs": 1,
+    "durationMs": 0,
     "detail": {
       "stats": {
         "totalTasks": 5,

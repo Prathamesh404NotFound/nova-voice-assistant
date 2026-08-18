@@ -328,6 +328,18 @@ registerAction({
   },
 });
 
+// Round 28: mood-aware task prioritization — "what should I work on first?".
+// Purely read-only: orders pending tasks (overdue first, then due today,
+// then the rest) and lets the latest mood check-in lift the smallest tasks
+// to the top when energy is low. L1 SAFE — nothing is written, zero network.
+registerAction({
+  id: "notes:priority-check",
+  level: RISK_LEVEL.SAFE,
+  description: "Order pending tasks by urgency and the latest mood check-in (read-only)",
+  simulate: async () => ({ summary: "would order your pending tasks by urgency and how you're feeling" }),
+  execute: async (p) => ({ result: { pending: store.all().tasks, now: p && p.now ? new Date(p.now).getTime() : Date.now() }, kind: "priority-check" }),
+});
+
 registerAction({
   id: "notes:summarize-notes",
   level: RISK_LEVEL.REVERSIBLE,

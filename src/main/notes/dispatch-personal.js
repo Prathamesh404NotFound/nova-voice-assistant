@@ -238,4 +238,66 @@ function moodGreet(now = Date.now()) {
   return `you told me ${age} ("${mood.fact}") — `;
 }
 
-module.exports = { personalizeNarration, applyTimePreference, userFacts, greetSnapshot, latestMood, moodAge, moodNarration, moodGreet };
+// Round 28: low-energy mood words — the moods that should change the
+// prioritization strategy. When the latest check-in reads as one of these,
+// Nova surfaces the smallest remaining tasks first (quick wins beat
+// deadlines when energy is low). Same spirit as MOOD_FACT_REGEX but only the
+// low-energy subset, so "I feel tired" reorders while "I feel energized"
+// does not.
+const LOW_ENERGY_RE = /\b(?:tired|exhausted|stressed|drained|fatigued|down|low|burnt|burned out|burning out|sluggish|foggy|overwhelmed|wiped out|fried|flat|off)\b/i;
+
+/**
+ * Order pending tasks by urgency, with the latest mood as a strategy hint.
+ *
+ * The urgency ladder is fixed and honest:
+ *   1. Overdue tasks, oldest first (the most overdue waits longest).
+ *   2. Due today, soonest due date first.
+ *   3. Everything else — when the latest mood check-in reads as low energy,
+ *      the smallest tasks (fewest words) go first so a tired user can
+ *      bank quick wins; otherwise, original order is preserved.
+ *
+ * Pure function — no require of store, no identity module side effects;
+ * the caller passes in the tasks. `now` is injectable for deterministic
+ * tests. Additive: with no low-energy mood the "rest" bucket stays in the
+ * order it was passed in, so mood never silently reshuffles a healthy day.
+ *
+ * @param {Array} tasks  pending task objects {id, text, dueDate?, createdAt}
+ * @param {number} [now] epoch ms (testing seam)
+ * @returns {{order: Array, lowEnergy: boolean}}
+ */
+function prioritize(tasks, now = Date.now()) {
+  if (!tasks || !tasks.length) return { order: [], lowEnergy: false };
+  const lowEnergy = !!latestMood() && LOW_ENERGY_RE.test(latestMood().fact);
+
+  const safeDay = (iso) => {
+    if (!iso) return null;
+    try {
+      const d = new Date(iso);
+      d.setHours(0, 0, 0, 0);
+      return d;
+    } catch { return null; }
+  };
+  const today = new Date(now);
+  today.setHours(0, 0, 0, 0);
+  const tms = today.getTime();
+
+  const overdue = tasks
+    .filter((t) => safeDay(t.dueDate) && safeDay(t.dueDate).getTime() < tms)
+    .sort((a, b) => safeDay(a.dueDate) - safeDay(b.dueDate));
+  const dueToday = tasks
+    .filter((t) => !safeDay(t.dueDate) ? false : safeDay(t.dueDate).getTime() === tms)
+    .sort((a, b) => safeDay(a.dueDate) - safeDay(b.dueDate));
+  const rest = tasks
+    .filter((t) => !safeDay(t.dueDate) || safeDay(t.dueDate).getTime() > tms);
+
+  if (lowEnergy) {
+    // Quick-wins ordering inside the rest bucket only — overdue and due-
+    // today keep their urgency seats even when tired (a deadline is a
+    // deadline; the mood only changes how far down the list you sit).
+    rest.sort((a, b) => (a.text || "").trim().split(/\s+/).length - (b.text || "").trim().split(/\s+/).length);
+  }
+
+  return { order: [...overdue, ...dueToday, ...rest], lowEnergy };
+}
+
+module.exports = { personalizeNarration, applyTimePreference, userFacts, greetSnapshot, latestMood, moodAge, moodNarration, moodGreet, LOW_ENERGY_RE, prioritize };

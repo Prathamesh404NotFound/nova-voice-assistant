@@ -64,12 +64,13 @@ function addFact(fact) {
   if (!text) return { ok: false, error: "empty-fact" };
   if (text.length > 200) return { ok: false, error: "too-long" };
   const key = factKey(text);
+  const nowISO = () => (__nowForTesting || new Date()).toISOString();
   const idx = data.facts.findIndex((f) => f.key === key);
   if (idx >= 0) {
     data.facts[idx].fact = text;
-    data.facts[idx].updatedAt = new Date().toISOString();
+    data.facts[idx].updatedAt = nowISO();
   } else {
-    const item = { key, fact: text, createdAt: new Date().toISOString() };
+    const item = { key, fact: text, createdAt: nowISO(), updatedAt: nowISO() };
     // oldest first (user recollection order); drop the oldest when full.
     if (data.facts.length >= MAX_FACTS) data.facts.shift();
     data.facts.push(item);
@@ -97,7 +98,11 @@ function relevantFacts(n = 3) {
   return data.facts.slice(-Math.max(0, n || 0));
 }
 
-// Testing hooks.
+// Testing hooks — setNowForTesting pins the fact timestamps so harnesses can
+// assert age wording and mood-recency thresholds without waiting in real time.
+let __nowForTesting = null;
+function setNowForTesting(d) { __nowForTesting = d ? new Date(d) : null; }
+
 function setStorePathForTesting(dir) {
   dataPath = path.join(dir, "user-model.json");
   data = { facts: [] };
@@ -111,4 +116,4 @@ function resetForTesting() {
 }
 
 load();
-module.exports = { addFact, removeFact, list, relevantFacts, factKey, MAX_FACTS, setStorePathForTesting, resetForTesting };
+module.exports = { addFact, removeFact, list, relevantFacts, factKey, MAX_FACTS, setStorePathForTesting, resetForTesting, setNowForTesting };

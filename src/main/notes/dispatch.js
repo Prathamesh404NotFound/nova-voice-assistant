@@ -93,7 +93,14 @@ async function runNoteAction(text, opts = {}) {
   }
 
   // --- All other notes actions: local, through the gate. ---
-  const res = await gate.runAction(actionId, payload, { taskId: opts.taskId });
+  // Round 28: pin the clock for the priority-check action so tests (and a
+  // future "what should I do at 8pm" voice shape) stay deterministic — the
+  // store's today/overdue math is day-granular and must never drift with the
+  // live clock mid-run.
+  const effPayload = actionId === "notes:priority-check" && opts.now !== undefined
+    ? { ...payload, now: new Date(opts.now).getTime() }
+    : payload;
+  const res = await gate.runAction(actionId, effPayload, { taskId: opts.taskId });
   if (res.outcome === "cancelled") {
     return {
       ok: false, intent: "notes",
@@ -440,6 +447,70 @@ function formatLocalResult(actionId, payload, detail) {
         actionId, detail: { kind: "mood-statement", fact: detail.fact },
       };
     }
+    // Round 28: mood-aware prioritization — "what should I work on first?".
+    // Purely read-only: orders pending tasks (overdue first, oldest first;
+    // then due today; then the rest) and lets a recent low-energy mood
+    // check-in lift the smallest tasks to the top of the rest bucket —
+    // quick wins beat deadlines when energy is low. L1 SAFE, local only.
+    case "notes:priority-check": {
+      const pc = detail.result || {};
+      const pend = (pc.pending || []).slice();
+      if (!pend.length) {
+        return {
+          ok: true, intent: "notes",
+          text: "Nothing to prioritize — your plate is clean. Say \"add X to my tasks\" when you have something on it.",
+          narration: "Nothing to prioritize — your plate is clean.",
+          actionId, detail: { kind: "priority-check", order: [], lowEnergy: false },
+        };
+      }
+      const pc2 = prioritize(pend, pc.now);
+      // Labels for the spoken list: overdue / due today / the rest.
+      const safeDay = (iso) => {
+        if (!iso) return null;
+        try {
+          const d = new Date(iso);
+          d.setHours(0, 0, 0, 0);
+          return d;
+        } catch { return null; }
+      };
+      const todayMs = new Date(pc.now).setHours(0, 0, 0, 0);
+      const tagged = pc2.order.map((t) => {
+        const d = safeDay(t.dueDate);
+        const tag = !d ? "" : d.getTime() < todayMs ? "overdue" : d.getTime() === todayMs ? "due today" : "";
+        return { text: t.text, tag };
+      });
+      // Cap the spoken list at 5 — a laundry list defeats the point of a
+      // prioritized answer; the rest still wait their turn.
+      const shown = tagged.slice(0, 5);
+      const left = tagged.length - shown.length;
+      const listed = shown.map((x, i) => `${i + 1}. ${x.text}${x.tag ? ` (${x.tag})` : ""}`).join(". ") + ".";
+      // Mood framing: a recent check-in (<12h of the real wall clock) explains
+      // the strategy when energy is low, or simply colors the opener when
+      // energy is fine. Mood aging is wall-clock real (a check-in from last
+      // night is stale whether today's math is pinned or not) — pc.now pins
+      // only the due-date/overdue bucket math.
+      const mood = latestMood();
+      const moodRecent = mood && (Date.now() - new Date(mood.updatedAt).getTime()) < 12 * 3_600_000;
+      let text;
+      if (pc2.lowEnergy && moodRecent) {
+        const opener = moodAge(mood.updatedAt, pc.now);
+        text = `You said ${opener} "${mood.fact}" — so small wins first: ${listed}`;
+      } else if (moodRecent) {
+        const opener = moodAge(mood.updatedAt, pc.now);
+        text = `You said ${opener} "${mood.fact}" — here's what I'd work on first: ${listed}`;
+      } else {
+        text = `Here's what I'd work on first: ${listed}`;
+      }
+      if (left > 0) {
+        text += ` …and ${left} more after those.`;
+      }
+      return {
+        ok: true, intent: "notes",
+        text,
+        narration: `Here's how I'd order your day${pc2.lowEnergy ? " — small wins first" : ""}\u2026`,
+        actionId, detail: { kind: "priority-check", order: pc2.order, lowEnergy: pc2.lowEnergy, moodRecent: !!moodRecent },
+      };
+    }
     // Round 24: remember a fact about the user. L1 SAFE — acknowledgement
     // line follows the personality for warmth but the fact itself is echoed
     // verbatim so nothing gets paraphrased away.
@@ -504,7 +575,7 @@ function formatLocalResult(actionId, payload, detail) {
 // Round 24: greeting helper — time-of-day greeting personalized by the user's
 // name and Nova's identity personality (tone only, never fact wording).
 const { get: identityGet } = require("../identity/identity");
-const { personalizeNarration, applyTimePreference, greetSnapshot, userFacts, latestMood, moodAge, moodNarration, moodGreet } = require("./dispatch-personal");
+const { personalizeNarration, applyTimePreference, greetSnapshot, userFacts, latestMood, moodAge, moodNarration, moodGreet, prioritize } = require("./dispatch-personal");
 
 function greetLine(personality, userName) {
   const hour = new Date().getHours();
@@ -516,4 +587,4 @@ function greetLine(personality, userName) {
   // warm (default)
   return `${tod}${who} — glad you're here. What shall we do today?`;
 }
-module.exports = { runNoteAction, planNoteAction, storeContext, formatLocalResult, greetLine, greetSnapshot, latestMood, moodAge, moodNarration, moodGreet };
+module.exports = { runNoteAction, planNoteAction, storeContext, formatLocalResult, greetLine, greetSnapshot, latestMood, moodAge, moodNarration, moodGreet, prioritize };

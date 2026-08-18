@@ -1,5 +1,676 @@
 [
   {
+    "ts": "2026-08-18T09:28:18.475Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msygmp7v-qkuge2",
+      "name": "tea-time",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "time"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:28:18.376Z",
+    "actionId": "automation:event-run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msygmnci-uaq584",
+      "name": "tmp-watch",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:28:18.375Z",
+    "actionId": "automation:run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msygmnci-uaq584-1787045298373",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msygmnci-uaq584",
+      "name": "tmp-watch",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T09:28:18.373Z",
+    "actionId": "automation:run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msygmnci-uaq584-1787045298373",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msygmnci-uaq584",
+      "name": "tmp-watch",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T09:28:16.050Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msygmnci-uaq584",
+      "name": "tmp-watch",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "file"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:28:15.747Z",
+    "actionId": "automation:toggle",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msygmn40-vdddt7",
+      "enabled": false
+    }
+  },
+  {
+    "ts": "2026-08-18T09:28:15.744Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msygmn40-vdddt7",
+      "name": "wake-note",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:27:59.741Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msygmarh-flmdv7",
+      "name": "idle-report",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "idle"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:27:58.755Z",
+    "actionId": "automation:event-run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msyglyex-brybym",
+      "name": "idle-report",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:27:58.753Z",
+    "actionId": "automation:run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msyglyex-brybym-1787045278751",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyglyex-brybym",
+      "name": "idle-report",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T09:27:58.751Z",
+    "actionId": "automation:run",
+    "level": 0,
+    "levelName": "read",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msyglyex-brybym-1787045278751",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyglyex-brybym",
+      "name": "idle-report",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T09:27:43.737Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyglyex-brybym",
+      "name": "idle-report",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "idle"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:27:41.534Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyglwpq-ll2ahb",
+      "name": "tea-time",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "time"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:27:40.037Z",
+    "actionId": "automation:event-run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msyglus8-idm38v",
+      "name": "tea-time",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:27:40.036Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msyglus8-idm38v-1787045260035",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyglus8-idm38v",
+      "name": "tea-time",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T09:27:40.035Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msyglus8-idm38v-1787045260035",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyglus8-idm38v",
+      "name": "tea-time",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T09:27:39.032Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyglus8-idm38v",
+      "name": "tea-time",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "time"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:27:38.530Z",
+    "actionId": "automation:event-run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msyglue7-8dmwyk",
+      "name": "wake-note",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:27:38.529Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msyglue7-8dmwyk-1787045258528",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyglue7-8dmwyk",
+      "name": "wake-note",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T09:27:38.528Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msyglue7-8dmwyk-1787045258528",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msyglue7-8dmwyk",
+      "name": "wake-note",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T09:27:38.527Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyglue7-8dmwyk",
+      "name": "wake-note",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:27:38.224Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msyglu5s-0ejcy1",
+      "name": "wake-note",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:27:37.924Z",
+    "actionId": "automation:event-run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "detail": {
+      "automationId": "auto-msygltwu-0uq4hf",
+      "name": "wake-note",
+      "status": "partial"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:27:37.922Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "taskId": "auto-run-auto-msygltwu-0uq4hf-1787045257905",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msygltwu-0uq4hf",
+      "name": "wake-note",
+      "status": "partial",
+      "stepsRun": 1
+    }
+  },
+  {
+    "ts": "2026-08-18T09:27:37.913Z",
+    "actionId": "automation:run",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "taskId": "auto-run-auto-msygltwu-0uq4hf-1787045257905",
+    "durationMs": 0,
+    "detail": {
+      "automationId": "auto-msygltwu-0uq4hf",
+      "name": "wake-note",
+      "steps": 1,
+      "gated": false
+    }
+  },
+  {
+    "ts": "2026-08-18T09:27:37.903Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msygltwu-0uq4hf",
+      "name": "wake-note",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:27:37.901Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "failed",
+    "reason": "I could not find a schedule. Try “every day at 9 AM”, “every weekday at 8 AM”, or “every Monday at 7:30pm”."
+  },
+  {
+    "ts": "2026-08-18T09:27:37.899Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msygltwr-mkn5c2",
+      "name": "ev",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "event"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:27:37.897Z",
+    "actionId": "automation:add",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "detail": {
+      "automationId": "auto-msygltwo-dv8ly3",
+      "name": "downloads-watcher",
+      "steps": 1,
+      "status": "safe",
+      "trigger": "file"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:25:30.282Z",
+    "actionId": "notes:mood-statement",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 1,
+    "detail": {
+      "ok": true,
+      "fact": "I feel exhausted today",
+      "kind": "mood-statement"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:25:14.916Z",
+    "actionId": "notes:mood-statement",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 2,
+    "detail": {
+      "ok": true,
+      "fact": "I feel exhausted today",
+      "kind": "mood-statement"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:25:10.849Z",
+    "actionId": "notes:priority-check",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "result": {
+        "pending": [
+          {
+            "id": "n-msygiofq-9n4b8j",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T09:25:10.838Z",
+            "updatedAt": "2026-08-18T09:25:10.839Z",
+            "dueDate": "2026-08-18T10:00:00.000Z"
+          },
+          {
+            "id": "n-msygiofr-xpag6z",
+            "text": "fix auth bug",
+            "done": false,
+            "createdAt": "2026-08-18T09:25:10.839Z",
+            "updatedAt": "2026-08-18T09:25:10.839Z",
+            "dueDate": "2026-08-17T10:00:00.000Z"
+          },
+          {
+            "id": "n-msygiofr-g5d3d6",
+            "text": "meeting prep",
+            "done": false,
+            "createdAt": "2026-08-18T09:25:10.839Z",
+            "updatedAt": "2026-08-18T09:25:10.839Z",
+            "dueDate": "2026-08-19T10:00:00.000Z"
+          },
+          {
+            "id": "n-msygiofr-7zew90",
+            "text": "quarterly report",
+            "done": false,
+            "createdAt": "2026-08-18T09:25:10.839Z",
+            "updatedAt": "2026-08-18T09:25:10.840Z",
+            "dueDate": "2026-08-24T10:00:00.000Z"
+          },
+          {
+            "id": "n-msygiofs-uo9yny",
+            "text": "reply to clients email",
+            "done": false,
+            "createdAt": "2026-08-18T09:25:10.840Z",
+            "updatedAt": "2026-08-18T09:25:10.840Z"
+          }
+        ],
+        "now": 1787133600000
+      },
+      "kind": "priority-check"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:25:10.845Z",
+    "actionId": "notes:mood-statement",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 2,
+    "detail": {
+      "ok": true,
+      "fact": "I feel exhausted today",
+      "kind": "mood-statement"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:24:24.140Z",
+    "actionId": "notes:priority-check",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "result": {
+        "pending": [
+          {
+            "id": "n-msyghoeb-mtfg87",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T09:24:24.131Z",
+            "updatedAt": "2026-08-18T09:24:24.132Z",
+            "dueDate": "2026-08-18T10:00:00.000Z"
+          }
+        ],
+        "now": 1787133600000
+      },
+      "kind": "priority-check"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:24:24.137Z",
+    "actionId": "notes:mood-statement",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 2,
+    "detail": {
+      "ok": true,
+      "fact": "I feel exhausted today",
+      "kind": "mood-statement"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:24:15.784Z",
+    "actionId": "notes:priority-check",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "result": {
+        "pending": [
+          {
+            "id": "n-msyghhy1-109nvm",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T09:24:15.769Z",
+            "updatedAt": "2026-08-18T09:24:15.770Z",
+            "dueDate": "2026-08-18T10:00:00.000Z"
+          },
+          {
+            "id": "n-msyghhy2-8kbh5e",
+            "text": "meeting prep",
+            "done": false,
+            "createdAt": "2026-08-18T09:24:15.770Z",
+            "updatedAt": "2026-08-18T09:24:15.770Z",
+            "dueDate": "2026-08-19T10:00:00.000Z"
+          },
+          {
+            "id": "n-msyghhy2-o034z2",
+            "text": "quarterly report",
+            "done": false,
+            "createdAt": "2026-08-18T09:24:15.770Z",
+            "updatedAt": "2026-08-18T09:24:15.770Z"
+          }
+        ],
+        "now": 1787133600000
+      },
+      "kind": "priority-check"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:24:15.783Z",
+    "actionId": "notes:mood-statement",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 1,
+    "detail": {
+      "ok": true,
+      "fact": "I feel okay",
+      "kind": "mood-statement"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:24:15.781Z",
+    "actionId": "notes:priority-check",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "result": {
+        "pending": [
+          {
+            "id": "n-msyghhy1-109nvm",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T09:24:15.769Z",
+            "updatedAt": "2026-08-18T09:24:15.770Z",
+            "dueDate": "2026-08-18T10:00:00.000Z"
+          },
+          {
+            "id": "n-msyghhy2-8kbh5e",
+            "text": "meeting prep",
+            "done": false,
+            "createdAt": "2026-08-18T09:24:15.770Z",
+            "updatedAt": "2026-08-18T09:24:15.770Z",
+            "dueDate": "2026-08-19T10:00:00.000Z"
+          },
+          {
+            "id": "n-msyghhy2-o034z2",
+            "text": "quarterly report",
+            "done": false,
+            "createdAt": "2026-08-18T09:24:15.770Z",
+            "updatedAt": "2026-08-18T09:24:15.770Z"
+          }
+        ],
+        "now": 1787180400000
+      },
+      "kind": "priority-check"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:24:15.778Z",
+    "actionId": "notes:priority-check",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 0,
+    "detail": {
+      "result": {
+        "pending": [
+          {
+            "id": "n-msyghhy1-109nvm",
+            "text": "pay rent",
+            "done": false,
+            "createdAt": "2026-08-18T09:24:15.769Z",
+            "updatedAt": "2026-08-18T09:24:15.770Z",
+            "dueDate": "2026-08-18T10:00:00.000Z"
+          },
+          {
+            "id": "n-msyghhy2-8kbh5e",
+            "text": "meeting prep",
+            "done": false,
+            "createdAt": "2026-08-18T09:24:15.770Z",
+            "updatedAt": "2026-08-18T09:24:15.770Z",
+            "dueDate": "2026-08-19T10:00:00.000Z"
+          },
+          {
+            "id": "n-msyghhy2-o034z2",
+            "text": "quarterly report",
+            "done": false,
+            "createdAt": "2026-08-18T09:24:15.770Z",
+            "updatedAt": "2026-08-18T09:24:15.770Z"
+          }
+        ],
+        "now": 1787133600000
+      },
+      "kind": "priority-check"
+    }
+  },
+  {
+    "ts": "2026-08-18T09:24:15.775Z",
+    "actionId": "notes:mood-statement",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 1,
+    "detail": {
+      "ok": true,
+      "fact": "I feel exhausted today",
+      "kind": "mood-statement"
+    }
+  },
+  {
     "ts": "2026-08-18T09:15:21.474Z",
     "actionId": "automation:add",
     "level": 1,
