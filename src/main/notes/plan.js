@@ -38,6 +38,12 @@ const RE_TASK_DONE = /^(?:mark|set)\s+(.+?)\s+(?:as\s+)?done$|^done[:\s]+(.+)/i;
 // "cancel reminder <id>" (side-panel mouse path)
 const RE_REMIND_CANCEL = /^cancel reminder\s+(["“]?[\w-]+["”]?)\s*$/i;
 
+// Round 13: "snooze 10 minutes" / "snooze it for an hour" / "snooze reminder
+// for 5 minutes" — re-arms the most recently fired reminder. Bare "snooze"
+// alone is accepted (defaults to 10 minutes).
+const RE_SNOOZE = /^(?:snooze|pause|delay)(?:\s+(?:it|the reminder|that reminder|reminder))?(?:\s+(?:for|by))?\s*(in\s+.+|.+)?$/i;
+const SNOOZE_DEFAULT_MS = 10 * 60_000; // 10 minutes
+
 // "delete note <id>" / "delete task <id>" (side-panel mouse path)
 const RE_DELETE_ID = /^delete\s+(note|task|reminder)\s+(["“]?[\w-]+["”]?)\s*$/i;
 
@@ -112,6 +118,18 @@ function parseTime(expr) {
         matched++;
       }
     }
+    if (matched) return new Date(now.getTime() + totalMs);
+    // Round 13: word-only quantities — "an hour", "a minute", "half an hour".
+    const wordSpecs = [
+      [/(?:^|\s)an?\s+hours?\b/i, 3600_000],
+      [/(?:^|\s)an?\s+minutes?\b/i, 60_000],
+      [/(?:^|\s)an?\s+seconds?\b/i, 1_000],
+    ];
+    for (const [re, ms] of wordSpecs) {
+      const globalRe = new RegExp(re.source, "gi");
+      for (const m of parts.matchAll(globalRe)) { totalMs += ms; matched++; }
+    }
+    if (/half\s+an?\s+hour\b|half\s+hour/i.test(parts)) { totalMs += 30 * 60_000; matched++; }
     if (matched) return new Date(now.getTime() + totalMs);
   }
 
@@ -252,6 +270,19 @@ function planNoteAction(text, ctx = {}) {
     return { actionId: "notes:complete-task", payload: { id: task.id, text: task.text } };
   }
 
+  // Round 13: snooze — checked BEFORE cancel/lookup rules.
+  m = RE_SNOOZE.exec(t);
+  if (m) {
+    const expr = (m[1] || "").trim() || null;
+    let dueAt = null;
+    if (expr) {
+      // "snooze 10 minutes" → expr "10 minutes"; "snooze in 10 minutes" → "in 10 minutes".
+      dueAt = parseTime(expr);
+    }
+    if (!dueAt) dueAt = new Date(Date.now() + SNOOZE_DEFAULT_MS);
+    return { actionId: "notes:snooze-reminder", payload: { dueAt: dueAt.toISOString(), seconds: Math.round((dueAt.getTime() - Date.now()) / 1000) } };
+  }
+
   m = RE_REMIND_CANCEL.exec(t);
   if (m) {
     const reminder = findById(ctx.reminders, m[1]);
@@ -319,4 +350,5 @@ module.exports = {
   planNoteAction, parseTime, matchTask, findById,
   RE_NOTE, RE_REMIND, RE_TASK_ADD, RE_TASKS_LIST, RE_TASK_DONE,
   RE_SEARCH_NOTES, RE_NOTES_LIST, RE_DELETE, RE_DELETE_ID, RE_REMIND_CANCEL, RE_SUMMARIZE,
+  RE_SNOOZE,
 };

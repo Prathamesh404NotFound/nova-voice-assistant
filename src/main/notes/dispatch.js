@@ -217,6 +217,24 @@ function formatLocalResult(actionId, payload, detail) {
         actionId, detail: { kind: "reminder-cancelled", reminder: r },
       };
     }
+    // Round 13: snooze — re-arms the last fired reminder.
+    case "notes:snooze-reminder": {
+      const r = detail.reminder || {};
+      if (detail.ok === false) {
+        const msg = detail.error === "no-fired"
+          ? "There's no fired reminder to snooze — did one already ring? If it was already snoozed, it's set for later."
+          : "I could not snooze that reminder — it may no longer exist.";
+        return { ok: false, intent: "notes", text: msg, actionId, detail: { kind: "reminder-snoozed", error: detail.error } };
+      }
+      const mins = Math.max(1, Math.round((detail.seconds || 0) / 60));
+      const at = new Date(detail.dueAt || r.dueAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+      return {
+        ok: true, intent: "notes",
+        text: `Reminder "${r.text}" snoozed — I'll nudge you again in ${mins} minute${mins === 1 ? "" : "s"} (${at}).`,
+        narration: `Snoozed ${mins} minutes.`,
+        actionId, detail: { kind: "reminder-snoozed", reminder: r },
+      };
+    }
     // Round 12: screenshot-to-note — screen text saved as a local note.
     case "notes:screen-to-note": {
       const note = (detail.note) || {};
