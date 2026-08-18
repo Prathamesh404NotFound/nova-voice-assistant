@@ -1,0 +1,23 @@
+[
+  {
+    "ts": "2026-08-18T07:12:56.821Z",
+    "actionId": "notes:task-stats",
+    "level": 1,
+    "levelName": "safe",
+    "outcome": "success",
+    "durationMs": 1,
+    "detail": {
+      "stats": {
+        "totalTasks": 5,
+        "done": 0,
+        "pending": 5,
+        "completionRate": 0,
+        "weekCompletions": 0,
+        "currentStreakDays": 0,
+        "dueThisWeek": 2,
+        "overdue": 1
+      },
+      "kind": "task-stats"
+    }
+  }
+]

@@ -229,7 +229,7 @@ function formatLocalResult(actionId, payload, detail) {
             : "No tasks yet — say \"add X to my tasks\" anytime.";
       return {
         ok: true, intent: "notes",
-        text: `You have ${s.totalTasks} task${s.totalTasks === 1 ? "" : "s"}: ${s.done} done, ${s.pending} pending — a ${s.completionRate}% completion rate. ${s.weekCompletions} completed in the last 7 days${s.currentStreakDays ? `, and your current streak is ${s.currentStreakDays} day${s.currentStreakDays === 1 ? "" : "s"}` : ""}. ${verdict}`,
+        text: `You have ${s.totalTasks} task${s.totalTasks === 1 ? "" : "s"}: ${s.done} done, ${s.pending} pending — a ${s.completionRate}% completion rate. ${s.weekCompletions} completed in the last 7 days${s.currentStreakDays ? `, and your current streak is ${s.currentStreakDays} day${s.currentStreakDays === 1 ? "" : "s"}` : ""}. ${s.overdue ? s.overdue + " task" + (s.overdue === 1 ? " is" : "s are") + " overdue" : "Nothing is overdue"}${s.dueThisWeek ? `, and ${s.dueThisWeek} due this week` : ""}. ${verdict}`,
         narration: "Here's your task progress…",
         actionId, detail: { kind: "task-stats", stats: s },
       };

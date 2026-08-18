@@ -63,7 +63,7 @@ const RE_NOTES_LIST = /^(?:show|list|what('s| is))\s+(?:my\s+)?notes$/i;
 // excludes task-creation/mark-done phrasings ('add task …', 'mark task …
 // done') via lookbehind/negative-lookahead — those belong to their own rules
 // that run before/after this check.
-const RE_TASK_STATS = /(?:how(?: am i|('s| is)) (?:doing (?:with|on) my|is my task))\s*tasks?\b|(?<!\b(?:add|mark)\b\s+.*)\b(?:create|new)\s+task stats(?:istics)?\b|(?<!\b(?:add|mark)\b\s+.*)\b(?:task stats|task statistics)\b(?!\s+(?:sheet|review|list|for|about))|\bcompletion rate\b|how many tasks have i done|my task (?:completion rate|progress|stats|statistics)/i;
+const RE_TASK_STATS = /(?:how(?: am i|('s| is)) (?:doing (?:with|on) my|is my task))\s*tasks?\b|(?<!\badd\b\s)(?<!\bmark\b\s)\b(?:create|new)\s+task stats(?:istics)?\b|(?<!\badd\b\s)(?<!\bmark\b\s)\b(?:task stats|task statistics)\b(?!\s+(?:sheet|review|list|for|about))|\bcompletion rate\b|how many tasks have i done|my task (?:completion rate|progress|stats|statistics)/i;
 
 // "delete my note about milk" / "delete the task buy milk"
 const RE_DELETE = /^delete\s+(?:my |the )?(note|task)\s+["“]?(.+?)["”]?\s*$/i;
@@ -144,6 +144,74 @@ function parseTime(expr) {
   return null;
 }
 
+/**
+ * Round 17: parse a task due-date expression. Returns a Date or null.
+ * Supports: "in 3 days", "by Friday", "next Monday", "tomorrow",
+ * "today", "end of day" / "by tonight", "this weekend", "next week",
+ * "in 2 weeks". Times are kept day-granular (due at end of the day) so a
+ * task isn't silently marked overdue because of the current hour.
+ */
+const DAY_NAMES = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+const WEEK_MS = 7 * 86_400_000;
+
+function parseDueDate(expr, now = __nowForTesting || new Date()) {
+  const e = String(expr || "").trim().toLowerCase();
+  if (!e) return null;
+
+  // "in N days", "in 2 weeks"
+  const relDays = /^(?:in\s+)?(\d+(?:\.\d+)?)\s*(days?|weeks?)\b/i.exec(e);
+  if (relDays) {
+    const n = parseFloat(relDays[1]);
+    const mult = /^week/i.test(relDays[2]) ? 7 : 1;
+    const d = new Date(now);
+    d.setDate(d.getDate() + Math.round(n * mult));
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }
+
+  // "by Friday", "Friday", "next Monday" — nearest matching weekday at EOD
+  const weekday = /^((?:next\s+)?(?:this\s+)?(?:by\s+)?)(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/i.exec(e);
+  if (weekday) {
+    const targetIdx = DAY_NAMES.indexOf(weekday[2].toLowerCase());
+    if (targetIdx >= 0) {
+      const todayIdx = now.getDay();
+      let delta = targetIdx - todayIdx;
+      const prefix = weekday[1].toLowerCase().trim();
+      if (/^next/.test(prefix)) delta = delta <= 0 ? delta + 7 : delta; // next = strictly future
+      else delta = delta <= 0 ? delta + 7 : delta || 7; // 'by Friday' / bare 'Friday' = upcoming
+      const d = new Date(now);
+      d.setDate(d.getDate() + delta);
+      d.setHours(23, 59, 59, 999);
+      return d;
+    }
+  }
+
+  if (/^today$|^by\s+today$|end\s+of\s+day|by\s+tonight$|^tonight$/i.test(e)) {
+    const d = new Date(now);
+    d.setHours(23, 59, 59, 999);
+    return d;
+  }
+  if (/^tomorrow$|^by\s+tomorrow$/i.test(e)) {
+    const d = new Date(now);
+    d.setDate(d.getDate() + 1);
+    d.setHours(23, 59, 59, 999);
+    return d;
+  }
+  if (/^this\s+weekend$/i.test(e)) {
+    const d = new Date(now);
+    d.setDate(d.getDate() + ((6 - d.getDay() + 7) % 7 || 7));
+    d.setHours(23, 59, 59, 999);
+    return d;
+  }
+  if (/^next\s+week$/i.test(e)) {
+    const d = new Date(now);
+    d.setDate(d.getDate() + 7);
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }
+  return null;
+}
+
 function clockHm(expr, base) {
   const m = /^(\d{1,2})(?::(\d{2}))?\s*(am|pm)?$/i.exec(expr.trim());
   if (!m) return null;
@@ -160,6 +228,13 @@ function clockHm(expr, base) {
 }
 
 // Planning --------------------------------------------------------------
+
+// Module-level test clock (Round 17) — harnesses pin 'now' via
+// setNowForTesting(date) so due-date math is deterministic. null == live clock.
+let __nowForTesting = null;
+function setNowForTesting(d) { __nowForTesting = d ? new Date(d) : null; }
+const nowForTesting = { now() { return __nowForTesting || new Date(); } };
+
 
 /** Pick the first task whose text matches (case-insensitive substring). */
 function matchTask(tasks, text) {
@@ -261,11 +336,33 @@ function planNoteAction(text, ctx = {}) {
     return { actionId: "notes:add-reminder", payload: { text: bare, dueAt: null, timeExpr: null } };
   }
 
-  m = RE_TASK_ADD.exec(t);
+  // Round 17: "add finish report to my tasks by Friday" / "task fix bug due in 3 days"
+  // RE_TASK_ADD is anchored (…to my tasks$), so a trailing due clause must be
+  // stripped FIRST; the bare task then matches the normal add rule.
+  const DUE_CLAUSE = /\s+(?:by|due|due by|due on)\s+((?:in\s+\d+(?:\.\d+)?\s+(?:day|week)s?|\d+(?:\.\d+)?\s+(?:day|week)s?|(?:next\s+)?(?:this\s+)?(?:by\s+)?(?:sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b|today|by\s+today|tomorrow|by\s+tomorrow|end\s+of\s+day|by\s+tonight|tonight|this\s+weekend|next\s+week))$/i;
+  let dueExpr = null;
+  let taskSubject = t;
+  const dm = DUE_CLAUSE.exec(t);
+  if (dm) {
+    const stripped = t.slice(0, dm.index).trim();
+    // Only strip when the remainder still looks like a task request — avoids
+    // mangling unrelated sentences that merely end with "by Friday".
+    if (stripped && (/^add\s+.+$/i.test(stripped) || /^task[:\s]+.+$/i.test(stripped))) {
+      taskSubject = stripped;
+      dueExpr = dm[1];
+    }
+  }
+  m = RE_TASK_ADD.exec(taskSubject);
   if (m) {
-    const taskText = (m[1] || m[2] || "").trim();
+    let taskText = (m[1] || m[2] || "").trim();
     if (!taskText) return { error: "Add what to your tasks? Try \"add buy milk to my tasks\"." };
-    return { actionId: "notes:add-task", payload: { text: taskText } };
+    let dueDate = dueExpr ? parseDueDate(dueExpr, nowForTesting.now()) : null;
+    const payload = { text: taskText };
+    if (dueDate) payload.dueDate = dueDate.toISOString();
+    return { actionId: "notes:add-task", payload };
+  }
+  if (dueExpr && !m) {
+    return { error: "That looks like a task with a due date. Say \"add finish the report to my tasks by Friday\" so I can file it properly." };
   }
 
   if (RE_TASKS_LIST.test(t)) {
@@ -362,7 +459,7 @@ function planNoteAction(text, ctx = {}) {
 }
 
 module.exports = {
-  planNoteAction, parseTime, matchTask, findById,
+  planNoteAction, parseTime, parseDueDate, setNowForTesting, matchTask, findById,
   RE_NOTE, RE_REMIND, RE_TASK_ADD, RE_TASKS_LIST, RE_TASK_DONE,
   RE_SEARCH_NOTES, RE_NOTES_LIST, RE_DELETE, RE_DELETE_ID, RE_REMIND_CANCEL, RE_SUMMARIZE,
   RE_SNOOZE, RE_TASK_STATS,

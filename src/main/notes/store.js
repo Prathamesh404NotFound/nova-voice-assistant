@@ -126,10 +126,14 @@ function rearmReminder(id, dueAt) {
   return stripInternal(item);
 }
 
-/** Add a task. Returns the task. */
-function addTask(text) {
+/**
+ * Add a task. `opts` may carry a day-granular `dueDate` ISO string (Round 17).
+ * Returns the task.
+ */
+function addTask(text, opts = {}) {
   load();
   const item = { id: genId(), text: String(text).trim(), done: false, createdAt: nowISO(), updatedAt: nowISO() };
+  if (opts.dueDate && !isNaN(Date.parse(opts.dueDate))) item.dueDate = opts.dueDate;
   __data.tasks.push(item);
   save();
   return stripInternal(item);
@@ -199,6 +203,25 @@ function taskStats() {
     }
     if (streak >= 365) break; // history cap — no older than a year
   }
+  // Round 17: due-date view — pending tasks due within 7 days and overdue
+  // counts (day-granular; due dates store at end-of-day, so a task due today
+  // is not yet overdue until tomorrow).
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const weekEnd = new Date(today.getTime() + 7 * 86_400_000);
+  const pendingTasks = tasks.filter((t) => !t.done);
+  const dueThisWeek = pendingTasks.filter((t) => {
+    if (!t.dueDate) return false;
+    let d; try { d = new Date(t.dueDate); } catch { return false; }
+    d.setHours(0, 0, 0, 0);
+    return d >= today && d <= weekEnd;
+  }).length;
+  const overdue = pendingTasks.filter((t) => {
+    if (!t.dueDate) return false;
+    let d; try { d = new Date(t.dueDate); } catch { return false; }
+    d.setHours(0, 0, 0, 0);
+    return d < today;
+  }).length;
   return {
     totalTasks: tasks.length,
     done: done.length,
@@ -206,6 +229,8 @@ function taskStats() {
     completionRate: rate,
     weekCompletions,
     currentStreakDays: streak,
+    dueThisWeek,
+    overdue,
   };
 }
 

@@ -817,6 +817,10 @@ html, body {
 .notes-item.done .notes-text { text-decoration: line-through; }
 .notes-text { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .notes-sub { color: #6a719a; font-size: 10px; flex-shrink: 0; }
+/* Round 17: due-date badges on pending tasks */
+.notes-item .notes-sub { white-space: nowrap; }
+.notes-sub.due-overdue { color: var(--amber); font-weight: 600; }
+.notes-sub.due-soon { color: var(--cyan-dim); font-weight: 600; }
 .notes-check { flex-shrink: 0; }
 .notes-check input[type="checkbox"] { accent-color: var(--cyan, #39d2ff); width: 13px; height: 13px; cursor: pointer; margin: 0; }
 .notes-del {

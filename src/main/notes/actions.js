@@ -43,7 +43,7 @@ registerAction({
   description: "Add an item to the local task list",
   simulate: async (p) => ({ summary: `would add "${(p.text || "").slice(0, 60)}" to your task list` }),
   execute: async (p) => {
-    const task = store.addTask(p.text);
+    const task = store.addTask(p.text, { dueDate: p.dueDate || null });
     return { task, kind: "task" };
   },
 });

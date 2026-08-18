@@ -106,6 +106,27 @@
     }
   }
 
+  // Round 17: due-date badge for pending tasks. Day-granular math — due dates
+  // are stored at end-of-day, so "due today" holds until midnight.
+  function dueBadge(task) {
+    if (task.done || !task.dueDate) return "";
+    let d;
+    try {
+      d = new Date(task.dueDate);
+    } catch {
+      return "";
+    }
+    if (isNaN(d.getTime())) return "";
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const due = new Date(d);
+    due.setHours(0, 0, 0, 0);
+    const days = Math.round((due - today) / 86_400_000);
+    if (days === 0) return "due today";
+    if (days < 0) return Math.abs(days) + "d overdue";
+    return "in " + days + "d";
+  }
+
   /** Render the active tab from the local store (no network — reads userData). */
   async function refreshNotesList() {
     const res = await window.nova.getNotesStore().catch(() => null);
@@ -126,14 +147,25 @@
       return;
     }
     if (tab === "tasks") {
-      el.notesList.innerHTML = items
-        .map((t) => `
+      // Round 17: pending tasks with a due date float to the top (soonest first);
+      // a small badge reads "due today" / "in 2d" / "3d overdue".
+      const sorted = items.slice().sort((a, b) => {
+        if (a.done !== b.done) return a.done ? 1 : -1;
+        if (!a.done && a.dueDate && b.dueDate) return new Date(a.dueDate) - new Date(b.dueDate);
+        return 0;
+      });
+      el.notesList.innerHTML = sorted
+        .map((t) => {
+          const badge = dueBadge(t);
+          const dueCls = badge.endsWith(" overdue") ? " due-overdue" : badge ? " due-soon" : "";
+          return `
         <div class="notes-item${t.done ? " done" : ""}">
           <label class="notes-check"><input type="checkbox" ${t.done ? "checked" : ""} data-notes-action="task-toggle" data-notes-id="${escapeAttr(t.id)}" /></label>
           <span class="notes-text">${escapeHtml(String(t.text || ""))}</span>
-          <span class="notes-sub">${t.done ? "done" : ""}</span>
+          <span class="notes-sub${dueCls}">${t.done ? "done" : badge}</span>
           <button class="notes-del" data-notes-action="delete" data-notes-id="${escapeAttr(t.id)}" title="Delete">&times;</button>
-        </div>`).join("");
+        </div>`;
+        }).join("");
       return;
     }
     if (tab === "reminders") {
