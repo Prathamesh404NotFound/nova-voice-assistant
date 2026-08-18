@@ -7,3 +7,7 @@ free-models-cache.json
 eng.traineddata
 .nova-ctrl-test-data/
 .nova-agent-test-data/
+output/__pycache__/
+output/final_media/
+output/partial/
+*.pyc
