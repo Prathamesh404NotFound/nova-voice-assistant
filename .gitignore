@@ -12,3 +12,4 @@ output/final_media/
 output/partial/
 *.pyc
 .nova-screen-note-test-data/
+.nova-snooze-test-data/
