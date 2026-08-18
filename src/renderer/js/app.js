@@ -29,7 +29,7 @@
     orbCanvas: $("orbCanvas"), orbCore: $("orbCore"), orbLabel: $("orbLabel"),
     orbWrap: $("orbWrap"), liveLine: $("liveLine"), liveHear: $("liveHear"),
     talkBtn: $("talkBtn"), continuousCheck: $("continuousCheck"),
-    sidePanel: $("sidePanel"), sideToggle: $("sideToggle"), sideClose: $("sideClose"),
+    sidePanel: $("sidePanel"), sideToggle: $("sideToggle"), sideClose: $("sideClose"), paletteHint: $("paletteHint"),
     history: $("history"), typeForm: $("typeForm"), typeInput: $("typeInput"),
     devModel: $("devModel"), devCount: $("devCount"), devUpdated: $("devUpdated"),
     devTask: $("devTask"), devTaskBody: $("devTaskBody"), devToggle: $("devToggle"),
@@ -2130,6 +2130,28 @@ let historyItems = [];
   initKbPanel();
   initAutoPanel();
   initWakeWord();
+
+  // Round 10: command palette — Cmd/Ctrl+K opens a fuzzy launcher over every
+  // registered action (which keep their risk levels and confirmation gates)
+  // plus local UI affordances.
+  if (window.NovaPaletteSetup && typeof window.NovaPaletteSetup.createPalette === "function") {
+    const palette = window.NovaPaletteSetup.createPalette({
+      el,
+      setSidePanel: (open) => setSidePanel(open),
+      runKbCommand,
+      submitMessage,
+      refreshPermPanel,
+      exportLog: () => el.permExportBtn.click(),
+      startListening: () => { if (state.mode !== "listening") el.talkBtn.click(); },
+      stopSpeaking: () => { if (state.ttsActive) stopSpeaking(); },
+      isSpeaking: () => state.ttsActive,
+      onActionRun: (text) => { el.liveLine.textContent = text; },
+    });
+    if (el.paletteHint) {
+      el.paletteHint.addEventListener("click", () => palette.open());
+    }
+    window.NovaPaletteSetup.bindPaletteHotkey(() => palette.open());
+  }
 
   el.onboardingAck?.addEventListener("click", async () => {
     try {
