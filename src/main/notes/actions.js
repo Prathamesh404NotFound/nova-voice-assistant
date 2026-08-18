@@ -80,6 +80,34 @@ registerAction({
 // L2 — reversible, cancellable 5 s toast, reverse() for Undo
 // ---------------------------------------------------------------------------
 
+// Round 18: change or clear a task's due date. Edit of an existing item →
+// L2 (REVERSIBLE): plain-language toast, 5 s cancel, reverse() restores the
+// old due date (or re-adds a removed one) so the Undo button handles it.
+registerAction({
+  id: "notes:set-task-due",
+  level: RISK_LEVEL.REVERSIBLE,
+  description: "Change or remove the due date of an existing task",
+  simulate: async (p) => {
+    const label = (p.dueDate ? `move the due date of "${(p.text || p.id || "").slice(0, 80)}" from ${(p.oldDueDate ? new Date(p.oldDueDate).toDateString() : "no date")} to ${new Date(p.dueDate).toDateString()}` : `remove the due date from "${(p.text || p.id || "").slice(0, 80)}"`);
+    return {
+      title: `Nova wants to ${label}`,
+      body: "Nothing gets deleted — the old due date can be restored within 5 minutes from the Action Log or the Undo button.",
+    };
+  },
+  execute: async (p) => {
+    // payload.dueDate null = clear the date; a valid ISO string = pin it;
+    // the planner never sends undefined, but guard anyway.
+    const task = store.setTaskDue(p.id, p.dueDate === undefined ? null : p.dueDate);
+    if (!task) throw new Error("task not found");
+    return { task, kind: "task-due-set", oldDueDate: p.oldDueDate || null };
+  },
+  reverse: async (p) => {
+    // Restore the old due date (or clear what was just added).
+    store.setTaskDue(p.id, p.oldDueDate || null);
+    return { undone: true, text: p.task ? p.task.text : String(p.id) };
+  },
+});
+
 registerAction({
   id: "notes:complete-task",
   level: RISK_LEVEL.REVERSIBLE,

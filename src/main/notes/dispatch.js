@@ -186,11 +186,42 @@ function formatLocalResult(actionId, payload, detail) {
     }
     case "notes:complete-task": {
       const t = detail.task || {};
+      // Round 18: light celebration when the task was due today or overdue
+      // (done on/before its due day) or overdue when completed.
+      let extra = "";
+      try {
+        if (t.dueDate) {
+          const due = new Date(t.dueDate);
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          due.setHours(0, 0, 0, 0);
+          extra = due.getTime() >= today.getTime() ? " And right on time — thanks for crushing it." : " Better late than never — that one was overdue!";
+        }
+      } catch { /* never let a bad date break the reply */ }
       return {
         ok: true, intent: "notes",
-        text: `Marked "${t.text}" as done.`,
+        text: `Marked "${t.text}" as done.${extra}`,
         narration: "Task done.",
         actionId, detail: { kind: "task-done", task: t },
+      };
+    }
+    // Round 18: change or clear a task's due date (L2 — already confirmed by the gate).
+    case "notes:set-task-due": {
+      const t = detail.task || {};
+      if (payload.dueDate) {
+        const nice = new Date(payload.dueDate).toDateString();
+        return {
+          ok: true, intent: "notes",
+          text: `Done — "${t.text}" is now due ${nice}.`,
+          narration: `Due date moved to ${nice}.`,
+          actionId, detail: { kind: "task-due-set", task: t },
+        };
+      }
+      return {
+        ok: true, intent: "notes",
+        text: `Removed the due date from "${t.text}" — it stays on your list with no deadline.`,
+        narration: "Due date removed.",
+        actionId, detail: { kind: "task-due-set", task: t },
       };
     }
     case "notes:delete-note": {

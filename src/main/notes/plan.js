@@ -32,6 +32,43 @@ const RE_TASK_ADD = /^add\s+(.+?)\s+to my tasks$|^task[:\s]+(.+)/i;
 // "what's on my task list" / "list my tasks"
 const RE_TASKS_LIST = /(?:what('s| is)\s+(?:on|in)\s+my|list\s+my|show\s+my)\s+task list$|^(?:list|show)\s+(?:my\s+)?tasks$|^tasks$|what tasks do i have/i;
 
+// Round 18: change/clear a task's due date.
+//  a) "change the due date for finish report to next monday"
+//     "move the deadline for finish report to friday"
+//     "reschedule finish report for next week"
+//  b) "finish report is now due by friday" / "finish report due next monday"
+//  c) "remove the due date for finish report" / "finish report no longer has a due date"
+//
+// Task identification always happens against ctx.tasks (must be provided by
+// the dispatcher — voice path snapshots the live store first), and a
+// matched task must be PENDING (done tasks don't get rescheduled by voice).
+// The verb branch (a) always runs when it matches; branches (b)/(c) only
+// apply when the subject matches exactly one pending task.
+// Verb forms cover both the full noun phrase ("change the due date for X to Y")
+// and the shorthand "reschedule X for Y" / "reschedule X to Y".
+const RE_SET_DUE_VERB = /^(?:(?:change|move|push|shift|adjust|update)\s+(?:the\s+)?(?:due\s+date|deadline|due\s+day)\s+(?:of|for|on)\s+(.+?)\s+(?:to|for|to be)\s+(.+)|reschedule\s+(.+?)\s+(?:to|for|to be)\s+(.+))$/i;
+const RE_CLEAR_DUE_VERB = /^(?:remove|delete|clear|drop|cancel)\s+(?:the\s+)?(?:due\s+date|deadline)\s+(?:of|for|on)\s+(.+)$/i;
+const RE_IMPLICIT_SET_DUE = /^(.+?)\s+(?:is\s+(?:now\s+|no longer\s+|)?due|due(?:\s+date)?(?:\s+is)?)\s+(?:to be\s+)?(today|tomorrow|by\s+today|by\s+tomorrow|end\s+of\s+day|by\s+tonight|tonight|this\s+weekend|next\s+week|(?:in\s+)?\d+(?:\.\d+)?\s+(?:day|week)s?|(?:next\s+)?(?:this\s+)?(?:by\s+)?(?:sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b)$/i;
+// "X is no longer due" / "X has/lost/dropped its due date" / "X lost the deadline".
+// Two separate alternations joined with $ anchors so the two-phrase form
+// cannot be matched by a wrong first alt of a single regex.
+const RE_IMPLICIT_CLEAR_DUE = /^(.+?)\s+(?:is\s+)?no\s+longer\s+due$|^(.+?)\s+(?:has|had|lost|dropped)\s+(?:a|the|its|their)\s+(due date|deadline)$/i;
+
+/** Subject → due-date expression for the verb branches. */
+function setDueClause(text) {
+  let m = RE_SET_DUE_VERB.exec(text);
+  if (m) {
+    // Groups 1/2 = noun-phrase form ("change the due date for X to Y"),
+    // groups 3/4 = shorthand ("reschedule X for Y") — whichever matched.
+    const subject = (m[1] || m[3] || "").trim();
+    const dueExpr = (m[2] || m[4] || "").trim();
+    if (subject && dueExpr) return { subject, dueExpr };
+  }
+  m = RE_CLEAR_DUE_VERB.exec(text);
+  if (m) return { subject: m[1], dueExpr: null, clear: true };
+  return null;
+}
+
 // "mark buy milk done" / "done: call dentist" / "mark task <id> done"
 const RE_TASK_DONE = /^(?:mark|set)\s+(.+?)\s+(?:as\s+)?done$|^done[:\s]+(.+)/i;
 
@@ -369,6 +406,55 @@ function planNoteAction(text, ctx = {}) {
     return { actionId: "notes:list-tasks", payload: {} };
   }
 
+  // Round 18: change/clear a due date. Needs ctx.tasks (dispatcher always
+  // snapshots the live store), so voice is the primary path.
+  const vc = setDueClause(t);
+  if (vc) {
+    if (!ctx.tasks || !ctx.tasks.length) {
+      return { error: "Your task list is empty — nothing to reschedule." };
+    }
+    const pend = ctx.tasks.filter((x) => !x.done);
+    const subj = vc.subject.trim();
+    const task = findById(pend, subj) || matchTask(pend, subj);
+    if (!task) return { error: `I could not find a pending task matching "${subj}" to reschedule.` };
+    if (vc.clear) {
+      return { actionId: "notes:set-task-due", payload: { id: task.id, text: task.text, dueDate: null, oldDueDate: task.dueDate || null } };
+    }
+    const due = parseDueDate(vc.dueExpr, nowForTesting.now());
+    if (!due) return { error: `I could not parse "${vc.dueExpr}" as a due date. Try "next monday", "in 3 days", or "by friday".` };
+    return { actionId: "notes:set-task-due", payload: { id: task.id, text: task.text, dueDate: due.toISOString(), oldDueDate: task.dueDate || null } };
+  }
+  // Implicit forms: "finish report is now due by friday" / "fix bug due next monday"
+  // Clear forms MUST be checked before the set forms — "finish report dropped
+  // its due date" would otherwise match the set branch's "due date" middle.
+  const ic = RE_IMPLICIT_CLEAR_DUE.exec(t);
+  if (ic) {
+    if (ctx.tasks && ctx.tasks.length) {
+      const pend = ctx.tasks.filter((x) => !x.done);
+      const subj = (ic[1] || ic[2]).trim();
+      const task = findById(pend, subj) || matchTask(pend, subj);
+      if (task) return { actionId: "notes:set-task-due", payload: { id: task.id, text: task.text, dueDate: null, oldDueDate: task.dueDate || null } };
+    }
+    return { error: "I could not find that task on your list — name it exactly, e.g. \"remove the due date for finish report\"." };
+  }
+  const im = RE_IMPLICIT_SET_DUE.exec(t);
+  if (im) {
+    if (ctx.tasks && ctx.tasks.length) {
+      const pend = ctx.tasks.filter((x) => !x.done);
+      const subj = im[1].replace(/\s+is\s+(?:now\s+|no longer\s+|)?due$|\s+due\s+date\s+is$|\s+due$|^due\s+date\s+is\s+/i, "").trim();
+      const task = findById(pend, subj) || matchTask(pend, subj);
+      if (task) {
+        const due = parseDueDate(im[2], nowForTesting.now());
+        return { actionId: "notes:set-task-due", payload: { id: task.id, text: task.text, dueDate: due.toISOString(), oldDueDate: task.dueDate || null } };
+      }
+    }
+    // No store ctx (no pending task matched) → route it to creation instead
+    // of misfiling it as a task-less edit.
+    const payload = { text: subj || t };
+    if (parseDueDate(im[2], nowForTesting.now())) payload.dueDate = parseDueDate(im[2], nowForTesting.now()).toISOString();
+    return { actionId: "notes:add-task", payload };
+  }
+
   m = RE_TASK_DONE.exec(t);
   if (m) {
     // "mark task <id> done" (mouse path) — strip the literal 'task ' prefix
@@ -463,4 +549,6 @@ module.exports = {
   RE_NOTE, RE_REMIND, RE_TASK_ADD, RE_TASKS_LIST, RE_TASK_DONE,
   RE_SEARCH_NOTES, RE_NOTES_LIST, RE_DELETE, RE_DELETE_ID, RE_REMIND_CANCEL, RE_SUMMARIZE,
   RE_SNOOZE, RE_TASK_STATS,
+  RE_SET_DUE_VERB, RE_CLEAR_DUE_VERB, RE_IMPLICIT_SET_DUE, RE_IMPLICIT_CLEAR_DUE,
+  setDueClause,
 };

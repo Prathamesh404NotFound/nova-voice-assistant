@@ -139,6 +139,26 @@ function addTask(text, opts = {}) {
   return stripInternal(item);
 }
 
+/**
+ * Round 18: change or remove a task's due date. `dueDate` may be an ISO
+ * string (pinned to end-of-day for day-based dates) or null to remove the
+ * due date entirely. Invalid ISO strings are silently dropped (NaN-guard);
+ * a null clears whatever was there. Returns updated task or null.
+ */
+function setTaskDue(id, dueDate) {
+  load();
+  const item = __data.tasks.find((t) => t.id === id);
+  if (!item) return null;
+  if (dueDate === null || dueDate === undefined) {
+    delete item.dueDate;
+  } else if (!isNaN(Date.parse(dueDate))) {
+    item.dueDate = new Date(dueDate).toISOString();
+  } // else: garbage — leave the field untouched rather than storing trash
+  item.updatedAt = nowISO();
+  save();
+  return stripInternal(item);
+}
+
 /** Mark a task done (or not-done). Returns updated task or null. */
 function setTaskDone(id, done) {
   load();
@@ -322,7 +342,7 @@ function resetForTesting() {
 }
 
 module.exports = {
-  all, addNote, addReminder, rearmReminder, addTask, setTaskDone, taskStats,
+  all, addNote, addReminder, rearmReminder, addTask, setTaskDone, setTaskDue, taskStats,
   deleteNote, deleteTask, cancelReminder, searchNotes, summarizeOf,
   dueReminders, markFired,
   setStorePathForTesting, resetForTesting, filePath,

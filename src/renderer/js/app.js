@@ -299,8 +299,15 @@
       // works and Private Mode stays irrelevant — TTS is fully local).
       if (document.hasFocus()) speak(msg);
     });
+    // Round 18: one-per-session overdue-task boot nudge — toast + spoken
+    // once at startup when pending overdue tasks exist (main process reads
+    // the store; fully local, no network, Private Mode safe).
+    window.nova.onTaskDueNudge((data) => {
+      if (!data || !data.text) return;
+      showNotesToast(data.text);
+      if (document.hasFocus()) speak(data.text);
+    });
   }
-
   // ======================================================================
   // KNOWLEDGE BASE SIDE PANEL (Stage 8 — fully local indexing + RAG)
   // ======================================================================

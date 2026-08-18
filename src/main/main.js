@@ -700,6 +700,14 @@ app.whenReady().then(async () => {
   //    while the app was closed; 15 s polling thereafter). Reminders only
   //    fire while the app is running.
   reminders.start(mainWindow);
+  // Round 18: one-per-session overdue-task boot nudge (read-only — speaks a
+  // reminder about pending overdue tasks once after startup, via the
+  // nova:task-due-nudge renderer event the renderer already speaks aloud).
+  try {
+    require("./notes/boot-nudge").start(mainWindow);
+  } catch (err) {
+    log.warn("[boot-nudge] startup nudge failed:", err?.message || err);
+  }
   // First-run onboarding: tell the renderer which OS permissions are still
   // pending so the why-needed screens can appear BEFORE the OS prompts.
   try {

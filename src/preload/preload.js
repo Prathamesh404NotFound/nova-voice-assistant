@@ -95,6 +95,12 @@ contextBridge.exposeInMainWorld("nova", {
     ipcRenderer.on("nova:reminder-fired", listener);
     return () => ipcRenderer.removeListener("nova:reminder-fired", listener);
   },
+  // Round 18: one-per-session overdue-task boot nudge (main → renderer).
+  onTaskDueNudge: (cb) => {
+    const listener = (_evt, data) => cb(data);
+    ipcRenderer.on("nova:task-due-nudge", listener);
+    return () => ipcRenderer.removeListener("nova:task-due-nudge", listener);
+  },
   onAgentProgress: (cb) => {
     const listener = (_evt, event) => cb(event);
     ipcRenderer.on("nova:agent-progress", listener);
