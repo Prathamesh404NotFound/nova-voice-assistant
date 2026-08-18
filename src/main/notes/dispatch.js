@@ -265,6 +265,31 @@ function formatLocalResult(actionId, payload, detail) {
         actionId, detail: { kind: "task-stats", stats: s },
       };
     }
+    // Round 21: read-only daily briefing — today's due tasks, overdue,
+    // and today's reminders in one spoken sentence.
+    case "notes:daily-briefing": {
+      const b = detail.result || {};
+      const named = (list) => list.map((x) => `"${x.text.slice(0, 40)}"`).join(", ");
+      const duet = b.dueToday || [];
+      const ov = b.overdue || [];
+      const rem = b.remindersToday || [];
+      let text;
+      if (!duet.length && !ov.length && !rem.length) {
+        text = "Nothing on the plate today — clear skies.";
+      } else {
+        const parts = [];
+        if (duet.length) parts.push(`${duet.length} task${duet.length === 1 ? "" : "s"} due today: ${named(duet)}`);
+        if (ov.length) parts.push(`${ov.length} overdue: ${named(ov)}`);
+        if (rem.length) parts.push(`${rem.length} reminder${rem.length === 1 ? "" : "s"} today: ${named(rem)}`);
+        text = `Here's today's plate: ${parts.join(". ")}.`;
+      }
+      return {
+        ok: true, intent: "notes",
+        text,
+        narration: "Here's what's on your plate today…",
+        actionId, detail: { kind: "daily-briefing", briefing: b },
+      };
+    }
     // Round 13: snooze — re-arms the last fired reminder.
     case "notes:snooze-reminder": {
       const r = detail.reminder || {};

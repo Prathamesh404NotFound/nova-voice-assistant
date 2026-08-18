@@ -200,6 +200,16 @@ registerAction({
   },
 });
 
+// Round 21: daily briefing — "what's on my plate today". One local-only,
+// read-only snapshot: tasks due today, overdue tasks, and today's reminders.
+registerAction({
+  id: "notes:daily-briefing",
+  level: RISK_LEVEL.SAFE,
+  description: "Read-only snapshot of today: tasks due, overdue, and reminders",
+  simulate: async () => ({ summary: "would read your task list and reminders and summarise today locally" }),
+  execute: async () => ({ result: store.dailyBriefing(), kind: "daily-briefing" }),
+});
+
 // Round 13: snooze — re-arms the most recently FIRED reminder (there is no
 // newer fired one to speak of — snooze is only meaningful against a reminder
 // that already nudged the user). Re-arming is L1 (safe, local only); the

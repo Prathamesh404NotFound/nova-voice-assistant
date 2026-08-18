@@ -259,6 +259,38 @@
         showNotesToast(res?.text || "That request could not be completed.");
         return;
       }
+      // Round 21: the daily briefing gets a structured card instead of a
+      // plain toast — due-today (cyan), overdue (amber), and today's
+      // reminders rendered as scrollable groups next to the spoken line.
+      if (res.detail?.kind === "daily-briefing") {
+        showNotesToast(res.narration || res.text || "Here's today's plate…", (div) => {
+          const b = res.detail.briefing || {};
+          div.classList.add("nova-briefing-toast");
+          div.dataset.briefing = "1";
+          const groups = [
+            { label: "DUE TODAY", items: b.dueToday || [], cls: "brief-due-today" },
+            { label: "OVERDUE", items: b.overdue || [], cls: "brief-overdue" },
+            { label: "REMINDERS TODAY", items: b.remindersToday || [], cls: "brief-reminders" },
+          ].filter((g) => g.items.length);
+          if (!groups.length) return; // empty plate — the line is enough
+          const wrap = document.createElement("div");
+          wrap.className = "nova-briefing-groups";
+          for (const g of groups) {
+            const block = document.createElement("div");
+            block.className = `nova-briefing-group ${g.cls}`;
+            block.innerHTML = `<div class="nova-briefing-label">${g.label}</div>`;
+            for (const item of g.items) {
+              const row = document.createElement("div");
+              row.className = "nova-briefing-item";
+              row.textContent = item.text;
+              block.appendChild(row);
+            }
+            wrap.appendChild(block);
+          }
+          div.appendChild(wrap);
+        });
+        return;
+      }
       showNotesToast(res.narration || res.text || "Done.");
       refreshNotesList();
     } catch (err) {

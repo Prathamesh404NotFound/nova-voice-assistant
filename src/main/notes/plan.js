@@ -94,6 +94,12 @@ const RE_SEARCH_NOTES =
 // "show my notes" / "list my notes"
 const RE_NOTES_LIST = /^(?:show|list|what('s| is))\s+(?:my\s+)?notes$/i;
 
+// Round 21: "what's on my plate today" / "brief me on today" / "daily briefing"
+// / "morning briefing" / "what do I have due today" — one spoken snapshot of
+// today: due tasks, overdue, and reminders. Checked before the notes list so
+// "brief" phrasings are never read as a search/list request.
+const RE_BRIEFING = /^(?:nova\s*,?\s*)?(?:what('s| is) on my plate today|brief me on today|(?:today|morning|daily)\s+briefing|what do i have due today|give me my briefing)\s*$/i;
+
 // Round 14: "how am I doing on my tasks" / "task stats" / "my completion rate"
 // NOTE: the optional-group + \b combo ((?:istics)?\b) breaks under JS regex
 // backtracking — use explicit alternation instead. The 'task stats(s)' branch
@@ -436,6 +442,12 @@ function planNoteAction(text, ctx = {}) {
       if (task) return { actionId: "notes:set-task-due", payload: { id: task.id, text: task.text, dueDate: null, oldDueDate: task.dueDate || null } };
     }
     return { error: "I could not find that task on your list — name it exactly, e.g. \"remove the due date for finish report\"." };
+  }
+  // Round 21: daily briefing — MUST run before the implicit set-due branch:
+  // "what do i have due today" matches RE_IMPLICIT_SET_DUE (it ends in
+  // "…due today"), and the fallback below would read an undefined `subj`.
+  if (RE_BRIEFING.test(t)) {
+    return { actionId: "notes:daily-briefing", payload: {} };
   }
   const im = RE_IMPLICIT_SET_DUE.exec(t);
   if (im) {

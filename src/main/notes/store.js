@@ -254,6 +254,46 @@ function taskStats() {
   };
 }
 
+/**
+ * Round 21: "what's on my plate today" — one local-only snapshot of today:
+ * pending tasks due today, pending overdue tasks, and reminders due today
+ * (fired or not — if it rings today, it belongs in the briefing). Day
+ * granularity everywhere; done tasks are excluded from both task groups.
+ * `now` may be injected for deterministic tests (defaults to the live clock).
+ */
+function dailyBriefing(now) {
+  load();
+  const today = new Date(now || Date.now());
+  today.setHours(0, 0, 0, 0);
+  const tonight = new Date(today.getTime() + 86_400_000); // 00:00 next day
+  const all = __data.tasks || [];
+  const reminders = (__data.reminders || []).slice();
+  const safeDay = (iso) => {
+    if (!iso) return null;
+    try {
+      const d = new Date(iso);
+      d.setHours(0, 0, 0, 0);
+      return d;
+    } catch { return null; }
+  };
+  const dueToday = all
+    .filter((t) => !t.done && safeDay(t.dueDate)?.getTime() === today.getTime())
+    .sort((a, b) => (a.createdAt || "").localeCompare(b.createdAt || ""))
+    .map((t) => ({ id: t.id, text: t.text }));
+  const overdue = all
+    .filter((t) => !t.done && safeDay(t.dueDate) && safeDay(t.dueDate) < today)
+    .sort((a, b) => safeDay(a.dueDate) - safeDay(b.dueDate)) // oldest (most overdue) first
+    .map((t) => ({ id: t.id, text: t.text, dueDate: t.dueDate }));
+  const remindersToday = reminders
+    .filter((r) => {
+      const at = new Date(r.dueAt).getTime();
+      return at >= today.getTime() && at < tonight.getTime();
+    })
+    .sort((a, b) => new Date(a.dueAt).getTime() - new Date(b.dueAt).getTime())
+    .map((r) => ({ id: r.id, text: r.text, dueAt: r.dueAt, fired: !!r.fired }));
+  return { dueToday, overdue, remindersToday };
+}
+
 /** Delete a note; returns its content for undo/telemetry. */
 function deleteNote(id) {
   load();
@@ -343,6 +383,7 @@ function resetForTesting() {
 
 module.exports = {
   all, addNote, addReminder, rearmReminder, addTask, setTaskDone, setTaskDue, taskStats,
+  dailyBriefing,
   deleteNote, deleteTask, cancelReminder, searchNotes, summarizeOf,
   dueReminders, markFired,
   setStorePathForTesting, resetForTesting, filePath,

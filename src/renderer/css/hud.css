@@ -1420,3 +1420,42 @@ html, body {
 .notes-item.fired { border-left: 2px solid var(--cyan); }
 .notes-sub-fired { color: var(--cyan); font-weight: 600; }
 .notes-item.fired .nova-snooze-bar { flex-wrap: nowrap; }
+
+/* Round 21: daily-briefing toast card — due today (cyan), overdue (amber),
+   reminders (default text) as compact groups under the spoken line. */
+.nova-briefing-toast {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.nova-briefing-groups {
+  display: flex;
+  gap: 10px;
+  padding-top: 4px;
+  border-top: 1px solid var(--line);
+}
+.nova-briefing-group {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.nova-briefing-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+.nova-briefing-item {
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--text);
+  border-left: 2px solid var(--line-strong);
+  padding-left: 6px;
+}
+.nova-briefing-group.brief-due-today .nova-briefing-label { color: var(--cyan-dim); }
+.nova-briefing-group.brief-due-today .nova-briefing-item { border-left-color: var(--cyan); }
+.nova-briefing-group.brief-overdue .nova-briefing-label { color: var(--amber); }
+.nova-briefing-group.brief-overdue .nova-briefing-item { border-left-color: var(--amber); }
