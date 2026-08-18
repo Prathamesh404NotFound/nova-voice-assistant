@@ -49,6 +49,10 @@ const { executePreview } = require("./files/dispatch");
 // through the existing permission gate. Registration must happen before the
 // first agent run so the gate knows the actions.
 require("./notes/actions");
+// Round 12: screenshot-to-note — registers notes:screen-to-note (L1) and
+// reuses vision:capture-screen (L0) with { forNotes: true } to ferry the
+// PNG bytes to OCR; nothing leaves the machine, works in Private Mode.
+require("./notes/screenshot-note");
 const reminders = require("./notes/reminders");
 
 // Knowledge base (Stage 8) — fully local: folder indexing with MiniLM

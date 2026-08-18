@@ -217,6 +217,20 @@ function formatLocalResult(actionId, payload, detail) {
         actionId, detail: { kind: "reminder-cancelled", reminder: r },
       };
     }
+    // Round 12: screenshot-to-note — screen text saved as a local note.
+    case "notes:screen-to-note": {
+      const note = (detail.note) || {};
+      if (detail.ok === false) {
+        return { ok: false, intent: "notes", text: detail.error || "I could not save the screen as a note.", actionId, detail: { kind: "screen-note", error: detail.error } };
+      }
+      const preview = (note.text || "").split("\n")[0];
+      return {
+        ok: true, intent: "notes",
+        text: `Saved your screen as a local note — "${preview}" (${detail.charCount || 0} characters read). Nothing was sent anywhere.`,
+        narration: "Noted — I saved what's on your screen.",
+        actionId, detail: { kind: "screen-note", note },
+      };
+    }
     default:
       return { ok: false, intent: "notes", text: "I don't know how to handle that notes action.", actionId, detail };
   }

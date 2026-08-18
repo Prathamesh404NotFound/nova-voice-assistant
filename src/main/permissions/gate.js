@@ -83,7 +83,17 @@ async function executeAndLog(action, payload, taskId) {
   const started = Date.now();
   try {
     const detail = await action.execute(payload);
-    actionLog.append({ actionId: action.id, level: action.level, outcome: "success", taskId, startedAt: started, detail });
+    // Round 12: callers like screenshot-to-note may attach raw image bytes
+    // (`buffer`) to the execute() result for downstream use. The Action Log
+    // must stay lightweight — a note about the capture, never the image
+    // bytes — so log a copy without the buffer, while the caller still
+    // receives the full object through the return value.
+    if (detail && Buffer.isBuffer(detail.buffer)) {
+      const { buffer: _strip, ...logDetail } = detail;
+      actionLog.append({ actionId: action.id, level: action.level, outcome: "success", taskId, startedAt: started, detail: logDetail });
+    } else {
+      actionLog.append({ actionId: action.id, level: action.level, outcome: "success", taskId, startedAt: started, detail });
+    }
     // Remember the execute() outcome — undo uses it to reverse bulk actions
     // (organize/move/copy) whose reverse() needs the actual moved/copied list.
     action.lastResult = detail || {};

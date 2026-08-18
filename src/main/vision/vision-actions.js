@@ -29,7 +29,10 @@ registerAction({
     const started = Date.now();
     const shot = await screenshot.captureScreen();
     // Strip the image bytes from what the gate logs — keep a lightweight note.
-    return {
+    // Round 12: the screenshot-to-note path sets { forNotes: true } so the
+    // caller can OCR the bytes; the buffer is still excluded from the log.
+    const forNotes = !!(payload && payload.forNotes);
+    const detail = {
       // NOTE: the screenshot.js module returns {buffer,...}; we pass it up to
       // vision-query.js via runVisionQuery, but the ACTION LOG only records:
       durationMs: Date.now() - started,
@@ -39,6 +42,8 @@ registerAction({
       permissionMissing: shot.permissionMissing,
       status: shot.status,
     };
+    if (forNotes) detail.buffer = shot.buffer;
+    return detail;
   },
 });
 

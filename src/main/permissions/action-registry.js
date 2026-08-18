@@ -46,4 +46,9 @@ function listActions() {
   return [...registry.values()].map(({ id, level, description }) => ({ id, level, description }));
 }
 
-module.exports = { registerAction, getAction, listActions };
+// Round 12: headless tests replace the real screen capture (desktopCapturer)
+// with a synthetic source — registered actions must be replaceable.
+function unregisterActionForTesting(id) {
+  return registry.delete(id);
+}
+module.exports = { registerAction, getAction, listActions, unregisterActionForTesting };

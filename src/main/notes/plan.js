@@ -13,6 +13,12 @@
 // 'note that X' → body is the content AFTER the optional 'that' keyword;
 // a bare 'note that' (or 'note that:') has an empty body → planning error.
 const RE_NOTE = /^(?:nova\s*,?\s*)?(?:note(?:\s*:\s*|\s+that\s+)(.+)|note\s+(.+)|(?:note down|write down|remember)\s+(?:that\s+)?(.+))/i;
+// Round 12: "note what is on my screen" / "capture my screen as a note" —
+// screenshot-to-note. Must come BEFORE the generic RE_NOTE so the phrase is
+// not swallowed as a plain text note (the OCR path is the whole point).
+// Matches (grouped):  a) "(note|save|capture|remember|write down) [what('s| is) ][(on my|my|the)] screen"
+//                      b) "(capture|snap) the screen (and note|save it)"
+const RE_SCREEN_NOTE = /^(?:nova\s*,?\s*)?(?:(?:note|save|capture|remember|write down)\s+(?:(?:what(?:'s| is)\s+)?(?:(?:on\s+)?(?:my|the)\s+)?screen))|(?:capture|snap)\s+(?:my\s+|the\s+)?screen(?:\s+and\s+(?:note|save)\s+it)?$/i;
 
 // "remind me to call mom at 3pm" / "remind me to stand up in 30 minutes"
 // Task text is everything after "remind me (to)?" up to the LAST " at/in "
@@ -156,6 +162,11 @@ function findById(pool, id) {
 function planNoteAction(text, ctx = {}) {
   const t = text.trim();
   let m;
+
+  // Round 12: screenshot-to-note — checked BEFORE the generic RE_NOTE.
+  if (RE_SCREEN_NOTE.test(t)) {
+    return { actionId: "notes:screen-to-note", payload: {} };
+  }
 
   m = RE_NOTE.exec(t);
   if (m) {
