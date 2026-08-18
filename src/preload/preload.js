@@ -90,6 +90,8 @@ contextBridge.exposeInMainWorld("nova", {
   // --- Notes / reminders / tasks (Stage 7 — fully local) ---
   getNotesStore: () => ipcRenderer.invoke("nova:get-notes-store"),
   notesRun: (text) => ipcRenderer.invoke("nova:notes-run", text),
+  // Round 36: focus-stats side-panel tab (L0-equivalent, fully local).
+  getFocusStats: () => ipcRenderer.invoke("nova:get-focus-stats"),
   onReminderFired: (cb) => {
     const listener = (_evt, data) => cb(data);
     ipcRenderer.on("nova:reminder-fired", listener);

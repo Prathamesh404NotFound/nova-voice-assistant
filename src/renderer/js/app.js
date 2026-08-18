@@ -171,7 +171,23 @@
       notes: "No notes yet. Voice: “Nova, note that …” — or type below.",
       tasks: "No tasks yet. Voice: “add X to my tasks” — or type below.",
       reminders: "No reminders yet. Voice: “remind me to X at 3pm” — or type below.",
+      // Round 36: Focus stats tab — fully local, works in Private Mode too.
+      focus: "No focus sessions yet — say “start focus mode” for a Pomodoro, or “start focus mode for 45 minutes” for a longer block.",
     }[tab];
+    if (tab === "focus") {
+      let stats = null;
+      try {
+        const fres = await window.nova.getFocusStats().catch(() => null);
+        stats = fres?.stats || null;
+      } catch {}
+      if (!stats || !Array.isArray(stats.daily)) {
+        el.notesList.innerHTML = `<p class="history-empty">${emptyMsg}</p>`;
+        return;
+      }
+      el.notesList.innerHTML = "";
+      el.notesList.appendChild((typeof window !== "undefined" && window.NovaFocusStatsUI) ? window.NovaFocusStatsUI.buildPanel(stats) : null);
+      return;
+    }
     if (!store || !Array.isArray(store[tab + "s"])) {
       el.notesList.innerHTML = `<p class="history-empty">${emptyMsg}</p>`;
       return;
@@ -265,6 +281,23 @@
         if (!v) return;
         $("notesInput").value = "";
         runNotesCommand(`add ${v} to my tasks`);
+      });
+      return;
+    }
+    // Round 36: Focus tab — start a Pomodoro from the panel (same L1
+    // notes:focus-start action as the voice path) and refresh the stats.
+    if (tab === "focus") {
+      el.notesAdd.innerHTML = `
+      <form id="notesForm" autocomplete="off">
+        <input id="notesInput" type="text" placeholder="Focus for … (minutes, e.g. 25 — leave empty for 25 min)" maxlength="4" />
+        <button type="submit" class="send-btn">&#9654;</button>
+      </form>`;
+      $("notesForm").addEventListener("submit", (ev) => {
+        ev.preventDefault();
+        const v = $("notesInput").value.trim();
+        $("notesInput").value = "";
+        const min = Math.max(1, Math.min(480, parseInt(v, 10)));
+        runNotesCommand(Number.isFinite(min) ? `start focus mode for ${min} minutes` : "start focus mode").then(refreshNotesList);
       });
       return;
     }

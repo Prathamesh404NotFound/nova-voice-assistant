@@ -37,3 +37,4 @@ nova-notes.json
 .nova-recurring-test-data/
 .nova-*/
 actions.log.json
+.nova-focus-stats-panel-test-data/

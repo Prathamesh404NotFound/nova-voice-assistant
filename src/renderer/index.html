@@ -148,6 +148,8 @@
           <button class="notes-tab active" data-notes-tab="notes" role="tab">Notes</button>
           <button class="notes-tab" data-notes-tab="tasks" role="tab">Tasks</button>
           <button class="notes-tab" data-notes-tab="reminders" role="tab">Reminders</button>
+          <!-- Round 36: Focus stats tab — today + trailing 7 days of focus time, fully local. -->
+          <button class="notes-tab" data-notes-tab="focus" role="tab">Focus</button>
         </div>
         <div id="notesList" class="notes-list"></div>
         <div id="notesAdd" class="notes-add"></div>
@@ -335,6 +337,8 @@
   <script src="js/palette-ranking.js"></script>
   <script src="js/history-export.js"></script>
   <script src="js/snooze-ui.js"></script>
+  <!-- Round 36: focus-stats side-panel tab (DOM-agnostic builder, loaded before app.js). -->
+  <script src="js/focus-stats-ui.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

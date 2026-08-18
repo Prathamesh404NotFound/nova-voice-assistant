@@ -495,6 +495,43 @@ ipcMain.handle("nova:get-notes-store", () => {
   }
 });
 
+// Round 36: focus-stats side-panel tab (L0-equivalent, fully local) — the
+// visual companion of the spoken focus-stats readout (Round 32). Both read
+// the same completed-session math from the local store: today's minutes,
+// the trailing 7 days, a per-local-day breakdown, and recent sessions.
+ipcMain.handle("nova:get-focus-stats", () => {
+  try {
+    const store = require("./notes/store");
+    const daily = [];
+    for (let i = 6; i >= 0; i--) {
+      // liveNow() lets tests pin the clock via store.setNowForTesting.
+      const d = new Date(store.liveNow());
+      d.setHours(0, 0, 0, 0);
+      d.setDate(d.getDate() - i);
+      // Local wall-clock day — matches how sessions are bucketed below
+      // (startedAt falls between the same local midnights).
+      const day = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+      const from = d.getTime();
+      const to = from + 86_400_000;
+      // Sum real elapsed minutes of completed sessions that STARTED on this day.
+      // (Honest measure — matches focusMinutesThisWeek semantics. Sessions
+      // crossing midnight count toward the day they started.)
+      let minutes = 0;
+      for (const f of store.focusHistory(Number.POSITIVE_INFINITY) || []) {
+        if (f.status !== "completed" || !f.stoppedAt) continue;
+        const started = new Date(f.startedAt).getTime();
+        const stopped = new Date(f.stoppedAt).getTime();
+        if (isNaN(started) || isNaN(stopped) || started < from || started >= to) continue;
+        minutes += Math.round((stopped - started) / 60_000);
+      }
+      daily.push({ day, label: i === 0 ? "Today" : null, minutes });
+    }
+    return { ok: true, stats: { todayMin: daily[6].minutes, weekMin: store.focusMinutesThisWeek(), daily, recent: store.focusHistory(10) || [] } };
+  } catch (err) {
+    return { ok: false, error: String(err?.message || err) };
+  }
+});
+
 /**
  * Run a notes message through the permission gate directly (side panel
  * mouse/keyboard path — same actions as the voice path, same levels).

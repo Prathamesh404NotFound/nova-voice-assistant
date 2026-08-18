@@ -771,4 +771,5 @@ module.exports = {
   startFocus, stopFocus, focusHistory, latestFocus, focusMinutesThisWeek, focusMinutesToday,
   setStorePathForTesting, resetForTesting, filePath,
   setNowForTesting, // test-only: pins the clock for end-time math
+  liveNow, // test-only: live clock (respects setNowForTesting) for per-day bucket math
 };
