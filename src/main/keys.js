@@ -153,7 +153,20 @@ function storeAccessKey(key) {
   log.info("Porcupine AccessKey stored in memory (never persisted to disk).");
 }
 
+let _secureChecked = null;
+function isKeyStorageInsecure() {
+  try {
+    if (_secureChecked === null) _secureChecked = typeof safeStorage.isEncryptionAvailable === "function" ? !safeStorage.isEncryptionAvailable() : true;
+    // Env-var users never touch disk, so they are fine regardless of keychain.
+    if (process.env.OPENROUTER_API_KEY && process.env.OPENROUTER_API_KEY.trim()) return false;
+    return !!_secureChecked;
+  } catch {
+    return false;
+  }
+}
+
 module.exports = {
   getKey, isKeyConfigured, storeKey, requireKeyOnce, showKeyDialog,
+  isKeyStorageInsecure,
   getAccessKey, isAccessKeyConfigured, storeAccessKey,
 };

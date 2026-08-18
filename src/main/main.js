@@ -279,6 +279,11 @@ ipcMain.handle("nova:get-settings", async () => {
     updatedAt: router.lastUpdated(),
     fallbackInUse: router.isFallbackInUse(),
     privateMode: settings.isPrivateMode(),
+    // Round 9: keychain availability — Linux setups without libsecret fall back
+    // to in-memory key storage, which the user should know about (no plaintext
+    // file is ever written, but the key does not survive a restart unless the
+    // OPENROUTER_API_KEY env var is set).
+    keyStorageInsecure: keys.isKeyStorageInsecure(),
   };
 });
 
@@ -531,6 +536,13 @@ ipcMain.handle("nova:kb-run", async (_evt, text) => {
     log.error("[kb] kb-run failed:", err?.message || err);
     return { ok: false, intent: "kb", text: "Something went wrong — details are in Developer Mode.", error: String(err?.message || err) };
   }
+});
+
+// Round 9: UI-visible embedding-model status so users know whether the real
+// MiniLM model is in use or the deterministic local fallback hasher.
+ipcMain.handle("nova:kb-embedding-status", async () => {
+  const { embeddingStatus, isUsingFallback } = require("./kb/embeddings");
+  return { ok: true, status: embeddingStatus(), usingFallback: isUsingFallback() };
 });
 
 /** Open an answer's source file in the default app (L2 confirmed in dispatch). */

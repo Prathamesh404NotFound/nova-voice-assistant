@@ -144,6 +144,9 @@ contextBridge.exposeInMainWorld("nova", {
     return () => ipcRenderer.removeListener("nova:toggle-mic", listener);
   },
 
+  // Round 9: kb embedding-model status (MiniLM vs deterministic local fallback)
+  kbEmbeddingStatus: () => ipcRenderer.invoke("nova:kb-embedding-status"),
+
   // --- Screen vision (Level 0 READ — every capture is logged) ---
   visionQuery: (question) => ipcRenderer.invoke("nova:vision-query", question),
   checkScreenPermission: () => ipcRenderer.invoke("nova:check-screen-permission"),

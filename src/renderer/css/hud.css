@@ -1293,3 +1293,6 @@ html, body {
 .tts-slider-label { font-size: 11px; color: #8493a6; min-width: 42px; }
 .tts-slider-row input[type="range"] { flex: 1; accent-color: var(--cyan, #39d2ff); height: 14px; }
 .tts-slider-val { font-size: 11px; font-family: var(--font-mono, monospace); color: var(--cyan, #39d2ff); min-width: 38px; text-align: right; }
+
+/* Round 9 — KB embedding backend note (MiniLM vs local hasher) */
+.kb-embedding-note { font-size: 11px; color: #7d8aa0; margin-top: 6px; line-height: 1.45; padding: 6px 9px; background: #0a0d14; border-left: 2px solid var(--cyan, #39d2ff); border-radius: 0 6px 6px 0; }

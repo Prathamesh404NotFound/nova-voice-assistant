@@ -304,7 +304,23 @@
     const addNote = folders.length >= (st.maxFolders || 5)
       ? `Index full (${folders.length}/${st.maxFolders || 5}) — remove a folder first.`
       : `Click to choose a folder — it will be indexed locally (text, markdown, PDF, Word).`;
-    el.kbAdd.innerHTML = `<button id="kbPickFolderBtn" class="flat-btn" ${folders.length >= (st.maxFolders || 5) ? "disabled" : ""}>+ Add folder to knowledge base</button><div class="settings-note">${addNote}</div>`;
+    el.kbAdd.innerHTML = `<button id="kbPickFolderBtn" class="flat-btn" ${folders.length >= (st.maxFolders || 5) ? "disabled" : ""}>+ Add folder to knowledge base</button><div class="settings-note">${addNote}</div><div id="kbEmbeddingNote" class="kb-embedding-note"></div>`;
+    // Round 9: show which embedding backend is active (real MiniLM model vs
+    // deterministic local fallback hasher) so the first-run network download
+    // expectation is explicit.
+    const ebRes = await window.nova.kbEmbeddingStatus?.().catch(() => null);
+    const ebNote = el.kbEmbeddingNote;
+    if (ebRes?.ok && ebNote) {
+      if (ebRes.usingFallback) {
+        ebNote.textContent = "Embeddings: lightweight local hasher (no network download needed — quality is lower than the full model; the real model can be downloaded on a networked machine later).";
+      } else if (ebRes.status === "loaded") {
+        ebNote.textContent = "Embeddings: full local model loaded — all search runs on this machine.";
+      } else {
+        ebNote.hidden = true;
+        ebNote.textContent = "";
+      }
+      ebNote.hidden = !ebNote.textContent;
+    } else if (ebNote) { ebNote.hidden = true; }
     document.getElementById("kbPickFolderBtn")?.addEventListener("click", async () => {
       // The L2 gate (cancellable toast) is handled in the main process via
       // nova:kb-run — "add this folder" triggers the dialog there.
@@ -611,7 +627,8 @@
   function updateWakeWordStatus() {
     if (!el.wakeWordStatus) return;
     if (!state.wakeApiKey) {
-      el.wakeWordStatus.textContent = "Requires a free Picovoice AccessKey from console.picovoice.ai. Falls back to tap-to-arm.";
+      const when = state.wakeEnabled ? " (toggle is on, but a key is required — set it to enable)" : "";
+      el.wakeWordStatus.textContent = "Requires a free Picovoice AccessKey from console.picovoice.ai" + when + ". Falls back to tap-to-arm.";
     } else if (state.wakeEnabled) {
       el.wakeWordStatus.textContent = state.wakeDetector?.isActive
         ? "Listening for “Hey Nova”…"
@@ -1673,6 +1690,17 @@ let historyItems = [];
       el.devFallback.textContent = s.fallbackInUse ? "yes" : "no";
       el.keyStatus.textContent = s.keyConfigured ? "stored" : "not set";
       el.keyStatus.className = "key-status " + (s.keyConfigured ? "ok" : "miss");
+      // Round 9: surface keychain unavailability (e.g. Linux without libsecret)
+      // so the session-only key behavior is explicit rather than logged only.
+      const storageNote = $("keyStorageNote");
+      if (storageNote) {
+        if (s.keyStorageInsecure) {
+          storageNote.textContent = "Keychain not available on this system — the key is held encrypted in memory only and won't survive a restart. Set the OPENROUTER_API_KEY environment variable for persistence.";
+          storageNote.hidden = false;
+        } else {
+          storageNote.hidden = true;
+        }
+      }
     } catch (err) {
       console.warn("Settings load failed:", err);
     }

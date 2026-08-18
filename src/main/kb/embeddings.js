@@ -148,6 +148,17 @@ function isUsingFallback() {
   return !_model && _fallback;
 }
 
+// Round 9: UI-visible embedding status. "loaded" — real MiniLM model is in
+// memory (may still need a one-time network download on first run, which
+// happens automatically the first time a folder is indexed or queried).
+// "fallback" — deterministic local hasher in use; quality is adequate for
+// small collections, lower than MiniLM. "unknown" — not yet attempted.
+function embeddingStatus() {
+  if (_model) return "loaded";
+  if (_fallback) return "fallback";
+  return "unknown";
+}
+
 function resetForTesting() {
   _model = null;
   _loadPromise = null;
@@ -163,4 +174,4 @@ function embedFallbackForTesting(texts) {
   return single ? out[0] : out;
 }
 
-module.exports = { embed, cosine, isUsingFallback, setModelCacheForTesting, resetForTesting, DIM, embedFallbackForTesting };
+module.exports = { embed, cosine, isUsingFallback, embeddingStatus, setModelCacheForTesting, resetForTesting, DIM, embedFallbackForTesting };
